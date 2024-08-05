@@ -1,0 +1,10 @@
+Home:
+Barra busqueda home
+
+Actividad:
+Cancelar
+Mensajes
+
+Detalles de actividad:
+metodos de pago en detalles de actividad
+descarga en pdf
