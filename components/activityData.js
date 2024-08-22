@@ -62,7 +62,8 @@ export default [
     status: "cancelled",
     worker: {
       workerId: 3,
-      firstName: "Luciano",
+      firstName:
+        "Luciano fs fg fg fg gf fg gf gf fg fg sdffsdfsdfsd ds  fsd fsd sdfsdf d",
       lastName: "Dovidio",
       profilePicture: "../../assets/images/data/2",
     },
@@ -85,7 +86,7 @@ export default [
       lastName: "Fernandez",
     },
     reservePrice: 2000,
-    reservePaymentType: "cash",
+    reservePaymentType: "credit_card",
     address: {
       addressId: 8,
       street: "San Luis 145",

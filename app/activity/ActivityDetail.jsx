@@ -16,6 +16,7 @@ import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
+import Ionicons from "@expo/vector-icons/Ionicons";
 
 import electricity from "../../assets/svgs/home/electricity";
 import plumbing from "../../assets/svgs/home/plumbing";
@@ -77,6 +78,17 @@ const translateService = (service) => {
   return serviceMap[service] || service;
 };
 
+const translateStatus = (status) => {
+  const statusMap = {
+    finished: "realizado por",
+    cancelled: "cancelado",
+    scheduled: "programado",
+    "on-progress": "en progreso",
+  };
+
+  return statusMap[status] || status;
+};
+
 const serviceIcons = {
   electricity,
   plumbing,
@@ -114,11 +126,39 @@ const formatTime = (dateTimeString) => {
   });
 };
 
-const formatPrice = (price) => {
-  if (price === null) {
-    return "Pago no registrado";
+const formatPriceByStatus = (price, status) => {
+  if (status === "on-progress" || status === "scheduled") {
+    return "Pendiente";
   }
+  if (status === "finished") {
+    if (price === null) {
+      return "Pago no registrado";
+    }
+    return `$ ${price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}`;
+  }
+  return "";
+};
+
+const formatPrice = (price) => {
   return `$ ${price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}`;
+};
+
+const translateReservePaymentType = (paymentType) => {
+  if (paymentType === "cash") {
+    return "Efectivo";
+  }
+  if (paymentType === "credit_card") {
+    return "Crédito";
+  }
+};
+
+const translatePaymentType = (paymentType) => {
+  if (paymentType === "cash") {
+    return "Efectivo";
+  }
+  if (paymentType === "credit_card") {
+    return "Crédito";
+  }
 };
 
 const ActivityDetail = ({ navigation, route }) => {
@@ -171,14 +211,21 @@ const ActivityDetail = ({ navigation, route }) => {
               >
                 Trabajo de {translateService(data.service)}
               </Text>
-              <Text style={{ fontSize: 15, fontWeight: "light" }}>
-                realizado por
-              </Text>
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <Text
+                  style={{ fontSize: 15, fontWeight: "light", marginRight: 3 }}
+                >
+                  {translateStatus(data.status)}
+                </Text>
+                {data.status === "scheduled" && (
+                  <Ionicons name="time-outline" size={22} color="black" />
+                )}
+              </View>
             </View>
             <IconComponent />
           </View>
           <View style={styles.workerContainer}>
-            <View style={{ width: "35%", alignItems: "flex-end" }}>
+            <View style={{ alignItems: "flex-end", width: "45%" }}>
               <Image source={workerImageSource} style={styles.workerImage} />
             </View>
             <View style={styles.nameContainer}>
@@ -192,11 +239,13 @@ const ActivityDetail = ({ navigation, route }) => {
               {formatDate(data.dateTime)} • {formatTime(data.dateTime)} hs
             </Text>
           </View>
-          <View style={styles.priceContainer}>
-            <Text style={{ fontSize: 15, fontWeight: "bold" }}>
-              {formatPrice(data.price)}
-            </Text>
-          </View>
+          {data.status !== "cancelled" && (
+            <View style={styles.priceContainer}>
+              <Text style={{ fontSize: 15, fontWeight: "bold" }}>
+                {formatPriceByStatus(data.price, data.status)}
+              </Text>
+            </View>
+          )}
 
           <View style={styles.lineContainer}>
             <View style={styles.line} />
@@ -287,7 +336,7 @@ const ActivityDetail = ({ navigation, route }) => {
                   <Text
                     style={{ fontWeight: "bold", fontSize: 15, marginLeft: 5 }}
                   >
-                    Efectivo
+                    {translateReservePaymentType(data.reservePaymentType)}
                   </Text>
                 </View>
               </View>
@@ -313,15 +362,13 @@ const ActivityDetail = ({ navigation, route }) => {
                   <Text
                     style={{ fontWeight: "bold", fontSize: 15, marginLeft: 5 }}
                   >
-                    Efectivo
+                    {translatePaymentType(data.paymentType)}
                   </Text>
                 </View>
               </View>
               <View style={styles.payment_detailsContainer}>
-                <Text style={{ fontSize: 15 }}>Reserva</Text>
-                <Text style={{ fontSize: 15 }}>
-                  {formatPrice(data.reservePrice)}
-                </Text>
+                <Text style={{ fontSize: 15 }}>Servicio</Text>
+                <Text style={{ fontSize: 15 }}>{formatPrice(data.price)}</Text>
               </View>
             </Animated.View>
           </View>
@@ -373,6 +420,7 @@ const styles = StyleSheet.create({
     marginTop: 30,
     flexDirection: "row",
     justifyContent: "center",
+    alignItems: "center",
   },
   workerImage: {
     width: 60,
@@ -383,7 +431,7 @@ const styles = StyleSheet.create({
   nameContainer: {
     marginLeft: 15,
     justifyContent: "center",
-    width: "65%",
+    width: "55%",
   },
   lineContainer: {
     flex: 1,

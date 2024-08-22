@@ -61,6 +61,40 @@ const serviceIcons = {
   music,
 };
 
+const translateService = (service) => {
+  const serviceMap = {
+    electricity: "Electricidad",
+    plumbing: "Plomeria",
+    gas: "Gas",
+    gardening: "Jardineria",
+    locksmith: "Cerrajeria",
+    painting: "Pintura",
+    construction: "Construccion",
+    pool: "Pileta",
+    carpentry: "Carpinteria",
+    glass: "Vidrios",
+    pets: "Mascotas",
+    security: "Seguridad",
+    ironwork: "Herreria",
+    technology: "Tecnologia",
+    beauty: "Belleza",
+    vehicles: "Vehiculos",
+    freight: "Fletes",
+    events: "Eventos",
+    photography: "Fotografia",
+    music: "Musica",
+  };
+
+  return serviceMap[service] || service;
+};
+
+const formatPrice = (price) => {
+  if (price === null) {
+    return "Pago no registrado";
+  }
+  return `$ ${price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}`;
+};
+
 const translateStatus = (status) => {
   const statusMap = {
     pending: "Pendiente",
@@ -74,7 +108,6 @@ const translateStatus = (status) => {
 
 const Activity = ({ navigation }) => {
   const insets = useSafeAreaInsets();
-
   return (
     <View
       style={{
@@ -118,7 +151,7 @@ const Activity = ({ navigation }) => {
                       >
                         <View style={styles.main_infoContainer}>
                           <View style={styles.infoContainer}>
-                            <View style={styles.addressContainer}>
+                            <View style={styles.serviceContainer}>
                               <Text
                                 style={{
                                   flex: 1,
@@ -127,8 +160,11 @@ const Activity = ({ navigation }) => {
                                 }}
                                 numberOfLines={2}
                               >
-                                {data.address.street}
+                                {translateService(data.service)}
                               </Text>
+                              {data.status === "finished" && (
+                                <Text>{formatPrice(data.price)}</Text>
+                              )}
                             </View>
                             <View style={styles.timeContainer}>
                               {data.status === "scheduled" && (
@@ -245,7 +281,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     flexDirection: "column",
   },
-  addressContainer: {
+  serviceContainer: {
     width: "80%",
   },
   infoContainer: {

@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "tiveo.2",
-    "slug": "tiveo.2",
+    "name": "tiveo",
+    "slug": "tiveo",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
