@@ -38,6 +38,9 @@ apply plugin: 'com.google.gms.google-services'
 
 #Create firebaseConfig.js
 
+#Run command
+npx expo run
+
 #Doc
 https://rnfirebase.io/
 
