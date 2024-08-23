@@ -9,6 +9,8 @@ import Profile from "./profile/Profile";
 import TabBar from "../components/TabBar";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import ActivityDetail from "./activity/ActivityDetail";
+import Welcome from "./Welcome";
+import Login from "./auth/Login";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -58,6 +60,8 @@ const Main = () => {
       <NavigationContainer style={{}}>
         <StatusBar style="dark" />
         <Stack.Navigator screenOptions={{ headerShown: false }}>
+          <Stack.Screen name="Welcome" component={Welcome} />
+          <Stack.Screen name="Login" component={Login} />
           <Stack.Screen name="MainNavigator" component={MainNavigator} />
           <Stack.Screen name="ActivityDetail" component={ActivityDetail} />
         </Stack.Navigator>
