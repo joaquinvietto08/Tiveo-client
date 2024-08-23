@@ -18,8 +18,6 @@ npm install firebase
 #Signin with Google
 npx expo install @react-native-google-signin/google-signin
 
-#Create firebaseConfig.js
-
 #Make changes on app.json
 
 #Create andorid/ios fold (If it returns an error but the folders are created, it's okay)
@@ -31,6 +29,8 @@ cd .\android\
 
 #Add android/ios .json firebase's files and re-run 
 npx expo prebuild
+
+#Create firebaseConfig.js
 
 #Doc
 https://rnfirebase.io/
