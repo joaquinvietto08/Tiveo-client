@@ -20,7 +20,7 @@ npx expo install @react-native-google-signin/google-signin
 
 #Make changes on app.json
 
-#Create andorid/ios fold (If it returns an error but the folders are created, it's okay)
+#Create android/ios fold (If it returns an error but the folders are created, it's okay)
 npx expo prebuild
 
 #Get SHA1 Certificate Fingerprints for firebase
