@@ -30,6 +30,8 @@ cd .\android\
 #Add android/ios .json firebase's files and re-run 
 npx expo prebuild
 
+#Make changes on build.gradle and app/build.gradle
+
 #Create firebaseConfig.js
 
 #Doc
