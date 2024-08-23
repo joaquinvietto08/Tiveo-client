@@ -14,6 +14,7 @@ import Facebook from "../../assets/svgs/auth/facebook";
 import Google from "../../assets/svgs/auth/google";
 import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
 import { GestureHandlerRootView, FlatList } from "react-native-gesture-handler";
+import { signInWithGoogle } from "./google_auth";
 
 const countries = [
   { name: "Argentina", code: "+54", flag: "🇦🇷" },
@@ -81,7 +82,18 @@ const Login = ({ navigation }) => {
         <View style={styles.container}>
           <Text style={styles.title}>Ingresa a tu cuenta</Text>
           <View style={styles.social_authContainer}>
-            <Pressable style={styles.social_authButton}>
+            <Pressable
+              style={styles.social_authButton}
+              onPress={() =>
+                signInWithGoogle()
+                  .then((user) => {
+                    console.log("Signed in with Google!");
+                  })
+                  .catch((error) => {
+                    alert("Sign in failed: " + error.message);
+                  })
+              }
+            >
               <Google />
               <Text style={styles.socialButtonText}>Continuar con Google</Text>
             </Pressable>
