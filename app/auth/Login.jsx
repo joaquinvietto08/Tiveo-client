@@ -127,7 +127,7 @@ const Login = ({ navigation }) => {
           </View>
           <Pressable
             style={styles.confirmButton}
-            onPress={() => navigation.navigate("MainNavigator")}
+            //    onPress={() => navigation.navigate("MainNavigator")}
             color="#FFC107"
           >
             <Text style={{ fontSize: 16 }}>Continuar</Text>
