@@ -30,7 +30,11 @@ cd .\android\
 #Add android/ios .json firebase's files and re-run 
 npx expo prebuild
 
-#Make changes on build.gradle and app/build.gradle
+#Make changes on android/build.gradle 
+googlePlayServicesAuthVersion = "20.7.0"
+
+#Make changes on android/app/build.gradle 
+apply plugin: 'com.google.gms.google-services'
 
 #Create firebaseConfig.js
 

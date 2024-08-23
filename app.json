@@ -14,7 +14,7 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.tiveo.tiveo",
-      "googleServicesFile": "./ios_things/GoogleService-Info.plist"
+      "googleServicesFile": "./ios-things/GoogleService-Info.plist"
     },
     "android": {
       "adaptiveIcon": {
