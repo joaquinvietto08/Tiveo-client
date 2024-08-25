@@ -15,10 +15,14 @@ npx expo install @react-native-firebase/auth
 npm install @react-native-async-storage/async-storage //for the moment firebase handles this, it is not necessary
 npm install firebase
 
+#Create firebaseConfig.js
+
+#################################################
+
 #Signin with Google
 npx expo install @react-native-google-signin/google-signin
 
-#Make changes on app.json
+#Add lines on app.json
 
 #Create android/ios fold (If it returns an error but the folders are created, it's okay)
 npx expo prebuild
@@ -30,13 +34,13 @@ cd .\android\
 #Add android/ios .json firebase's files and re-run 
 npx expo prebuild
 
-#Make changes on android/build.gradle 
+#Add on android/build.gradle 
 googlePlayServicesAuthVersion = "20.7.0"
 
-#Make changes on android/app/build.gradle 
+#Add on android/app/build.gradle 
 apply plugin: 'com.google.gms.google-services'
 
-#Create firebaseConfig.js
+#################################################
 
 #Run command
 npx expo run
@@ -45,3 +49,28 @@ npx expo run
 https://rnfirebase.io/
 
 #################################################
+
+#Signin with facebook
+npm install --save react-native-fbsdk-next
+
+#Add on android/settings.gradle
+include ':react-native-fbsdk-next'
+project(':react-native-fbsdk-next').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-fbsdk-next/android')
+
+#Add on android/app/build.gradle 
+implementation 'com.facebook.android:facebook-android-sdk:latest.release'
+
+#Add on android\app\src\main\java\com\tiveo\tiveo\MainApplication.kt
+import com.facebook.FacebookSdk;
+
+#Add on android\app\src\main\res\values\strings.xml
+<string name="facebook_app_id">393195440171062</string>
+
+#Add on android\app\src\main\AndroidManifest.xml
+<meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
+
+
+
+#Add on android/build.gradle 
+mavenCentral()
+
