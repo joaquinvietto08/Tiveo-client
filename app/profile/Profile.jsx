@@ -2,20 +2,50 @@ import { View, Text, StyleSheet, Pressable } from "react-native";
 import React from "react";
 import auth from "@react-native-firebase/auth";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
+import { AccessToken, LoginManager } from "react-native-fbsdk-next";
 
 const Profile = ({ navigation }) => {
   const handleSignOut = async () => {
-    try {
-      // Revocar acceso de Google
-      await GoogleSignin.revokeAccess();
-      console.log("Google access revoked!");
+    const user = auth().currentUser;
 
-      // Cerrar sesión de Firebase
-      await auth().signOut();
-      console.log("User signed out successfully!");
-    } catch (error) {
-      console.error("Error signing out: ", error);
-      alert("Sign out failed: " + error.message);
+    if (user) {
+      // Detectar el proveedor de autenticación
+      const providerId = user.providerData[0]?.providerId;
+
+      try {
+        // Cerrar sesión de Firebase
+        await auth().signOut();
+        console.log("User signed out from Firebase!");
+
+        // Verificar si el usuario está autenticado con Google
+        if (providerId === "google.com") {
+          try {
+            await GoogleSignin.revokeAccess();
+            console.log("Google access revoked!");
+          } catch (error) {
+            console.error("Error revoking Google access: ", error);
+          }
+        }
+
+        // Verificar si el usuario está autenticado con Facebook
+        if (providerId === "facebook.com") {
+          try {
+            const currentAccessToken =
+              await AccessToken.getCurrentAccessToken();
+            if (currentAccessToken) {
+              await LoginManager.logOut();
+              console.log("User logged out from Facebook!");
+            }
+          } catch (error) {
+            console.error("Error logging out from Facebook: ", error);
+          }
+        }
+      } catch (error) {
+        console.error("Error signing out: ", error);
+        alert("Sign out failed: " + error.message);
+      }
+    } else {
+      console.log("No user is currently logged in.");
     }
   };
 
