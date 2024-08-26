@@ -53,24 +53,7 @@ https://rnfirebase.io/
 #Signin with facebook
 npm install --save react-native-fbsdk-next
 
-#Add on android/settings.gradle
-include ':react-native-fbsdk-next'
-project(':react-native-fbsdk-next').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-fbsdk-next/android')
-
-#Add on android/app/build.gradle 
-implementation 'com.facebook.android:facebook-android-sdk:latest.release'
-
-#Add on android\app\src\main\java\com\tiveo\tiveo\MainApplication.kt
-import com.facebook.FacebookSdk;
-
-#Add on android\app\src\main\res\values\strings.xml
-<string name="facebook_app_id">393195440171062</string>
-
-#Add on android\app\src\main\AndroidManifest.xml
-<meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
-
-
-
-#Add on android/build.gradle 
-mavenCentral()
+#Tutorial
+https://www.youtube.com/watch?v=TG25YmNxZnQ
+https://www.youtube.com/watch?v=LqmlZiF_q9Y&t=16s
 
