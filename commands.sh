@@ -61,3 +61,6 @@ https://www.youtube.com/watch?v=LqmlZiF_q9Y&t=16s
 https://tomeko.net/online_tools/hex_to_base64.php
 
 #################################################
+
+#React Native maps
+npm install react-native-maps --save-exact

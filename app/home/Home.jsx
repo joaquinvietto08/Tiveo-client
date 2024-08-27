@@ -58,7 +58,7 @@ const Home_categoryButton = ({ item }) => (
   </View>
 );
 
-const Home = () => {
+const Home = ({ navigation }) => {
   const insets = useSafeAreaInsets();
   return (
     <View
@@ -105,6 +105,7 @@ const Home = () => {
               <Pressable
                 style={styles.featured_categoryButton}
                 android_ripple={{ color: "#E2E2E2", borderless: true }}
+                onPress={() => navigation.navigate("Map")}
               >
                 <Electricity style={styles.featured_categoryIcon} />
                 <Text style={styles.featured_categoryName}>Electricidad</Text>
