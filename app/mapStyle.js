@@ -1,104 +1,129 @@
 export const mapStyle = [
   {
-    featureType: "water",
-    elementType: "geometry",
+    featureType: "administrative",
+    elementType: "all",
     stylers: [
       {
-        color: "#e9e9e9",
-      },
-      {
-        lightness: 17,
+        visibility: "off",
       },
     ],
   },
   {
     featureType: "landscape",
-    elementType: "geometry",
+    elementType: "all",
     stylers: [
       {
-        color: "#f5f5f5",
+        visibility: "simplified",
       },
       {
-        lightness: 20,
+        saturation: "74",
+      },
+      {
+        lightness: "100",
+      },
+      {
+        color: "#f5f5fa",
       },
     ],
   },
   {
-    featureType: "road.highway",
-    elementType: "geometry.fill",
+    featureType: "poi.attraction",
+    elementType: "all",
     stylers: [
       {
-        color: "#ffffff",
-      },
-      {
-        lightness: 17,
+        visibility: "off",
       },
     ],
   },
   {
-    featureType: "road.highway",
-    elementType: "geometry.stroke",
+    featureType: "poi.business",
+    elementType: "all",
     stylers: [
       {
-        color: "#ffffff",
-      },
-      {
-        lightness: 29,
-      },
-      {
-        weight: 0.2,
+        visibility: "off",
       },
     ],
   },
   {
-    featureType: "road.arterial",
-    elementType: "geometry",
+    featureType: "poi.government",
+    elementType: "all",
     stylers: [
       {
-        color: "#ffffff",
-      },
-      {
-        lightness: 18,
+        visibility: "off",
       },
     ],
   },
   {
-    featureType: "road.local",
-    elementType: "geometry",
+    featureType: "poi.medical",
+    elementType: "all",
     stylers: [
       {
-        color: "#ffffff",
-      },
-      {
-        lightness: 16,
+        visibility: "off",
       },
     ],
   },
   {
-    featureType: "poi",
-    elementType: "geometry",
+    featureType: "poi.place_of_worship",
+    elementType: "all",
     stylers: [
       {
-        color: "#f5f5f5",
-      },
-      {
-        lightness: 21,
+        visibility: "off",
       },
     ],
   },
   {
-    featureType: "poi.park",
-    elementType: "geometry",
+    featureType: "poi.school",
+    elementType: "all",
     stylers: [
       {
-        color: "#dedede",
-      },
-      {
-        lightness: 21,
+        visibility: "off",
       },
     ],
   },
   {
+    featureType: "poi.sports_complex",
+    elementType: "all",
+    stylers: [
+      {
+        visibility: "off",
+      },
+    ],
+  },
+  {
+    featureType: "road",
+    elementType: "all",
+    stylers: [
+      {
+        visibility: "on",
+      },
+      {
+        hue: "#000dff",
+      },
+    ],
+  },
+  {
+    featureType: "road",
+    elementType: "labels",
+    stylers: [
+      {
+        visibility: "off",
+      },
+    ],
+  },
+  {
+    featureType: "road",
+    elementType: "labels.text",
+    stylers: [
+      {
+        visibility: "on",
+      },
+      {
+        color: "#929292",
+      },
+    ],
+  },
+  {
+    featureType: "road",
     elementType: "labels.text.stroke",
     stylers: [
       {
@@ -108,26 +133,16 @@ export const mapStyle = [
         color: "#ffffff",
       },
       {
-        lightness: 16,
+        gamma: "1",
+      },
+      {
+        weight: "1.50",
       },
     ],
   },
   {
-    elementType: "labels.text.fill",
-    stylers: [
-      {
-        saturation: 36,
-      },
-      {
-        color: "#333333",
-      },
-      {
-        lightness: 40,
-      },
-    ],
-  },
-  {
-    elementType: "labels.icon",
+    featureType: "transit",
+    elementType: "all",
     stylers: [
       {
         visibility: "off",
@@ -135,41 +150,20 @@ export const mapStyle = [
     ],
   },
   {
-    featureType: "transit",
-    elementType: "geometry",
+    featureType: "water",
+    elementType: "all",
     stylers: [
       {
-        color: "#f2f2f2",
+        visibility: "simplified",
       },
       {
-        lightness: 19,
-      },
-    ],
-  },
-  {
-    featureType: "administrative",
-    elementType: "geometry.fill",
-    stylers: [
-      {
-        color: "#fefefe",
+        lightness: "26",
       },
       {
-        lightness: 20,
-      },
-    ],
-  },
-  {
-    featureType: "administrative",
-    elementType: "geometry.stroke",
-    stylers: [
-      {
-        color: "#fefefe",
+        color: "#5f94ff",
       },
       {
-        lightness: 17,
-      },
-      {
-        weight: 1.2,
+        gamma: "2.53",
       },
     ],
   },
