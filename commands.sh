@@ -57,3 +57,7 @@ npm install --save react-native-fbsdk-next
 https://www.youtube.com/watch?v=TG25YmNxZnQ
 https://www.youtube.com/watch?v=LqmlZiF_q9Y&t=16s
 
+#In Hex string paste SHA1 to obtain key Hash
+https://tomeko.net/online_tools/hex_to_base64.php
+
+#################################################
