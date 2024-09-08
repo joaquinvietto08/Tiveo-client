@@ -1,7 +1,8 @@
 import React from "react";
 import { StyleSheet, View, Dimensions } from "react-native";
 import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
-import { mapStyle } from "./mapStyle";
+import { mapStyle } from "../components/map/mapStyle";
+import { mapConfig } from "../components/map/mapConfig";
 
 const Map = () => {
   return (
@@ -11,12 +12,13 @@ const Map = () => {
         provider={PROVIDER_GOOGLE}
         style={styles.mapStyle}
         initialRegion={{
-          latitude: 41.3995345,
-          longitude: 2.1909796,
-          latitudeDelta: 0.003,
-          longitudeDelta: 0.003,
+          latitude: -34.603684,
+          longitude: -58.381559,
+          latitudeDelta: 0.01,
+          longitudeDelta: 0.01,
         }}
         mapType="standard"
+        {...mapConfig}
       ></MapView>
     </View>
   );
