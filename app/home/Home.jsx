@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useRef } from "react";
 import {
   View,
   Text,
@@ -39,8 +39,66 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import image from "../../assets/images/data/2.png";
 import Feather from "@expo/vector-icons/Feather";
 
+const initialServices = [
+  { key: "1", name: "Todos" },
+  { key: "2", name: "Electricidad" },
+  { key: "3", name: "Plomeria" },
+  { key: "4", name: "Jardinería" },
+  { key: "5", name: "Cerrajería" },
+  { key: "6", name: "Pintura" },
+  { key: "7", name: "Construcción" },
+  { key: "8", name: "Vidrios" },
+  { key: "100", name: "Ver más" },
+];
+
+const ServiceButton = ({ item, isActive, onPress }) => (
+  <Pressable
+    style={[
+      styles.serviceButton,
+      isActive ? styles.activeButton : styles.inactiveButton,
+    ]}
+    onPress={onPress}
+  >
+    <Feather name="grid" size={24} color={isActive ? "#000" : "#B7B7B7"} />
+    <Text style={isActive ? styles.activeText : styles.inactiveText}>
+      {item.name}
+    </Text>
+  </Pressable>
+);
+
 const Home = ({ navigation }) => {
   const insets = useSafeAreaInsets();
+  const [selectedService, setSelectedService] = useState({
+    key: "1",
+    name: "Todos",
+  });
+  const flatListRef = useRef(null);
+
+  const handleServicePress = (item) => {
+    if (item.key === "100") {
+      navigation.navigate("Services");
+    } else {
+      setSelectedService(item);
+      flatListRef.current?.scrollToIndex({
+        index: 0,
+        animated: true,
+        viewPosition: 0.1,
+      });
+    }
+  };
+
+  const filteredServices = initialServices.filter(
+    (service) => service.key !== selectedService.key
+  );
+
+  const renderItem = ({ item }) => (
+    <ServiceButton
+      item={item}
+      isActive={item.key === selectedService.key}
+      onPress={() => handleServicePress(item)}
+    />
+  );
+
   return (
     <View
       style={{
@@ -80,8 +138,18 @@ const Home = ({ navigation }) => {
           <Pressable style={styles.searchButton}>
             <Ionicons name="search-outline" size={24} color="black" />
             <Text style={{ marginLeft: 10, fontSize: 16 }}>Buscar...</Text>
-            <Feather name="grid" size={24} color="black" />
           </Pressable>
+        </View>
+        <View style={styles.servicesListContainer}>
+          <FlatList
+            data={[selectedService, ...filteredServices]}
+            renderItem={renderItem}
+            ref={flatListRef}
+            horizontal={true}
+            showsHorizontalScrollIndicator={false}
+            keyExtractor={(item) => item.key}
+            contentContainerStyle={styles.flatListContent}
+          />
         </View>
       </View>
     </View>
@@ -158,6 +226,38 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 4,
     elevation: 1,
+  },
+  servicesListContainer: {
+    marginVertical: 10,
+  },
+  serviceButton: {
+    flexDirection: "row",
+    alignItems: "center",
+    paddingHorizontal: 15,
+    paddingVertical: 8,
+    borderRadius: 14,
+    marginRight: 10,
+    borderWidth: 1,
+  },
+  activeButton: {
+    backgroundColor: "#FFCB13",
+    borderColor: "#FFCB13",
+  },
+  inactiveButton: {
+    backgroundColor: "white",
+    borderColor: "#B7B7B7",
+  },
+  activeText: {
+    fontWeight: "bold",
+    marginLeft: 10,
+    color: "#000",
+  },
+  inactiveText: {
+    marginLeft: 10,
+    color: "#B7B7B7",
+  },
+  flatListContent: {
+    paddingHorizontal: 20,
   },
 });
 
