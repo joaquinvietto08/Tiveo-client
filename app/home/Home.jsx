@@ -59,7 +59,7 @@ const ServiceButton = ({ item, isActive, onPress }) => (
     ]}
     onPress={onPress}
   >
-    <Feather name="grid" size={24} color={isActive ? "#000" : "#B7B7B7"} />
+    <Feather name="grid" size={24} color={isActive ? "#000" : "#8D8D8D"} />
     <Text style={isActive ? styles.activeText : styles.inactiveText}>
       {item.name}
     </Text>
@@ -244,8 +244,8 @@ const styles = StyleSheet.create({
     borderColor: "#FFCB13",
   },
   inactiveButton: {
-    backgroundColor: "white",
-    borderColor: "#B7B7B7",
+    borderColor: "#8D8D8D",
+    backgroundColor: "rgba(255, 255, 255, 0.69)",
   },
   activeText: {
     fontWeight: "bold",
@@ -254,7 +254,7 @@ const styles = StyleSheet.create({
   },
   inactiveText: {
     marginLeft: 10,
-    color: "#B7B7B7",
+    color: "#8D8D8D",
   },
   flatListContent: {
     paddingHorizontal: 20,
