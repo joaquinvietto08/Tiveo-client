@@ -235,6 +235,11 @@ const Home = ({ navigation }) => {
         animated: true,
         viewPosition: 0.1,
       });
+      flatListRef2.current?.scrollToIndex({
+        index: 0,
+        animated: true,
+        viewPosition: 0.1,
+      });
     }
   };
 
@@ -253,6 +258,16 @@ const Home = ({ navigation }) => {
   const sheetRef = useRef(null);
   const snapPoints = [140, 420];
 
+  const flatListRef2 = useRef(null);
+
+  const animationConfigs = {
+    duration: 400,
+  };
+
+  const handleMapPress = () => {
+    sheetRef.current?.snapToIndex(0);
+  };
+
   const [favorites, setFavorites] = useState({});
   const toggleFavorite = (key) => {
     setFavorites((prevFavorites) => ({
@@ -269,7 +284,9 @@ const Home = ({ navigation }) => {
     >
       <StatusBar translucent barStyle="dark-content" />
       <GestureHandlerRootView style={styles.gestureHandler}>
-        <Map />
+        <Pressable onPress={handleMapPress} style={{ flex: 1 }}>
+          <Map />
+        </Pressable>
         <View
           style={{
             ...styles.container,
@@ -320,6 +337,7 @@ const Home = ({ navigation }) => {
           snapPoints={snapPoints}
           index={1}
           handleIndicatorStyle={{ backgroundColor: "#D8D8D8" }}
+          animationConfigs={animationConfigs}
           backgroundStyle={{
             backgroundColor: "#F8F8F8",
             shadowColor: "#000",
@@ -337,6 +355,7 @@ const Home = ({ navigation }) => {
             <FlatList
               data={workers}
               horizontal
+              ref={flatListRef2}
               keyExtractor={(item) => item.key}
               contentContainerStyle={styles.cardsContainer}
               showsHorizontalScrollIndicator={false}
