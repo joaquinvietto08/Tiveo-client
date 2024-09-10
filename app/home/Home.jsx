@@ -251,7 +251,7 @@ const Home = ({ navigation }) => {
   );
 
   const sheetRef = useRef(null);
-  const snapPoints = [140, 410];
+  const snapPoints = [140, 420];
 
   const [favorites, setFavorites] = useState({});
   const toggleFavorite = (key) => {
