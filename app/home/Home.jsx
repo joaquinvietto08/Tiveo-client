@@ -5,9 +5,6 @@ import {
   StyleSheet,
   Image,
   Pressable,
-  ImageBackground,
-  ScrollView,
-  FlatList,
   StatusBar,
 } from "react-native";
 import Tiveo from "../../assets/svgs/tiveo";
@@ -37,7 +34,12 @@ import Map from "../Map";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import image from "../../assets/images/data/2.png";
+import headerPic from "../../assets/images/baner-carpinteria.jpg";
 import Feather from "@expo/vector-icons/Feather";
+import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { FlatList } from "react-native-gesture-handler";
+import AntDesign from "@expo/vector-icons/AntDesign";
 
 const initialServices = [
   { key: "1", name: "Todos" },
@@ -64,6 +66,155 @@ const ServiceButton = ({ item, isActive, onPress }) => (
       {item.name}
     </Text>
   </Pressable>
+);
+
+const workers = [
+  {
+    key: "1",
+    service: "gardening",
+    headerPhoto: headerPic,
+    type: "home-service",
+    rating: "4.8",
+    totalRatings: "23",
+    title: "Servicio de carpintería de todo tipo y bla bla",
+    status: "available",
+    address: "",
+  },
+  {
+    key: "2",
+    service: "electricity",
+    headerPhoto: headerPic,
+    type: "home-service",
+    rating: "4.8",
+    totalRatings: "23",
+    title: "Servicio de carpintería de todo tipo y bla bla",
+    status: "busy",
+    address: "",
+  },
+  {
+    key: "3",
+    service: "plumbing",
+    headerPhoto: headerPic,
+    type: "home-service",
+    rating: "4.8",
+    totalRatings: "23",
+    title: "Servicio de carpintería de todo tipo y bla bla",
+    status: "available",
+    address: "",
+  },
+  {
+    key: "4",
+    service: "paint",
+    headerPhoto: headerPic,
+    type: "place-service",
+    rating: "4.8",
+    totalRatings: "23",
+    title: "Servicio de carpintería de todo tipo y bla bla",
+    status: "busy",
+    address: "Marcelo T de Alvear 360",
+  },
+  {
+    key: "5",
+    service: "paint",
+    headerPhoto: headerPic,
+    type: "place-service",
+    rating: "4.8",
+    totalRatings: "23",
+    title: "Servicio de carpintería de todo tipo y bla bla",
+    status: "available",
+    address: "Marcelo T de Alvear 3602",
+  },
+  {
+    key: "6",
+    service: "paint",
+    headerPhoto: headerPic,
+    type: "home-service",
+    rating: "4.8",
+    totalRatings: "23",
+    title: "Servicio de carpintería de todo tipo y bla bla",
+    status: "busy",
+    address: "",
+  },
+];
+
+const translateField = (field, value) => {
+  const translations = {
+    service: {
+      gardening: "Jardinería",
+      carpentry: "Carpintería",
+      electricity: "Electricidad",
+      plumbing: "Plomería",
+      paint: "Pintura",
+    },
+    type: {
+      "home-service": "Servicio a domicilio",
+      "place-service": "Servicio en lugar",
+    },
+    status: {
+      available: "Disponible",
+      busy: "Contactar",
+    },
+  };
+
+  return translations[field] && translations[field][value]
+    ? translations[field][value]
+    : value;
+};
+
+const CardButton = ({ item, isFavorite, onToggleFavorite }) => (
+  <View style={styles.cardView}>
+    <Pressable
+      android_ripple={{ color: "#E2E2E2", borderless: true }}
+      style={styles.cardButton}
+    >
+      <View style={styles.card_headerContainer}>
+        <Image source={item.headerPhoto} style={styles.headerPhoto} />
+        <Pressable style={styles.card_favContainer} onPress={onToggleFavorite}>
+          {isFavorite ? (
+            <MaterialIcons name="favorite" size={25} color="#ff3f3f" />
+          ) : (
+            <MaterialIcons name="favorite-outline" size={25} color="#C5C5C5" />
+          )}
+        </Pressable>
+      </View>
+      <View style={styles.infoContainer}>
+        <Text style={styles.infoType}>
+          {translateField("type", item.type)} •{" "}
+        </Text>
+        <AntDesign name="star" size={12} color="#F1D000" />
+        <Text style={styles.infoRating}>{item.rating} </Text>
+        <Text style={styles.info_totalRatings}>({item.totalRatings})</Text>
+      </View>
+      <Text style={styles.infoTitle}>{item.title}</Text>
+      <View style={styles.bottom_cardContainer}>
+        {item.address !== "" && (
+          <View style={styles.addressView}>
+            <MaterialIcons name="location-pin" size={22} color="#ACACAC" />
+            <Text
+              numberOfLines={1}
+              ellipsizeMode="tail"
+              style={styles.addressText}
+            >
+              {item.address}
+            </Text>
+          </View>
+        )}
+        {item.status === "available" ? (
+          <View style={styles.availableView}>
+            <Text style={styles.availableText}>
+              {translateField("status", item.status)}
+            </Text>
+          </View>
+        ) : (
+          <View style={styles.busyView}>
+            <Text style={styles.busyText}>
+              {translateField("status", item.status)}
+            </Text>
+          </View>
+        )}
+      </View>
+    </Pressable>
+  </View>
 );
 
 const Home = ({ navigation }) => {
@@ -99,6 +250,17 @@ const Home = ({ navigation }) => {
     />
   );
 
+  const sheetRef = useRef(null);
+  const snapPoints = [140, 410];
+
+  const [favorites, setFavorites] = useState({});
+  const toggleFavorite = (key) => {
+    setFavorites((prevFavorites) => ({
+      ...prevFavorites,
+      [key]: !prevFavorites[key],
+    }));
+  };
+
   return (
     <View
       style={{
@@ -106,52 +268,89 @@ const Home = ({ navigation }) => {
       }}
     >
       <StatusBar translucent barStyle="dark-content" />
-      <Map />
-      <View
-        style={{
-          ...styles.container,
-          paddingTop: insets.top,
-          paddingBottom: insets.bottom,
-        }}
-      >
-        <View style={styles.headerContainer}>
-          <View style={styles.user_picContainer}>
-            <Pressable style={styles.user_picButton}>
-              <Image source={image} style={styles.picProfile} />
+      <GestureHandlerRootView style={styles.gestureHandler}>
+        <Map />
+        <View
+          style={{
+            ...styles.container,
+            paddingTop: insets.top,
+            paddingBottom: insets.bottom,
+          }}
+        >
+          <View style={styles.headerContainer}>
+            <View style={styles.user_picContainer}>
+              <Pressable style={styles.user_picButton}>
+                <Image source={image} style={styles.picProfile} />
+              </Pressable>
+            </View>
+            <View style={styles.locationContainer}>
+              <Pressable style={styles.locationButton}>
+                <MaterialIcons name="location-pin" size={24} color="black" />
+                <Text
+                  style={styles.locationText}
+                  numberOfLines={1}
+                  ellipsizeMode="tail"
+                >
+                  Marcelo T de Alvear 360
+                </Text>
+                <Icon name="keyboard-arrow-down" size={29} color="#000" />
+              </Pressable>
+            </View>
+          </View>
+          <View style={styles.searchContainer}>
+            <Pressable style={styles.searchButton}>
+              <Ionicons name="search-outline" size={24} color="black" />
+              <Text style={{ marginLeft: 10, fontSize: 16 }}>Buscar...</Text>
             </Pressable>
           </View>
-          <View style={styles.locationContainer}>
-            <Pressable style={styles.locationButton}>
-              <MaterialIcons name="location-pin" size={24} color="black" />
-              <Text
-                style={styles.locationText}
-                numberOfLines={1}
-                ellipsizeMode="tail"
-              >
-                Marcelo T de Alvear 360
-              </Text>
-              <Icon name="keyboard-arrow-down" size={29} color="#000" />
-            </Pressable>
+          <View style={styles.servicesListContainer}>
+            <FlatList
+              data={[selectedService, ...filteredServices]}
+              ref={flatListRef}
+              horizontal={true}
+              showsHorizontalScrollIndicator={false}
+              keyExtractor={(item) => item.key}
+              contentContainerStyle={styles.flatListContent}
+              renderItem={renderItem}
+            />
           </View>
         </View>
-        <View style={styles.searchContainer}>
-          <Pressable style={styles.searchButton}>
-            <Ionicons name="search-outline" size={24} color="black" />
-            <Text style={{ marginLeft: 10, fontSize: 16 }}>Buscar...</Text>
-          </Pressable>
-        </View>
-        <View style={styles.servicesListContainer}>
-          <FlatList
-            data={[selectedService, ...filteredServices]}
-            renderItem={renderItem}
-            ref={flatListRef}
-            horizontal={true}
-            showsHorizontalScrollIndicator={false}
-            keyExtractor={(item) => item.key}
-            contentContainerStyle={styles.flatListContent}
-          />
-        </View>
-      </View>
+        <BottomSheet
+          ref={sheetRef}
+          snapPoints={snapPoints}
+          index={1}
+          handleIndicatorStyle={{ backgroundColor: "#D8D8D8" }}
+          backgroundStyle={{
+            backgroundColor: "#F8F8F8",
+            shadowColor: "#000",
+            elevation: 7,
+          }}
+        >
+          <BottomSheetView style={styles.bottom_viewContainer}>
+            <Text style={styles.bottomTitle}>25 trabajadores en tu zona</Text>
+          </BottomSheetView>
+          <View>
+            <View style={styles.subtitleContainer}>
+              <Text style={styles.bottomSubtitle}>Destacados</Text>
+              <Text style={styles.bottomMore}>Ver todos</Text>
+            </View>
+            <FlatList
+              data={workers}
+              horizontal
+              keyExtractor={(item) => item.key}
+              contentContainerStyle={styles.cardsContainer}
+              showsHorizontalScrollIndicator={false}
+              renderItem={({ item }) => (
+                <CardButton
+                  item={item}
+                  isFavorite={!!favorites[item.key]}
+                  onToggleFavorite={() => toggleFavorite(item.key)}
+                />
+              )}
+            />
+          </View>
+        </BottomSheet>
+      </GestureHandlerRootView>
     </View>
   );
 };
@@ -159,6 +358,9 @@ const Home = ({ navigation }) => {
 const styles = StyleSheet.create({
   mainContainer: {
     backgroundColor: "#F5F5F5",
+    flex: 1,
+  },
+  gestureHandler: {
     flex: 1,
   },
   container: {
@@ -258,6 +460,152 @@ const styles = StyleSheet.create({
   },
   flatListContent: {
     paddingHorizontal: 20,
+  },
+  handleStyle: {
+    backgroundColor: "#F8F8F8",
+    borderTopLeftRadius: 15,
+    borderTopRightRadius: 15,
+    shadowColor: "red",
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 1,
+  },
+  bottom_viewContainer: {
+    alignItems: "center",
+    paddingTop: 10,
+    marginBottom: 25,
+  },
+  bottomTitle: {
+    fontSize: 14,
+    fontWeight: "bold",
+    textAlign: "center",
+  },
+  subtitleContainer: {
+    paddingHorizontal: 20,
+    width: "100%",
+    justifyContent: "space-between",
+    alignItems: "center",
+    flexDirection: "row",
+    marginBottom: 15,
+  },
+  bottomSubtitle: {
+    fontSize: 17,
+    fontWeight: "bold",
+  },
+  bottomMore: {
+    fontSize: 14,
+    color: "#FFCB13",
+  },
+  cardsContainer: {
+    paddingHorizontal: 20,
+  },
+  cardView: {
+    borderRadius: 10,
+    marginRight: 15,
+    width: 260,
+    height: 220,
+    backgroundColor: "#FFFFFF",
+  },
+  cardButton: {
+    width: 260,
+    height: 220,
+    position: "relative",
+  },
+  card_headerContainer: {
+    width: "100%",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  headerPhoto: {
+    width: 260,
+    height: 110,
+    borderTopRightRadius: 10,
+    borderTopLeftRadius: 10,
+  },
+  card_favContainer: {
+    position: "absolute",
+    height: 40,
+    width: 40,
+    right: 0,
+    top: 0,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  infoContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginTop: 5,
+    paddingLeft: 8,
+  },
+  infoType: {
+    fontSize: 12,
+    color: "#ACACAC",
+    fontWeight: "500",
+  },
+  infoRating: {
+    fontSize: 12,
+    color: "#F1D000",
+    fontWeight: "500",
+  },
+  info_totalRatings: {
+    fontSize: 12,
+    color: "#ACACAC",
+    fontWeight: "500",
+  },
+  infoTitle: {
+    fontSize: 14,
+    fontWeight: "bold",
+    paddingHorizontal: 8,
+    paddingTop: 6,
+  },
+  bottom_cardContainer: {
+    alignItems: "flex-end",
+    justifyContent: "flex-end",
+    flex: 1,
+    paddingBottom: 8,
+    flexDirection: "row",
+  },
+  addressView: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginRight: "auto",
+    paddingLeft: 3,
+    paddingBottom: 1,
+  },
+  addressText: {
+    maxWidth: 140,
+    fontSize: 12,
+    fontWeight: "800",
+    color: "#ACACAC",
+  },
+  availableView: {
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 5,
+    height: 28,
+    paddingHorizontal: 8,
+    backgroundColor: "rgba(0, 255, 128, 0.14)",
+    marginRight: 8,
+  },
+  availableText: {
+    fontSize: 13,
+    color: "#00EC7E",
+    fontWeight: "600",
+  },
+  busyView: {
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 5,
+    height: 28,
+    paddingHorizontal: 8,
+    backgroundColor: "rgba(255, 157, 0, 0.14)",
+    marginRight: 8,
+  },
+  busyText: {
+    fontSize: 13,
+    color: "#FF9D00",
+    fontWeight: "600",
   },
 });
 
