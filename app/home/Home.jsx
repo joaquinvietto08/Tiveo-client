@@ -239,6 +239,7 @@ const Home = ({ navigation }) => {
         index: 0,
         animated: true,
         viewPosition: 0.1,
+        viewPosition: 0.2,
       });
     }
   };
@@ -546,10 +547,12 @@ const styles = StyleSheet.create({
     position: "absolute",
     height: 40,
     width: 40,
-    right: 0,
-    top: 0,
+    right: 5,
+    top: 5,
     justifyContent: "center",
     alignItems: "center",
+    backgroundColor: "rgba(255, 255, 255, 0.75)",
+    borderRadius: 25,
   },
   infoContainer: {
     flexDirection: "row",
