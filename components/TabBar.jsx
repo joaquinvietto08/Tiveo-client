@@ -3,7 +3,7 @@ import React from "react";
 import { Entypo, Ionicons, MaterialIcons } from "@expo/vector-icons";
 
 const TabBar = ({ state, descriptors, navigation }) => {
-  const primaryColor = "#FFCB13";
+  const primaryColor = "#FF9D00";
   const greyColor = "#8B8B8B";
 
   const icons = {
@@ -93,10 +93,10 @@ const styles = StyleSheet.create({
   tabBar: {
     position: "absolute",
     flexDirection: "row",
-    height: 65,
+    height: 75,
     width: "100%",
     bottom: 0,
-    backgroundColor: "#FFF",
+    backgroundColor: "#F8F8F8",
   },
   tabBarItem: {
     flex: 1,

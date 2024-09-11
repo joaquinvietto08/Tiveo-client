@@ -14,7 +14,10 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.tiveo.tiveo",
-      "googleServicesFile": "./ios-things/GoogleService-Info.plist"
+      "googleServicesFile": "./ios-things/GoogleService-Info.plist",
+      "config": {
+        "googleMapsApiKey": "REPLACE_FOR_API_KEY"
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -22,7 +25,12 @@
         "backgroundColor": "#ffffff"
       },
       "package": "com.tiveo.tiveo",
-      "googleServicesFile": "./android/app/google-services.json"
+      "googleServicesFile": "./android/app/google-services.json",
+      "config": {
+        "googleMaps": {
+          "apiKey": "REPLACE_FOR_API_KEY"
+        }
+      }
     },
     "web": {
       "favicon": "./assets/images/favicon.png"
