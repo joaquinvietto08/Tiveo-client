@@ -257,7 +257,7 @@ const Home = ({ navigation }) => {
   );
 
   const sheetRef = useRef(null);
-  const snapPoints = [140, 420];
+  const snapPoints = [140, 450];
 
   const flatListRef2 = useRef(null);
 
@@ -295,31 +295,16 @@ const Home = ({ navigation }) => {
             paddingBottom: insets.bottom,
           }}
         >
-          <View style={styles.headerContainer}>
-            <View style={styles.user_picContainer}>
+          <View style={styles.searchContainer}>
+            <View style={styles.searchContainer2}>
+              <Pressable style={styles.searchButton}>
+                <Ionicons name="search-outline" size={24} color="black" />
+                <Text style={{ marginLeft: 10, fontSize: 16 }}>Buscar...</Text>
+              </Pressable>
               <Pressable style={styles.user_picButton}>
                 <Image source={image} style={styles.picProfile} />
               </Pressable>
             </View>
-            <View style={styles.locationContainer}>
-              <Pressable style={styles.locationButton}>
-                <MaterialIcons name="location-pin" size={24} color="black" />
-                <Text
-                  style={styles.locationText}
-                  numberOfLines={1}
-                  ellipsizeMode="tail"
-                >
-                  Marcelo T de Alvear 360
-                </Text>
-                <Icon name="keyboard-arrow-down" size={29} color="#000" />
-              </Pressable>
-            </View>
-          </View>
-          <View style={styles.searchContainer}>
-            <Pressable style={styles.searchButton}>
-              <Ionicons name="search-outline" size={24} color="black" />
-              <Text style={{ marginLeft: 10, fontSize: 16 }}>Buscar...</Text>
-            </Pressable>
           </View>
           <View style={styles.servicesListContainer}>
             <FlatList
@@ -346,9 +331,21 @@ const Home = ({ navigation }) => {
           }}
         >
           <BottomSheetView style={styles.bottom_viewContainer}>
-            <Text style={styles.bottomTitle}>25 trabajadores en tu zona</Text>
+            <View style={styles.locationContainer}>
+              <Pressable style={styles.locationButton}>
+                <Text
+                  style={styles.locationText}
+                  numberOfLines={1}
+                  ellipsizeMode="tail"
+                >
+                  Marcelo T de Alvear 360
+                </Text>
+                <Icon name="keyboard-arrow-down" size={29} color="#000" />
+              </Pressable>
+            </View>
           </BottomSheetView>
           <View>
+            <Text style={styles.bottomTitle}>25 trabajadores en tu zona</Text>
             <View style={styles.subtitleContainer}>
               <Text style={styles.bottomSubtitle}>Destacados</Text>
               <Text style={styles.bottomMore}>Ver todos</Text>
@@ -387,67 +384,47 @@ const styles = StyleSheet.create({
     position: "absolute",
     width: "100%",
   },
-  headerContainer: {
-    width: "100%",
-    height: 90,
-    paddingTop: 30,
-    justifyContent: "flex-end",
-  },
-  user_picContainer: {
-    justifyContent: "flex-end",
-    width: "100%",
-    alignItems: "flex-end",
-    position: "absolute",
-    paddingHorizontal: 20,
-    paddingBottom: 10,
-  },
-  user_picButton: {
-    width: 50,
-    height: 50,
-    borderRadius: 50,
-  },
-  picProfile: {
-    width: 50,
-    height: 50,
-    borderRadius: 50,
-  },
-  locationContainer: {
-    alignItems: "center",
-    width: "100%",
-    position: "absolute",
-  },
-  locationButton: {
-    height: 40,
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-    maxWidth: 215,
-  },
-  locationText: {
-    fontWeight: "bold",
-    fontSize: 14,
-    overflow: "hidden",
-    maxWidth: 160,
-  },
   searchContainer: {
     width: "100%",
     paddingHorizontal: 20,
     justifyContent: "center",
-    paddingTop: 15,
+    paddingTop: 25,
   },
-  searchButton: {
-    width: "100%",
-    height: 53,
+  searchContainer2: {
     flexDirection: "row",
-    paddingHorizontal: 20,
-    alignItems: "center",
+    height: 55,
     backgroundColor: "#fff",
-    borderRadius: 22,
+    borderRadius: 40,
     shadowColor: "#000000",
     shadowOffset: { width: 0, height: 0 },
     shadowOpacity: 0.25,
     shadowRadius: 4,
     elevation: 1,
+    justifyContent: "space-between",
+    paddingRight: 7,
+    alignItems: "center",
+  },
+  searchButton: {
+    flex: 1,
+    height: "100%",
+    borderRadius: 40,
+    flexDirection: "row",
+    paddingLeft: 20,
+    alignItems: "center",
+  },
+  user_picButton: {
+    width: 45,
+    height: 45,
+    borderRadius: 50,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  picProfile: {
+    width: 45,
+    height: 45,
+    borderRadius: 50,
+    borderWidth: 1,
+    borderColor: "#8D8D8D",
   },
   servicesListContainer: {
     marginVertical: 10,
@@ -493,13 +470,31 @@ const styles = StyleSheet.create({
   },
   bottom_viewContainer: {
     alignItems: "center",
-    paddingTop: 10,
-    marginBottom: 25,
+    marginBottom: 15,
+  },
+  locationContainer: {
+    alignItems: "center",
+    width: "100%",
+  },
+  locationButton: {
+    height: 40,
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    maxWidth: 270,
+  },
+  locationText: {
+    fontWeight: "500",
+    fontSize: 14,
+    overflow: "hidden",
+    maxWidth: 215,
   },
   bottomTitle: {
     fontSize: 14,
     fontWeight: "bold",
-    textAlign: "center",
+    paddingHorizontal: 20,
+    color: "#8D8D8D",
+    marginBottom: 10,
   },
   subtitleContainer: {
     paddingHorizontal: 20,
