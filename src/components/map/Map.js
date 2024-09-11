@@ -1,8 +1,8 @@
 import React from "react";
 import { StyleSheet, Dimensions } from "react-native";
 import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
-import { mapStyle } from "../components/map/mapStyle";
-import { mapConfig } from "../components/map/mapConfig";
+import { mapStyle } from "./mapStyle";
+import { mapConfig } from "./mapConfig";
 
 const Map = () => {
   return (

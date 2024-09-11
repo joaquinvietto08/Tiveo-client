@@ -10,12 +10,12 @@ import {
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Icon from "react-native-vector-icons/MaterialIcons";
-import Facebook from "../../assets/svgs/auth/facebook";
-import Google from "../../assets/svgs/auth/google";
+import Facebook from "../../../assets/svgs/auth/facebook";
+import Google from "../../../assets/svgs/auth/google";
 import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
 import { GestureHandlerRootView, FlatList } from "react-native-gesture-handler";
-import { signInWithGoogle } from "./google_auth";
-import { signInWithFacebook } from "./facebook_auth";
+import { signInWithGoogle } from "../../actions/api/google_auth";
+import { signInWithFacebook } from "../../actions/api/facebook_auth";
 
 const countries = [
   { name: "Argentina", code: "+54", flag: "🇦🇷" },
