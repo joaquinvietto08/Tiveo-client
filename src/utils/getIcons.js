@@ -19,7 +19,7 @@ import events from "../../assets/svgs/home/events";
 import photography from "../../assets/svgs/home/photography";
 import music from "../../assets/svgs/home/music";
 
-export const getIcon = (serviceId) => {
+export const getIcon = (serviceName) => {
   const iconMap = {
     electricity,
     plumbing,
@@ -43,5 +43,5 @@ export const getIcon = (serviceId) => {
     music,
   };
 
-  return iconMap[serviceId] || null;
+  return iconMap[serviceName] || null;
 };
