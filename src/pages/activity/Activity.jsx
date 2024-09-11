@@ -1,25 +1,5 @@
 import React from "react";
 import { View, Text, Pressable, ScrollView } from "react-native";
-import electricity from "../../../assets/svgs/home/electricity";
-import plumbing from "../../../assets/svgs/home/plumbing";
-import gas from "../../../assets/svgs/home/gas";
-import gardening from "../../../assets/svgs/home/gardening";
-import locksmith from "../../../assets/svgs/home/locksmith";
-import painting from "../../../assets/svgs/home/painting";
-import construction from "../../../assets/svgs/home/construction";
-import pool from "../../../assets/svgs/home/pool";
-import carpentry from "../../../assets/svgs/home/carpentry";
-import glass from "../../../assets/svgs/home/glass";
-import pets from "../../../assets/svgs/home/pets";
-import security from "../../../assets/svgs/home/security";
-import ironwork from "../../../assets/svgs/home/ironwork";
-import technology from "../../../assets/svgs/home/technology";
-import beauty from "../../../assets/svgs/home/beauty";
-import vehicles from "../../../assets/svgs/home/vehicles";
-import freight from "../../../assets/svgs/home/freight";
-import events from "../../../assets/svgs/home/events";
-import photography from "../../../assets/svgs/home/photography";
-import music from "../../../assets/svgs/home/music";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import activityData from "../../components/data/activityData";
 import Ionicons from "@expo/vector-icons/Ionicons";
@@ -29,31 +9,9 @@ import {
   translateService,
   formatPrice,
   translateStatus,
-} from "../../utility/formatHelpers";
+} from "../../utils/formatHelpers";
+import { getIcon } from "../../utils/getIcons";
 import { styles } from "./ActivityStyles";
-
-const serviceIcons = {
-  electricity,
-  plumbing,
-  gas,
-  gardening,
-  locksmith,
-  painting,
-  construction,
-  pool,
-  carpentry,
-  glass,
-  pets,
-  security,
-  ironwork,
-  technology,
-  beauty,
-  vehicles,
-  freight,
-  events,
-  photography,
-  music,
-};
 
 const Activity = ({ navigation }) => {
   const insets = useSafeAreaInsets();
@@ -70,7 +28,7 @@ const Activity = ({ navigation }) => {
           <Text style={{ fontSize: 22, fontWeight: "bold" }}>Actividad</Text>
           <View style={styles.activityContainer}>
             {activityData.map((data) => {
-              const IconComponent = serviceIcons[data.service];
+              const IconComponent = getIcon(data.service);
               const statusStyle =
                 data.status !== "pending" && data.status !== "scheduled";
               return (
