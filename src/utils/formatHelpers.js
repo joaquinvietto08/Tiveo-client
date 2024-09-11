@@ -25,6 +25,22 @@ export const translateService = (service) => {
   return serviceMap[service] || service;
 };
 
+export const translateType = (type) => {
+  const typeMap = {
+    "home-service": "Servicio a domicilio",
+    "place-service": "Servicio en lugar",
+  };
+  return typeMap[type] || type;
+};
+
+export const translateAvailability = (availability) => {
+  const availabilityMap = {
+    available: "Disponible",
+    busy: "Contactar",
+  };
+  return availabilityMap[availability] || availability;
+};
+
 export const formatPrice = (price) => {
   if (price === null) {
     return "Pago no registrado";

@@ -1,45 +1,22 @@
 import React, { useState, useRef } from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  Image,
-  Pressable,
-  StatusBar,
-} from "react-native";
-import Tiveo from "../../../assets/svgs/tiveo";
-import Electricity from "../../../assets/svgs/home/electricity";
-import Plumbing from "../../../assets/svgs/home/plumbing";
-import Gas from "../../../assets/svgs/home/gas";
-import Gardening from "../../../assets/svgs/home/gardening";
-import Locksmith from "../../../assets/svgs/home/locksmith";
-import Painting from "../../../assets/svgs/home/painting";
-import Construction from "../../../assets/svgs/home/construction";
-import Pool from "../../../assets/svgs/home/pool";
-import Carpentry from "../../../assets/svgs/home/carpentry";
-import Glass from "../../../assets/svgs/home/glass";
-import Pets from "../../../assets/svgs/home/pets";
-import Security from "../../../assets/svgs/home/security";
-import Ironwork from "../../../assets/svgs/home/ironwork";
-import Technology from "../../../assets/svgs/home/technology";
-import Beauty from "../../../assets/svgs/home/beauty";
-import Vehicles from "../../../assets/svgs/home/vehicles";
-import Freight from "../../../assets/svgs/home/freight";
-import Events from "../../../assets/svgs/home/events";
-import Photography from "../../../assets/svgs/home/photography";
-import Music from "../../../assets/svgs/home/music";
-import Icon from "react-native-vector-icons/MaterialIcons";
+import { View, Text, Image, Pressable, StatusBar } from "react-native";
+import { FlatList, GestureHandlerRootView } from "react-native-gesture-handler";
+import { getIcon } from "../../utils/getIcons";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Map from "../../components/map/Map";
+import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import image from "../../../assets/images/data/2.png";
-import headerPic from "../../../assets/images/baner-carpinteria.jpg";
+import Icon from "react-native-vector-icons/MaterialIcons";
 import Feather from "@expo/vector-icons/Feather";
-import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
-import { GestureHandlerRootView } from "react-native-gesture-handler";
-import { FlatList } from "react-native-gesture-handler";
 import AntDesign from "@expo/vector-icons/AntDesign";
+import { styles } from "./HomeStyles";
+import {
+  translateType,
+  translateAvailability,
+} from "../../utils/formatHelpers";
+import { workers } from "../../components/data/workersData";
+import image from "../../../assets/images/data/2.png";
 
 const initialServices = [
   { key: "1", name: "Todos" },
@@ -68,99 +45,6 @@ const ServiceButton = ({ item, isActive, onPress }) => (
   </Pressable>
 );
 
-const workers = [
-  {
-    key: "1",
-    service: "gardening",
-    headerPhoto: headerPic,
-    type: "home-service",
-    rating: "4.8",
-    totalRatings: "23",
-    title: "Servicio de carpintería de todo tipo y bla bla",
-    status: "available",
-    address: "",
-  },
-  {
-    key: "2",
-    service: "electricity",
-    headerPhoto: headerPic,
-    type: "home-service",
-    rating: "4.8",
-    totalRatings: "23",
-    title: "Servicio de carpintería de todo tipo y bla bla",
-    status: "busy",
-    address: "",
-  },
-  {
-    key: "3",
-    service: "plumbing",
-    headerPhoto: headerPic,
-    type: "home-service",
-    rating: "4.8",
-    totalRatings: "23",
-    title: "Servicio de carpintería de todo tipo y bla bla",
-    status: "available",
-    address: "",
-  },
-  {
-    key: "4",
-    service: "paint",
-    headerPhoto: headerPic,
-    type: "place-service",
-    rating: "4.8",
-    totalRatings: "23",
-    title: "Servicio de carpintería de todo tipo y bla bla",
-    status: "busy",
-    address: "Marcelo T de Alvear 360",
-  },
-  {
-    key: "5",
-    service: "paint",
-    headerPhoto: headerPic,
-    type: "place-service",
-    rating: "4.8",
-    totalRatings: "23",
-    title: "Servicio de carpintería de todo tipo y bla bla",
-    status: "available",
-    address: "Marcelo T de Alvear 3602",
-  },
-  {
-    key: "6",
-    service: "paint",
-    headerPhoto: headerPic,
-    type: "home-service",
-    rating: "4.8",
-    totalRatings: "23",
-    title: "Servicio de carpintería de todo tipo y bla bla",
-    status: "busy",
-    address: "",
-  },
-];
-
-const translateField = (field, value) => {
-  const translations = {
-    service: {
-      gardening: "Jardinería",
-      carpentry: "Carpintería",
-      electricity: "Electricidad",
-      plumbing: "Plomería",
-      paint: "Pintura",
-    },
-    type: {
-      "home-service": "Servicio a domicilio",
-      "place-service": "Servicio en lugar",
-    },
-    status: {
-      available: "Disponible",
-      busy: "Contactar",
-    },
-  };
-
-  return translations[field] && translations[field][value]
-    ? translations[field][value]
-    : value;
-};
-
 const CardButton = ({ item, isFavorite, onToggleFavorite }) => (
   <View style={styles.cardView}>
     <Pressable
@@ -178,9 +62,7 @@ const CardButton = ({ item, isFavorite, onToggleFavorite }) => (
         </Pressable>
       </View>
       <View style={styles.infoContainer}>
-        <Text style={styles.infoType}>
-          {translateField("type", item.type)} •{" "}
-        </Text>
+        <Text style={styles.infoType}>{translateType(item.type)} • </Text>
         <AntDesign name="star" size={12} color="#F1D000" />
         <Text style={styles.infoRating}>{item.rating} </Text>
         <Text style={styles.info_totalRatings}>({item.totalRatings})</Text>
@@ -199,16 +81,16 @@ const CardButton = ({ item, isFavorite, onToggleFavorite }) => (
             </Text>
           </View>
         )}
-        {item.status === "available" ? (
+        {item.availability === "available" ? (
           <View style={styles.availableView}>
             <Text style={styles.availableText}>
-              {translateField("status", item.status)}
+              {translateAvailability(item.availability)}
             </Text>
           </View>
         ) : (
           <View style={styles.busyView}>
             <Text style={styles.busyText}>
-              {translateField("status", item.status)}
+              {translateAvailability(item.availability)}
             </Text>
           </View>
         )}
@@ -371,259 +253,5 @@ const Home = ({ navigation }) => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  mainContainer: {
-    backgroundColor: "#F5F5F5",
-    flex: 1,
-  },
-  gestureHandler: {
-    flex: 1,
-  },
-  container: {
-    position: "absolute",
-    width: "100%",
-  },
-  searchContainer: {
-    width: "100%",
-    paddingHorizontal: 20,
-    justifyContent: "center",
-    paddingTop: 25,
-  },
-  searchContainer2: {
-    flexDirection: "row",
-    height: 55,
-    backgroundColor: "#fff",
-    borderRadius: 40,
-    shadowColor: "#000000",
-    shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 1,
-    justifyContent: "space-between",
-    paddingRight: 7,
-    alignItems: "center",
-  },
-  searchButton: {
-    flex: 1,
-    height: "100%",
-    borderRadius: 40,
-    flexDirection: "row",
-    paddingLeft: 20,
-    alignItems: "center",
-  },
-  user_picButton: {
-    width: 45,
-    height: 45,
-    borderRadius: 50,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  picProfile: {
-    width: 45,
-    height: 45,
-    borderRadius: 50,
-    borderWidth: 1,
-    borderColor: "#8D8D8D",
-  },
-  servicesListContainer: {
-    marginVertical: 10,
-  },
-  serviceButton: {
-    flexDirection: "row",
-    alignItems: "center",
-    paddingHorizontal: 15,
-    paddingVertical: 8,
-    borderRadius: 14,
-    marginRight: 10,
-    borderWidth: 1,
-  },
-  activeButton: {
-    backgroundColor: "#FF9D00",
-    borderColor: "#FF9D00",
-  },
-  inactiveButton: {
-    borderColor: "#8D8D8D",
-    backgroundColor: "rgba(255, 255, 255, 0.69)",
-  },
-  activeText: {
-    fontWeight: "500",
-    marginLeft: 10,
-    color: "#fff",
-  },
-  inactiveText: {
-    marginLeft: 10,
-    color: "#8D8D8D",
-  },
-  flatListContent: {
-    paddingHorizontal: 20,
-  },
-  handleStyle: {
-    backgroundColor: "#F8F8F8",
-    borderTopLeftRadius: 15,
-    borderTopRightRadius: 15,
-    shadowColor: "red",
-    shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 1,
-  },
-  bottom_viewContainer: {
-    alignItems: "center",
-    marginBottom: 15,
-  },
-  locationContainer: {
-    alignItems: "center",
-    width: "100%",
-  },
-  locationButton: {
-    height: 40,
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-    maxWidth: 270,
-  },
-  locationText: {
-    fontWeight: "500",
-    fontSize: 14,
-    overflow: "hidden",
-    maxWidth: 215,
-  },
-  bottomTitle: {
-    fontSize: 14,
-    fontWeight: "bold",
-    paddingHorizontal: 20,
-    color: "#8D8D8D",
-    marginBottom: 10,
-  },
-  subtitleContainer: {
-    paddingHorizontal: 20,
-    width: "100%",
-    justifyContent: "space-between",
-    alignItems: "center",
-    flexDirection: "row",
-    marginBottom: 15,
-  },
-  bottomSubtitle: {
-    fontSize: 17,
-    fontWeight: "bold",
-  },
-  bottomMore: {
-    fontSize: 14,
-    color: "#FF9D00",
-  },
-  cardsContainer: {
-    paddingHorizontal: 20,
-  },
-  cardView: {
-    borderRadius: 10,
-    marginRight: 15,
-    width: 260,
-    height: 220,
-    backgroundColor: "#FFFFFF",
-  },
-  cardButton: {
-    width: 260,
-    height: 220,
-    position: "relative",
-  },
-  card_headerContainer: {
-    width: "100%",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  headerPhoto: {
-    width: 260,
-    height: 110,
-    borderTopRightRadius: 10,
-    borderTopLeftRadius: 10,
-  },
-  card_favContainer: {
-    position: "absolute",
-    height: 40,
-    width: 40,
-    right: 5,
-    top: 5,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "rgba(255, 255, 255, 0.75)",
-    borderRadius: 25,
-  },
-  infoContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginTop: 5,
-    paddingLeft: 8,
-  },
-  infoType: {
-    fontSize: 12,
-    color: "#ACACAC",
-    fontWeight: "500",
-  },
-  infoRating: {
-    fontSize: 12,
-    color: "#F1D000",
-    fontWeight: "500",
-  },
-  info_totalRatings: {
-    fontSize: 12,
-    color: "#ACACAC",
-    fontWeight: "500",
-  },
-  infoTitle: {
-    fontSize: 14,
-    fontWeight: "bold",
-    paddingHorizontal: 8,
-    paddingTop: 6,
-  },
-  bottom_cardContainer: {
-    alignItems: "flex-end",
-    justifyContent: "flex-end",
-    flex: 1,
-    paddingBottom: 8,
-    flexDirection: "row",
-  },
-  addressView: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginRight: "auto",
-    paddingLeft: 3,
-    paddingBottom: 1,
-  },
-  addressText: {
-    maxWidth: 140,
-    fontSize: 12,
-    fontWeight: "800",
-    color: "#ACACAC",
-  },
-  availableView: {
-    justifyContent: "center",
-    alignItems: "center",
-    borderRadius: 5,
-    height: 28,
-    paddingHorizontal: 8,
-    backgroundColor: "rgba(0, 255, 128, 0.14)",
-    marginRight: 8,
-  },
-  availableText: {
-    fontSize: 13,
-    color: "#00EC7E",
-    fontWeight: "600",
-  },
-  busyView: {
-    justifyContent: "center",
-    alignItems: "center",
-    borderRadius: 5,
-    height: 28,
-    paddingHorizontal: 8,
-    backgroundColor: "rgba(255, 157, 0, 0.14)",
-    marginRight: 8,
-  },
-  busyText: {
-    fontSize: 13,
-    color: "#FF9D00",
-    fontWeight: "600",
-  },
-});
 
 export default Home;
