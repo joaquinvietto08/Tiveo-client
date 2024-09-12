@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, Pressable, ScrollView } from "react-native";
+import { View, Pressable, ScrollView, Text } from "react-native";
 import { getIcon } from "../../utils/getIcons";
 import { styles } from "./ServicesStyles";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -55,7 +55,9 @@ const Services = () => {
     >
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.main_servicesContainer}>
-          <Text style={{ fontSize: 22, fontWeight: "bold" }}>Servicios</Text>
+          <Text style={{ fontSize: 22, fontFamily: "Inter-SemiBold" }}>
+            Servicios
+          </Text>
           <View style={styles.servicesContainer}>{firstServiceButtons}</View>
           <View style={styles.servicesContainer2}>{secondServiceButtons}</View>
         </View>

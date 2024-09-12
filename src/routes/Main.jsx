@@ -1,18 +1,18 @@
 import { StatusBar } from "expo-status-bar";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer } from "@react-navigation/native";
+import { useEffect, useState } from "react";
 import Services from "../pages/services/Services";
 import Home from "../pages/home/Home";
 import Activity from "../pages/activity/Activity";
 import Profile from "../pages/profile/Profile";
 import TabBar from "../components/tabBar/TabBar";
-import { SafeAreaProvider } from "react-native-safe-area-context";
 import ActivityDetail from "../pages/activity/ActivityDetail";
 import Welcome from "../pages/auth/Welcome";
 import Login from "../pages/auth/Login";
 import auth from "@react-native-firebase/auth";
-import { useEffect, useState } from "react";
 import Map from "../components/map/Map";
 
 const Stack = createNativeStackNavigator();

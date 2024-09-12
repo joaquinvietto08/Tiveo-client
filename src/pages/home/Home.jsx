@@ -181,7 +181,15 @@ const Home = ({ navigation }) => {
             <View style={styles.searchContainer2}>
               <Pressable style={styles.searchButton}>
                 <Ionicons name="search-outline" size={24} color="black" />
-                <Text style={{ marginLeft: 10, fontSize: 16 }}>Buscar...</Text>
+                <Text
+                  style={{
+                    marginLeft: 10,
+                    fontSize: 16,
+                    fontFamily: "Inter-Regular",
+                  }}
+                >
+                  Buscar...
+                </Text>
               </Pressable>
               <Pressable style={styles.user_picButton}>
                 <Image source={image} style={styles.picProfile} />

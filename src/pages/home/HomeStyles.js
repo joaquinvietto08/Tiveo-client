@@ -75,11 +75,12 @@ export const styles = StyleSheet.create({
     backgroundColor: "rgba(255, 255, 255, 0.69)",
   },
   activeText: {
-    fontWeight: "500",
+    fontFamily: "Inter-Medium",
     marginLeft: 10,
     color: "#fff",
   },
   inactiveText: {
+    fontFamily: "Inter-Regular",
     marginLeft: 10,
     color: "#8D8D8D",
   },
@@ -112,14 +113,14 @@ export const styles = StyleSheet.create({
     maxWidth: 270,
   },
   locationText: {
-    fontWeight: "500",
+    fontFamily: "Inter-Medium",
     fontSize: 14,
     overflow: "hidden",
     maxWidth: 215,
   },
   bottomTitle: {
     fontSize: 14,
-    fontWeight: "bold",
+    fontFamily: "Inter-Bold",
     paddingHorizontal: 20,
     color: "#8D8D8D",
     marginBottom: 10,
@@ -134,11 +135,12 @@ export const styles = StyleSheet.create({
   },
   bottomSubtitle: {
     fontSize: 17,
-    fontWeight: "bold",
+    fontFamily: "Inter-Bold",
   },
   bottomMore: {
     fontSize: 14,
     color: "#FF9D00",
+    fontFamily: "Inter-Regular",
   },
   cardsContainer: {
     paddingHorizontal: 20,
@@ -186,21 +188,21 @@ export const styles = StyleSheet.create({
   infoType: {
     fontSize: 12,
     color: "#ACACAC",
-    fontWeight: "500",
+    fontFamily: "Inter-Medium",
   },
   infoRating: {
     fontSize: 12,
     color: "#F1D000",
-    fontWeight: "500",
+    fontFamily: "Inter-Medium",
   },
   info_totalRatings: {
     fontSize: 12,
     color: "#ACACAC",
-    fontWeight: "500",
+    fontFamily: "Inter-Medium",
   },
   infoTitle: {
     fontSize: 14,
-    fontWeight: "bold",
+    fontFamily: "Inter-Bold",
     paddingHorizontal: 8,
     paddingTop: 6,
   },
@@ -220,8 +222,8 @@ export const styles = StyleSheet.create({
   },
   addressText: {
     maxWidth: 140,
-    fontSize: 12,
-    fontWeight: "800",
+    fontSize: 11,
+    fontFamily: "Inter-ExtraBold",
     color: "#ACACAC",
   },
   availableView: {
@@ -236,7 +238,7 @@ export const styles = StyleSheet.create({
   availableText: {
     fontSize: 13,
     color: "#00EC7E",
-    fontWeight: "600",
+    fontFamily: "Inter-SemiBold",
   },
   busyView: {
     justifyContent: "center",
@@ -250,6 +252,6 @@ export const styles = StyleSheet.create({
   busyText: {
     fontSize: 13,
     color: "#FF9D00",
-    fontWeight: "600",
+    fontFamily: "Inter-SemiBold",
   },
 });

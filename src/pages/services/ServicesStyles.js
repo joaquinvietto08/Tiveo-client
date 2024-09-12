@@ -40,10 +40,10 @@ export const styles = StyleSheet.create({
   },
   serviceIcon: {},
   serviceName: {
-    fontWeight: "light",
     fontSize: 14,
     bottom: 14,
     position: "absolute",
+    fontFamily: "Inter-Light",
   },
   servicesContainer2: {
     flexDirection: "row",
