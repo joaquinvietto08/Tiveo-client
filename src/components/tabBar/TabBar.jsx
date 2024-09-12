@@ -1,6 +1,8 @@
 import { View, Text, StyleSheet, Pressable } from "react-native";
 import React from "react";
-import { Entypo, Ionicons, MaterialIcons } from "@expo/vector-icons";
+import Octicons from "@expo/vector-icons/Octicons";
+import Feather from "@expo/vector-icons/Feather";
+import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 
 const TabBar = ({ state, descriptors, navigation }) => {
   const primaryColor = "#FF9D00";
@@ -8,21 +10,16 @@ const TabBar = ({ state, descriptors, navigation }) => {
 
   const icons = {
     Home: (props) => (
-      <MaterialIcons name="home" size={26} color={greyColor} {...props} />
+      <Octicons name="home" size={22} color={greyColor} {...props} />
     ),
     Services: (props) => (
-      <Ionicons name="grid-sharp" size={20} color={greyColor} {...props} />
+      <Feather name="grid" size={23} color={greyColor} {...props} />
     ),
     Activity: (props) => (
-      <Entypo
-        name="text-document-inverted"
-        size={22}
-        color={greyColor}
-        {...props}
-      />
+      <FontAwesome5 name="list-ul" size={20} color={greyColor} {...props} />
     ),
     Profile: (props) => (
-      <Ionicons name="person-sharp" size={20} color={greyColor} {...props} />
+      <FontAwesome5 name="user" size={20} color={greyColor} {...props} />
     ),
   };
   return (
@@ -78,6 +75,7 @@ const TabBar = ({ state, descriptors, navigation }) => {
               style={{
                 color: isFocused ? primaryColor : greyColor,
                 fontSize: 13,
+                fontFamily: "Inter-Medium",
               }}
             >
               {label}
