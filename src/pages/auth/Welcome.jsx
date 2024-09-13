@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
     left: -50,
     width: 450,
     height: 450,
-    backgroundColor: "rgba(255, 203, 19, 0.41)",
+    backgroundColor: "rgba(255, 157, 0, 0.41)",
     borderRadius: 300,
   },
   circle2: {
@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
     left: 207,
     width: 342,
     height: 342,
-    backgroundColor: "rgba(255, 203, 19, 0.43)",
+    backgroundColor: "rgba(255, 157, 0, 0.43)",
     borderRadius: 200,
   },
   container: {

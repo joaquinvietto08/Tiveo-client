@@ -68,6 +68,7 @@ export const translateStatus = (status) => {
     cancelled: "Cancelado",
     finished: "Finalizado",
     scheduled: "Programado",
+    "on-progress": "en progreso",
   };
 
   return statusMap[status] || status;

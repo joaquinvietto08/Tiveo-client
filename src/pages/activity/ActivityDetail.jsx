@@ -17,27 +17,14 @@ import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import Ionicons from "@expo/vector-icons/Ionicons";
-
-import electricity from "../../../assets/svgs/home/electricity";
-import plumbing from "../../../assets/svgs/home/plumbing";
-import gas from "../../../assets/svgs/home/gas";
-import gardening from "../../../assets/svgs/home/gardening";
-import locksmith from "../../../assets/svgs/home/locksmith";
-import painting from "../../../assets/svgs/home/painting";
-import construction from "../../../assets/svgs/home/construction";
-import pool from "../../../assets/svgs/home/pool";
-import carpentry from "../../../assets/svgs/home/carpentry";
-import glass from "../../../assets/svgs/home/glass";
-import pets from "../../../assets/svgs/home/pets";
-import security from "../../../assets/svgs/home/security";
-import ironwork from "../../../assets/svgs/home/ironwork";
-import technology from "../../../assets/svgs/home/technology";
-import beauty from "../../../assets/svgs/home/beauty";
-import vehicles from "../../../assets/svgs/home/vehicles";
-import freight from "../../../assets/svgs/home/freight";
-import events from "../../../assets/svgs/home/events";
-import photography from "../../../assets/svgs/home/photography";
-import music from "../../../assets/svgs/home/music";
+import { getIcon } from "../../utils/getIcons";
+import {
+  translateService,
+  translateStatus,
+  formatDate,
+  formatTime,
+  formatPrice,
+} from "../../utils/formatHelpers";
 
 //temporal
 import Valentino from "../../../assets/images/data/7.png";
@@ -51,81 +38,6 @@ const workerImages = {
   3: Calixto,
 };
 
-const translateService = (service) => {
-  const serviceMap = {
-    electricity: "electricidad",
-    plumbing: "plomeria",
-    gas: "gas",
-    gardening: "jardineria",
-    locksmith: "cerrajeria",
-    painting: "pintura",
-    construction: "construccion",
-    pool: "pileta",
-    carpentry: "carpinteria",
-    glass: "vidrios",
-    pets: "mascotas",
-    security: "seguridad",
-    ironwork: "herreria",
-    technology: "tecnologia",
-    beauty: "belleza",
-    vehicles: "vehiculos",
-    freight: "fletes",
-    events: "eventos",
-    photography: "fotografia",
-    music: "musica",
-  };
-
-  return serviceMap[service] || service;
-};
-
-const translateStatus = (status) => {
-  const statusMap = {
-    finished: "realizado por",
-    cancelled: "cancelado",
-    scheduled: "programado",
-    "on-progress": "en progreso",
-  };
-
-  return statusMap[status] || status;
-};
-
-const serviceIcons = {
-  electricity,
-  plumbing,
-  gas,
-  gardening,
-  locksmith,
-  painting,
-  construction,
-  pool,
-  carpentry,
-  glass,
-  pets,
-  security,
-  ironwork,
-  technology,
-  beauty,
-  vehicles,
-  freight,
-  events,
-  photography,
-  music,
-};
-
-const formatDate = (dateTimeString) => {
-  const date = new Date(dateTimeString);
-  return date.toLocaleDateString("es-AR", { month: "long", day: "numeric" });
-};
-
-const formatTime = (dateTimeString) => {
-  const date = new Date(dateTimeString);
-  return date.toLocaleTimeString("es-AR", {
-    hour: "2-digit",
-    minute: "2-digit",
-    hour12: false,
-  });
-};
-
 const formatPriceByStatus = (price, status) => {
   if (status === "on-progress" || status === "scheduled") {
     return "Pendiente";
@@ -137,10 +49,6 @@ const formatPriceByStatus = (price, status) => {
     return `$ ${price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}`;
   }
   return "";
-};
-
-const formatPrice = (price) => {
-  return `$ ${price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}`;
 };
 
 const translateReservePaymentType = (paymentType) => {
@@ -164,7 +72,7 @@ const translatePaymentType = (paymentType) => {
 const ActivityDetail = ({ navigation, route }) => {
   const insets = useSafeAreaInsets();
   const { data } = route.params;
-  const IconComponent = serviceIcons[data.service];
+  const IconComponent = getIcon(data.service);
   const workerImageSource = workerImages[data.worker.workerId];
   const [arrowUp, setArrowUp] = useState(true);
   const animation = useRef(new Animated.Value(0)).current;
