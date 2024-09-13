@@ -390,7 +390,7 @@ const styles = StyleSheet.create({
     paddingLeft: 15,
     paddingBottom: 10,
     borderBottomWidth: 2,
-    borderBottomColor: "#FFCB13",
+    borderBottomColor: "#FF9D00",
   },
   arrowContainer: {
     width: 50,

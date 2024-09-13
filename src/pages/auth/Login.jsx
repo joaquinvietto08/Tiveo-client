@@ -284,7 +284,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   confirmButton: {
-    backgroundColor: "#FFCB13",
+    backgroundColor: "#FF9D00",
     width: "100%",
     height: 48,
     borderRadius: 8,
