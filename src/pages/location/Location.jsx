@@ -15,30 +15,35 @@ const exampleLocations = [
   { key: "5", name: "Casa", details: "Marcelo T. de Alvear 360" },
   { key: "6", name: "Chacabuco 757" },
   { key: "7", name: "Casa", details: "Marcelo T. de Alvear 360" },
-  { key: "8", name: "Chacabuco 757" },
-  { key: "9", name: "Casa", details: "Marcelo T. de Alvear 360" },
-  { key: "10", name: "Chacabuco 757" },
-  { key: "11", name: "Casa", details: "Marcelo T. de Alvear 360" },
-  { key: "12", name: "Chacabuco 757" },
-  { key: "13", name: "Casa", details: "Marcelo T. de Alvear 360" },
-  { key: "14", name: "Chacabuco 757" },
-  { key: "15", name: "Casa", details: "Marcelo T. de Alvear 360" },
-  { key: "16", name: "Chacabuco 757" },
 ];
 
-const LocationItem = ({ item }) => {
+const DefaultItem = ({ item }) => {
   let iconName;
 
   if (item.key === "1") {
     iconName = "location-crosshairs";
   } else if (item.key === "2") {
     iconName = "map-pin";
-  } else {
-    iconName = "location-dot";
   }
+
   return (
     <Pressable style={styles.addressContainer}>
-      <FontAwesome6 name={iconName} size={18} color="black" />
+      <View style={{ width: 20, alignItems: "center" }}>
+        <FontAwesome6 name={iconName} size={18} color="black" />
+      </View>
+      <View style={{ marginLeft: 10 }}>
+        <Text style={styles.addressName}>{item.name}</Text>
+      </View>
+    </Pressable>
+  );
+};
+
+const LocationItem = ({ item }) => {
+  return (
+    <Pressable style={styles.addressContainer}>
+      <View style={{ width: 20, alignItems: "center" }}>
+        <FontAwesome6 name="location-crosshairs" size={18} color="black" />
+      </View>
       <View style={{ marginLeft: 10 }}>
         <Text style={styles.addressName}>{item.name}</Text>
         {item.details && (
@@ -49,10 +54,17 @@ const LocationItem = ({ item }) => {
   );
 };
 
-const IndexLocation = () => {
+const Location = () => {
   const insets = useSafeAreaInsets();
   const [inputValue, setInputValue] = useState("");
-  const [locationsFromDB, setLocationsFromDB] = useState(exampleLocations);
+
+  const renderItem = ({ item }) => {
+    if (item.key === "1" || item.key === "2") {
+      return <DefaultItem item={item} />;
+    } else {
+      return <LocationItem item={item} />;
+    }
+  };
 
   return (
     <View
@@ -85,8 +97,8 @@ const IndexLocation = () => {
       <View style={styles.locationsContainer}>
         {inputValue === "" ? (
           <FlatList
-            data={[...defaultOptions, ...locationsFromDB]}
-            renderItem={({ item }) => <LocationItem item={item} />}
+            data={[...defaultOptions, ...exampleLocations]}
+            renderItem={renderItem}
             keyExtractor={(item) => item.key}
             showsVerticalScrollIndicator={false}
           />
@@ -98,4 +110,4 @@ const IndexLocation = () => {
   );
 };
 
-export default IndexLocation;
+export default Location;

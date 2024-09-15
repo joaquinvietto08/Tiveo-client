@@ -13,7 +13,8 @@ import ActivityDetail from "../pages/activity/ActivityDetail";
 import Welcome from "../pages/auth/Welcome";
 import Login from "../pages/auth/Login";
 import auth from "@react-native-firebase/auth";
-import IndexLocation from "../pages/location/IndexLocation";
+import Location from "../pages/location/Location";
+import MapLocation from "../pages/location/MapLocation";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -79,7 +80,8 @@ const Main = () => {
         <Stack.Navigator screenOptions={{ headerShown: false }}>
           {user ? (
             <>
-              <Stack.Screen name="IndexLocation" component={IndexLocation} />
+              <Stack.Screen name="Location" component={Location} />
+              <Stack.Screen name="MapLocation" component={MapLocation} />
               <Stack.Screen name="MainNavigator" component={MainNavigator} />
               <Stack.Screen name="ActivityDetail" component={ActivityDetail} />
             </>
