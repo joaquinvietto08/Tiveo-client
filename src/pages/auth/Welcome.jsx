@@ -16,7 +16,7 @@ const Welcome = ({ navigation }) => {
       <StatusBar
         translucent
         backgroundColor="transparent"
-        barStyle="dark-content"
+        barStyle="light-content"
       />
       <View style={styles.circle1} />
       <View style={styles.circle2} />
@@ -28,9 +28,13 @@ const Welcome = ({ navigation }) => {
         <Pressable
           style={styles.startButton}
           onPress={() => navigation.navigate("Login")}
-          color="#FFC107"
+          color="#FF9D00"
         >
-          <Text style={{ fontSize: 16 }}>Comenzar</Text>
+          <Text
+            style={{ fontSize: 16, fontFamily: "Inter-Medium", color: "#fff" }}
+          >
+            Comenzar
+          </Text>
         </Pressable>
       </View>
     </View>
@@ -74,9 +78,10 @@ const styles = StyleSheet.create({
     marginBottom: 40,
   },
   subtitle: {
+    fontFamily: "Inter-Regular",
     fontSize: 18,
     textAlign: "center",
-    width: "72%",
+    width: "80%",
   },
   startButton: {
     marginTop: "auto",

@@ -8,6 +8,7 @@ import {
   TextInput,
   Keyboard,
 } from "react-native";
+import { styles } from "./LoginStyles";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import Facebook from "../../../assets/svgs/auth/facebook";
@@ -76,8 +77,8 @@ const Login = ({ navigation }) => {
     >
       <StatusBar
         translucent
-        backgroundColor="#FFC107"
-        barStyle="dark-content"
+        backgroundColor="#FF9D00"
+        barStyle="light-content"
       />
       <GestureHandlerRootView style={{ flex: 1 }}>
         <View style={styles.container}>
@@ -116,7 +117,13 @@ const Login = ({ navigation }) => {
               <Text style={styles.socialButtonText}>Continuar con correo</Text>
             </Pressable>
           </View>
-          <Text style={{ color: "#8A8A8A", fontSize: 16 }}>
+          <Text
+            style={{
+              color: "#8A8A8A",
+              fontSize: 16,
+              fontFamily: "Inter-Regular",
+            }}
+          >
             O con tu celular
           </Text>
           <View style={styles.phone_authContainer}>
@@ -136,7 +143,7 @@ const Login = ({ navigation }) => {
                 value={phoneNumber}
                 placeholder="Ej: 123456789"
                 placeholderTextColor="#8A8A8A"
-                selectionColor={"#FFC107"}
+                selectionColor={"#FF9D00"}
                 cursorColor="black"
                 onChangeText={(text) => {
                   const numericText = text.replace(/[^0-9]/g, "");
@@ -145,12 +152,16 @@ const Login = ({ navigation }) => {
               />
             </View>
           </View>
-          <Pressable
-            style={styles.confirmButton}
-            //    onPress={() => navigation.navigate("MainNavigator")}
-            color="#FFC107"
-          >
-            <Text style={{ fontSize: 16 }}>Continuar</Text>
+          <Pressable style={styles.confirmButton} color="#FF9D00">
+            <Text
+              style={{
+                fontSize: 16,
+                fontFamily: "Inter-Medium",
+                color: "#fff",
+              }}
+            >
+              Continuar
+            </Text>
           </Pressable>
         </View>
 
@@ -194,137 +205,3 @@ const Login = ({ navigation }) => {
 };
 
 export default Login;
-
-const styles = StyleSheet.create({
-  mainContainer: {
-    backgroundColor: "#F5F5F5",
-    flex: 1,
-  },
-  container: {
-    marginTop: 70,
-    alignItems: "center",
-    paddingHorizontal: 20,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: "bold",
-    width: "100%",
-    borderBottomWidth: 0.2,
-    height: 50,
-    textAlign: "center",
-    borderColor: "#98A2B3",
-  },
-  social_authContainer: {
-    marginTop: 30,
-    width: "100%",
-    height: 170,
-    justifyContent: "space-between",
-    marginBottom: 20,
-  },
-  social_authButton: {
-    flexDirection: "row",
-    backgroundColor: "#FFF",
-    width: "100%",
-    height: 46,
-    borderRadius: 8,
-    shadowColor: "#000000",
-    shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 4,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  socialButtonText: {
-    marginLeft: 10,
-    fontSize: 15,
-    color: "#000",
-  },
-  phone_authContainer: {
-    width: "100%",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginTop: 20,
-    marginBottom: 30,
-  },
-  selectCountry: {
-    width: "30%",
-    height: 52,
-    backgroundColor: "#FFF",
-    borderWidth: 1,
-    borderRadius: 8,
-    borderColor: "#C8C8C8",
-    flexDirection: "row",
-    justifyContent: "space-evenly",
-    alignItems: "center",
-    paddingHorizontal: 10,
-  },
-  phoneInputContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    width: "68%",
-    height: 52,
-    backgroundColor: "#FFF",
-    borderWidth: 1,
-    borderRadius: 8,
-    borderColor: "#C8C8C8",
-    paddingHorizontal: 15,
-  },
-  countryCodeText: {
-    fontSize: 17,
-    marginRight: 8,
-  },
-  flag: {
-    fontSize: 20,
-  },
-  phoneInput: {
-    fontSize: 17,
-    height: 23,
-    flex: 1,
-  },
-  confirmButton: {
-    backgroundColor: "#FF9D00",
-    width: "100%",
-    height: 48,
-    borderRadius: 8,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  overlay: {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
-  },
-  contentContainer: {
-    flex: 1,
-    alignItems: "center",
-    paddingHorizontal: 25,
-    paddingTop: 20,
-  },
-  countryItem: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    paddingVertical: 12,
-    width: "100%",
-  },
-  flag: {
-    fontSize: 20,
-  },
-  countryName: {
-    fontSize: 15,
-  },
-  countryCode: {
-    fontSize: 16,
-    color: "#888",
-  },
-  separator: {
-    height: 1,
-    width: "100%",
-    backgroundColor: "#E0E0E0",
-  },
-});

@@ -14,36 +14,54 @@ import { styles } from "./HomeStyles";
 import {
   translateType,
   translateAvailability,
+  translateService,
 } from "../../utils/formatHelpers";
 import { workers } from "../../components/data/workersData";
-import image from "../../../assets/images/data/2.png";
 
 const initialServices = [
   { key: "1", name: "Todos" },
-  { key: "2", name: "Electricidad" },
-  { key: "3", name: "Plomeria" },
-  { key: "4", name: "Jardinería" },
-  { key: "5", name: "Cerrajería" },
-  { key: "6", name: "Pintura" },
-  { key: "7", name: "Construcción" },
-  { key: "8", name: "Vidrios" },
+  { key: "2", name: "electricity" },
+  { key: "3", name: "plumbing" },
+  { key: "4", name: "gardening" },
+  { key: "5", name: "locksmith" },
+  { key: "6", name: "painting" },
+  { key: "7", name: "construction" },
+  { key: "8", name: "pets" },
   { key: "100", name: "Ver más" },
 ];
 
-const ServiceButton = ({ item, isActive, onPress }) => (
-  <Pressable
-    style={[
-      styles.serviceButton,
-      isActive ? styles.activeButton : styles.inactiveButton,
-    ]}
-    onPress={onPress}
-  >
-    <Feather name="grid" size={24} color={isActive ? "#fff" : "#8D8D8D"} />
-    <Text style={isActive ? styles.activeText : styles.inactiveText}>
-      {item.name}
-    </Text>
-  </Pressable>
-);
+const ServiceButton = ({ item, isActive, onPress }) => {
+  const IconComponent =
+    item.key !== "1" && item.key !== "100" ? getIcon(item.name) : null;
+  return (
+    <Pressable
+      style={[
+        styles.serviceButton,
+        isActive ? styles.activeButton : styles.inactiveButton,
+      ]}
+      onPress={onPress}
+    >
+      {item.key === "1" ? (
+        <Feather
+          name="grid"
+          size={24}
+          color={isActive ? "#fff" : "#8D8D8D"}
+          style={{ marginRight: 10 }}
+        />
+      ) : item.key !== "100" ? (
+        <IconComponent
+          fill={isActive ? "#fff" : "#8D8D8D"}
+          height={24}
+          width={24}
+          style={{ marginRight: 10 }}
+        />
+      ) : null}
+      <Text style={isActive ? styles.activeText : styles.inactiveText}>
+        {translateService(item.name)}
+      </Text>
+    </Pressable>
+  );
+};
 
 const CardButton = ({ item, isFavorite, onToggleFavorite }) => (
   <View style={styles.cardView}>
@@ -190,9 +208,6 @@ const Home = ({ navigation }) => {
                 >
                   Buscar...
                 </Text>
-              </Pressable>
-              <Pressable style={styles.user_picButton}>
-                <Image source={image} style={styles.picProfile} />
               </Pressable>
             </View>
           </View>

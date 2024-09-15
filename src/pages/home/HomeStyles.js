@@ -16,11 +16,11 @@ export const styles = StyleSheet.create({
     width: "100%",
     paddingHorizontal: 20,
     justifyContent: "center",
-    paddingTop: 25,
+    paddingTop: 20,
   },
   searchContainer2: {
     flexDirection: "row",
-    height: 55,
+    height: 50,
     backgroundColor: "#fff",
     borderRadius: 40,
     shadowColor: "#000000",
@@ -40,20 +40,6 @@ export const styles = StyleSheet.create({
     paddingLeft: 20,
     alignItems: "center",
   },
-  user_picButton: {
-    width: 45,
-    height: 45,
-    borderRadius: 50,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  picProfile: {
-    width: 45,
-    height: 45,
-    borderRadius: 50,
-    borderWidth: 1,
-    borderColor: "#8D8D8D",
-  },
   servicesListContainer: {
     marginVertical: 10,
   },
@@ -64,7 +50,7 @@ export const styles = StyleSheet.create({
     paddingVertical: 8,
     borderRadius: 14,
     marginRight: 10,
-    borderWidth: 1,
+    borderWidth: 0.5,
   },
   activeButton: {
     backgroundColor: "#FF9D00",
@@ -76,12 +62,10 @@ export const styles = StyleSheet.create({
   },
   activeText: {
     fontFamily: "Inter-Medium",
-    marginLeft: 10,
     color: "#fff",
   },
   inactiveText: {
     fontFamily: "Inter-Regular",
-    marginLeft: 10,
     color: "#8D8D8D",
   },
   flatListContent: {
