@@ -1,0 +1,73 @@
+import { StyleSheet } from "react-native";
+
+export const styles = StyleSheet.create({
+  mainContainer: {
+    backgroundColor: "#F5F5F5",
+    flex: 1,
+  },
+  scrollViewContainer: {},
+  main_servicesContainer: {
+    marginTop: 70,
+    alignItems: "center",
+    marginBottom: 120,
+    paddingHorizontal: 20,
+  },
+  servicesContainer: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "space-between",
+    marginTop: 35,
+    width: "100%",
+  },
+  service_buttonView: {
+    borderRadius: 7,
+    marginVertical: 7,
+    width: "31%",
+    height: 105,
+    backgroundColor: "#FFFFFF",
+    shadowColor: "#000000",
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 2,
+  },
+  serviceButton: {
+    width: "100%",
+    height: 105,
+    alignItems: "center",
+    position: "relative",
+    paddingTop: 25,
+  },
+  serviceIcon: {},
+  serviceName: {
+    fontSize: 14,
+    bottom: 14,
+    position: "absolute",
+    fontFamily: "Inter-Light",
+  },
+  servicesContainer2: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "space-between",
+    width: "66%",
+  },
+  service_buttonView2: {
+    borderRadius: 7,
+    marginVertical: 7,
+    width: "47%",
+    height: 105,
+    backgroundColor: "#FFFFFF",
+    shadowColor: "#000000",
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 2,
+  },
+  serviceButton2: {
+    width: "100%",
+    height: 105,
+    alignItems: "center",
+    position: "relative",
+    paddingTop: 25,
+  },
+});
