@@ -4,23 +4,19 @@ import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
 import { mapStyle } from "./mapStyle";
 import { mapConfig } from "./mapConfig";
 
-const Map = () => {
+const Map = ({ region, children, ...props }) => {
   return (
     <MapView
       customMapStyle={mapStyle}
       provider={PROVIDER_GOOGLE}
       style={styles.mapStyle}
-      initialRegion={{
-        latitude: -34.603684,
-        longitude: -58.381559,
-        latitudeDelta: 0.01,
-        longitudeDelta: 0.01,
-      }}
+      initialRegion={region}
       mapType="standard"
       {...mapConfig}
-      showsUserLocation={true}
-      showsMyLocationButton={false}
-    ></MapView>
+      {...props}
+    >
+      {children}
+    </MapView>
   );
 };
 
