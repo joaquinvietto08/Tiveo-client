@@ -1,8 +1,9 @@
 import { View, Text, Pressable, TextInput, FlatList } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { styles } from "./LocationStyles";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
+import { useRoute } from "@react-navigation/native";
 
 const defaultOptions = [
   { key: "1", name: "Mi ubicación actual" },
@@ -17,7 +18,7 @@ const exampleLocations = [
   { key: "7", name: "Casa", details: "Marcelo T. de Alvear 360" },
 ];
 
-const DefaultItem = ({ item }) => {
+const DefaultItem = ({ item, navigation }) => {
   let iconName;
 
   if (item.key === "1") {
@@ -26,8 +27,16 @@ const DefaultItem = ({ item }) => {
     iconName = "map-pin";
   }
 
+  const handlePress = () => {
+    if (item.key === "1") {
+      navigation.navigate("LocationMap", { getLocation: true });
+    } else if (item.key === "2") {
+      navigation.navigate("LocationMap", { getLocation: false });
+    }
+  };
+
   return (
-    <Pressable style={styles.addressContainer}>
+    <Pressable style={styles.addressContainer} onPress={handlePress}>
       <View style={{ width: 20, alignItems: "center" }}>
         <FontAwesome6 name={iconName} size={18} color="black" />
       </View>
@@ -38,11 +47,11 @@ const DefaultItem = ({ item }) => {
   );
 };
 
-const LocationItem = ({ item }) => {
+const LocationItem = ({ item, navigation }) => {
   return (
     <Pressable style={styles.addressContainer}>
       <View style={{ width: 20, alignItems: "center" }}>
-        <FontAwesome6 name="location-crosshairs" size={18} color="black" />
+        <FontAwesome6 name="location-dot" size={18} color="black" />
       </View>
       <View style={{ marginLeft: 10 }}>
         <Text style={styles.addressName}>{item.name}</Text>
@@ -54,13 +63,27 @@ const LocationItem = ({ item }) => {
   );
 };
 
-const Location = () => {
+const Location = ({ navigation }) => {
   const insets = useSafeAreaInsets();
   const [inputValue, setInputValue] = useState("");
+  const [error, setError] = useState(null);
+  const route = useRoute();
+
+  useEffect(() => {
+    if (route.params?.errorMsg) {
+      setError(route.params.errorMsg);
+      setTimeout(() => {
+        setError(null);
+        navigation.setParams({ errorMsg: undefined });
+      }, 5000);
+    }
+  }, [route.params?.errorMsg]);
 
   const renderItem = ({ item }) => {
     if (item.key === "1" || item.key === "2") {
-      return <DefaultItem item={item} />;
+      return (
+        <DefaultItem item={item} navigation={navigation} setError={setError} />
+      );
     } else {
       return <LocationItem item={item} />;
     }
@@ -104,6 +127,11 @@ const Location = () => {
           />
         ) : (
           <Text>Chau</Text>
+        )}
+        {error && (
+          <View style={styles.errorContainer}>
+            <Text style={styles.errorText}>{error}</Text>
+          </View>
         )}
       </View>
     </View>

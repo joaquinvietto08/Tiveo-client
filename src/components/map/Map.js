@@ -18,6 +18,8 @@ const Map = () => {
       }}
       mapType="standard"
       {...mapConfig}
+      showsUserLocation={true}
+      showsMyLocationButton={false}
     ></MapView>
   );
 };
