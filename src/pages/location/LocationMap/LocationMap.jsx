@@ -1,9 +1,8 @@
 import { View, Text, Pressable, ActivityIndicator } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { styles } from "./LocationMapStyle";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Map from "../../../components/map/Map";
-import { Marker } from "react-native-maps";
 import { userLocation } from "../../../actions/api/userLocation";
 import { useRoute, useNavigation } from "@react-navigation/native";
 import Feather from "@expo/vector-icons/Feather";
@@ -18,35 +17,63 @@ const LocationMap = () => {
   const navigation = useNavigation();
   const { getLocation } = route.params;
 
-  useEffect(() => {
-    Geocoder.init("AIzaSyByH7AinqSs06Rbter1gh1_Zmyp4S1wVLc", {
-      language: "es",
-    });
-  }, []);
+  const mapRef = useRef(null);
+
+  const buenosAiresRegion = {
+    latitude: -34.603684,
+    longitude: -58.381559,
+    latitudeDelta: 0.006,
+    longitudeDelta: 0.006,
+  };
+
+  const fetchAddressFromCoords = async (latitude, longitude) => {
+    try {
+      const json = await Geocoder.from(latitude, longitude);
+      const addressComponents = json.results[0].address_components;
+
+      const streetNumber =
+        addressComponents.find((component) =>
+          component.types.includes("street_number")
+        )?.long_name || "";
+
+      const streetName =
+        addressComponents.find((component) => component.types.includes("route"))
+          ?.long_name || "";
+
+      return `${streetName} ${streetNumber}`;
+    } catch (error) {
+      console.warn("Error fetching address: ", error);
+      return "";
+    }
+  };
 
   useEffect(() => {
     const fetchLocationAndAddress = async () => {
       if (getLocation) {
         try {
+          Geocoder.init("AIzaSyByH7AinqSs06Rbter1gh1_Zmyp4S1wVLc", {
+            language: "es",
+          });
           setLoading(true);
           const location = await userLocation();
           if (location) {
             const { latitude, longitude } = location.coords;
-            setLocation({
+            const userRegion = {
               latitude,
               longitude,
-              latitudeDelta: 0.01,
-              longitudeDelta: 0.01,
-            });
+              latitudeDelta: 0.006,
+              longitudeDelta: 0.006,
+            };
 
-            Geocoder.from(latitude, longitude)
-              .then((json) => {
-                const fullAddress = json.results[0].formatted_address;
-                const addressParts = fullAddress.split(",");
-                const filteredAddress = `${addressParts[0]}`;
-                setAddress(filteredAddress);
-              })
-              .catch((error) => console.warn(error));
+            if (mapRef.current) {
+              mapRef.current.animateToRegion(userRegion, 1000);
+            }
+
+            const fetchedAddress = await fetchAddressFromCoords(
+              latitude,
+              longitude
+            );
+            setAddress(fetchedAddress);
           }
         } catch (error) {
           navigation.navigate("Location", {
@@ -55,22 +82,26 @@ const LocationMap = () => {
         } finally {
           setLoading(false);
         }
+      } else {
+        const fetchedAddress = await fetchAddressFromCoords(
+          buenosAiresRegion.latitude,
+          buenosAiresRegion.longitude
+        );
+        setAddress(fetchedAddress);
+        setLoading(false);
       }
     };
 
     fetchLocationAndAddress();
   }, [getLocation]);
 
-  const onRegionChangeComplete = (region) => {
-    setMapRegion(region);
-    Geocoder.from(region.latitude, region.longitude)
-      .then((json) => {
-        const fullAddress = json.results[0].formatted_address;
-        const addressParts = fullAddress.split(",");
-        const filteredAddress = `${addressParts[0]}`;
-        setAddress(filteredAddress);
-      })
-      .catch((error) => console.warn(error));
+  const onRegionChangeComplete = async (location) => {
+    setLocation(location);
+    const fetchedAddress = await fetchAddressFromCoords(
+      location.latitude,
+      location.longitude
+    );
+    setAddress(fetchedAddress);
   };
 
   return (
@@ -87,19 +118,17 @@ const LocationMap = () => {
         </Pressable>
       </View>
       <Map
-        region={location}
-        showsUserLocation={true}
+        ref={mapRef}
+        initialRegion={buenosAiresRegion}
+        showsUserLocation={!!getLocation}
         showsMyLocationButton={false}
-      >
-        {location ? (
-          <Marker
-            coordinate={{
-              latitude: location.latitude,
-              longitude: location.longitude,
-            }}
-          />
-        ) : null}
-      </Map>
+        onRegionChangeComplete={onRegionChangeComplete}
+      ></Map>
+      {address ? (
+        <View style={styles.markerFixed}>
+          <Feather name="map-pin" size={40} color="red" />
+        </View>
+      ) : null}
       <View style={styles.bottomContainer}>
         <Text
           style={{ fontFamily: "Inter-Bold", fontSize: 20, paddingLeft: 20 }}
@@ -112,10 +141,10 @@ const LocationMap = () => {
               {address || "Obteniendo dirección..."}
             </Text>
           </View>
-          <Pressable>
-            {loading ? (
-              <ActivityIndicator size="small" color="#000" /> // Loader mientras carga
-            ) : (
+          {loading || address === " " ? (
+            <ActivityIndicator size="small" color="#000" />
+          ) : (
+            <Pressable>
               <Text
                 style={{
                   fontFamily: "Inter-SemiBold",
@@ -125,8 +154,8 @@ const LocationMap = () => {
               >
                 Confirmar
               </Text>
-            )}
-          </Pressable>
+            </Pressable>
+          )}
         </View>
       </View>
     </View>
