@@ -7,18 +7,15 @@ import {
   userLocation,
   fetchAddressFromCoords,
 } from "../../../actions/api/userLocation";
-import { useRoute, useNavigation } from "@react-navigation/native";
 import Feather from "@expo/vector-icons/Feather";
 import Marker from "../../../../assets/svgs/map/marker";
 
-const LocationMap = () => {
+const LocationMap = ({ navigation, route }) => {
   const insets = useSafeAreaInsets();
   const [address, setAddress] = useState("");
   const [loading, setLoading] = useState(true);
-  const route = useRoute();
-  const navigation = useNavigation();
+  const [location, setLocation] = useState(null);
   const { getLocation } = route.params;
-
   const mapRef = useRef(null);
 
   const buenosAiresRegion = {
@@ -33,8 +30,8 @@ const LocationMap = () => {
       if (getLocation) {
         try {
           setLoading(true);
-
           const location = await userLocation();
+          setLocation(location.coords);
           if (location) {
             const { latitude, longitude } = location.coords;
             const userRegion = {
@@ -67,6 +64,7 @@ const LocationMap = () => {
           buenosAiresRegion.longitude
         );
         setAddress(fetchedAddress);
+        setLocation(buenosAiresRegion);
         setLoading(false);
       }
     };
@@ -74,8 +72,12 @@ const LocationMap = () => {
     fetchLocationAndAddress();
   }, [getLocation]);
 
-  const onRegionChangeComplete = async ({ latitude, longitude }) => {
-    const fetchedAddress = await fetchAddressFromCoords(latitude, longitude);
+  const onRegionChangeComplete = async (location) => {
+    setLocation(location);
+    const fetchedAddress = await fetchAddressFromCoords(
+      location.latitude,
+      location.longitude
+    );
     setAddress(fetchedAddress);
   };
 
@@ -119,7 +121,9 @@ const LocationMap = () => {
           {loading || address === " " ? (
             <ActivityIndicator size="small" color="#000" />
           ) : (
-            <Pressable>
+            <Pressable
+              onPress={() => navigation.navigate("SaveAddress", { location })}
+            >
               <Text
                 style={{
                   fontFamily: "Inter-SemiBold",

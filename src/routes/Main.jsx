@@ -15,6 +15,7 @@ import Login from "../pages/auth/Login";
 import auth from "@react-native-firebase/auth";
 import Location from "../pages/location/Location/Location";
 import LocationMap from "../pages/location/LocationMap/LocationMap";
+import SaveAddress from "../pages/location/SaveAddress/SaveAddress";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -82,6 +83,7 @@ const Main = () => {
             <>
               <Stack.Screen name="Location" component={Location} />
               <Stack.Screen name="LocationMap" component={LocationMap} />
+              <Stack.Screen name="SaveAddress" component={SaveAddress} />
               <Stack.Screen name="MainNavigator" component={MainNavigator} />
               <Stack.Screen name="ActivityDetail" component={ActivityDetail} />
             </>
