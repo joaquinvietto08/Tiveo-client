@@ -3,14 +3,16 @@ import React, { useEffect, useState, useRef } from "react";
 import { styles } from "./LocationMapStyle";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Map from "../../../components/map/Map";
-import { userLocation } from "../../../actions/api/userLocation";
+import {
+  userLocation,
+  fetchAddressFromCoords,
+} from "../../../actions/api/userLocation";
 import { useRoute, useNavigation } from "@react-navigation/native";
 import Feather from "@expo/vector-icons/Feather";
-import Geocoder from "react-native-geocoding";
+import Marker from "../../../../assets/svgs/map/marker";
 
 const LocationMap = () => {
   const insets = useSafeAreaInsets();
-  const [location, setLocation] = useState(null);
   const [address, setAddress] = useState("");
   const [loading, setLoading] = useState(true);
   const route = useRoute();
@@ -26,43 +28,20 @@ const LocationMap = () => {
     longitudeDelta: 0.006,
   };
 
-  const fetchAddressFromCoords = async (latitude, longitude) => {
-    try {
-      const json = await Geocoder.from(latitude, longitude);
-      const addressComponents = json.results[0].address_components;
-
-      const streetNumber =
-        addressComponents.find((component) =>
-          component.types.includes("street_number")
-        )?.long_name || "";
-
-      const streetName =
-        addressComponents.find((component) => component.types.includes("route"))
-          ?.long_name || "";
-
-      return `${streetName} ${streetNumber}`;
-    } catch (error) {
-      console.warn("Error fetching address: ", error);
-      return "";
-    }
-  };
-
   useEffect(() => {
     const fetchLocationAndAddress = async () => {
       if (getLocation) {
         try {
-          Geocoder.init("AIzaSyByH7AinqSs06Rbter1gh1_Zmyp4S1wVLc", {
-            language: "es",
-          });
           setLoading(true);
+
           const location = await userLocation();
           if (location) {
             const { latitude, longitude } = location.coords;
             const userRegion = {
               latitude,
               longitude,
-              latitudeDelta: 0.006,
-              longitudeDelta: 0.006,
+              latitudeDelta: 0.002,
+              longitudeDelta: 0.002,
             };
 
             if (mapRef.current) {
@@ -95,12 +74,8 @@ const LocationMap = () => {
     fetchLocationAndAddress();
   }, [getLocation]);
 
-  const onRegionChangeComplete = async (location) => {
-    setLocation(location);
-    const fetchedAddress = await fetchAddressFromCoords(
-      location.latitude,
-      location.longitude
-    );
+  const onRegionChangeComplete = async ({ latitude, longitude }) => {
+    const fetchedAddress = await fetchAddressFromCoords(latitude, longitude);
     setAddress(fetchedAddress);
   };
 
@@ -126,7 +101,7 @@ const LocationMap = () => {
       ></Map>
       {address ? (
         <View style={styles.markerFixed}>
-          <Feather name="map-pin" size={40} color="red" />
+          <Marker />
         </View>
       ) : null}
       <View style={styles.bottomContainer}>

@@ -36,9 +36,9 @@ const DefaultItem = ({ item, navigation }) => {
   };
 
   return (
-    <Pressable style={styles.addressContainer} onPress={handlePress}>
+    <Pressable style={styles.defaultContainer} onPress={handlePress}>
       <View style={{ width: 20, alignItems: "center" }}>
-        <FontAwesome6 name={iconName} size={18} color="black" />
+        <FontAwesome6 name={iconName} size={18} color="#FF9D00" />
       </View>
       <View style={{ marginLeft: 10 }}>
         <Text style={styles.addressName}>{item.name}</Text>

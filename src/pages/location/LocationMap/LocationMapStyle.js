@@ -19,7 +19,7 @@ export const styles = StyleSheet.create({
     elevation: 5,
   },
   backButton: {
-    width: 50,
+    width: 70,
     height: 50,
     marginTop: 10,
     justifyContent: "center",
@@ -29,8 +29,8 @@ export const styles = StyleSheet.create({
     position: "absolute",
     top: "50%",
     left: "50%",
-    marginLeft: -20,
-    marginTop: -40, // Centra el marcador en la pantalla
+    marginLeft: -21,
+    marginTop: -60,
   },
   bottomContainer: {
     width: "100%",

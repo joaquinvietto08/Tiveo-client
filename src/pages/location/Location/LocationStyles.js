@@ -48,6 +48,13 @@ export const styles = StyleSheet.create({
     paddingTop: 10,
     flex: 1,
   },
+  defaultContainer: {
+    paddingVertical: 15,
+    borderBottomWidth: 1,
+    borderColor: "#C8C8C8",
+    flexDirection: "row",
+    alignItems: "center",
+  },
   addressContainer: {
     paddingVertical: 15,
     borderBottomWidth: 1,
