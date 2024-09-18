@@ -32,20 +32,14 @@ export const styles = StyleSheet.create({
     fontSize: 13,
     color: "#8D8D8D",
   },
-  searchContainer: {
+  google_inputContainer: {
     marginTop: 15,
-    backgroundColor: "#fff",
-    width: "100%",
-    height: 48,
-    borderWidth: 1,
-    borderColor: "#C8C8C8",
-    borderRadius: 8,
-    paddingHorizontal: 15,
-    fontFamily: "Inter-Regular",
+    paddingHorizontal: 20,
+    flex: 0,
   },
   locationsContainer: {
     paddingHorizontal: 20,
-    paddingTop: 10,
+    paddingTop: 0,
     flex: 1,
   },
   defaultContainer: {
@@ -60,6 +54,7 @@ export const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderColor: "#C8C8C8",
     flexDirection: "row",
+    flex: 1,
   },
   addressName: {
     fontFamily: "Inter-Medium",

@@ -1,12 +1,10 @@
 import { View, Text } from "react-native";
 import React from "react";
 
-const SaveAddress = ({ route }) => {
-  const { location } = route.params;
+const SaveAddress = () => {
   return (
     <View>
-      <Text>Latitud: {location.latitude}</Text>
-      <Text>Longitud: {location.longitude}</Text>
+      <Text>SaveAddress</Text>
     </View>
   );
 };

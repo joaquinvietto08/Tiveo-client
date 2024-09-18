@@ -8,14 +8,14 @@ import {
   fetchAddressFromCoords,
 } from "../../../actions/api/userLocation";
 import Feather from "@expo/vector-icons/Feather";
-import Marker from "../../../../assets/svgs/map/marker";
+import Marker from "../../../components/map/locationMarker";
 
 const LocationMap = ({ navigation, route }) => {
   const insets = useSafeAreaInsets();
   const [address, setAddress] = useState("");
   const [loading, setLoading] = useState(true);
   const [location, setLocation] = useState(null);
-  const { getLocation } = route.params;
+  const { getLocation, location: selectedLocation } = route.params;
   const mapRef = useRef(null);
 
   const buenosAiresRegion = {
@@ -58,6 +58,15 @@ const LocationMap = ({ navigation, route }) => {
         } finally {
           setLoading(false);
         }
+      } else if (selectedLocation) {
+        setLocation({
+          latitude: selectedLocation.latitude,
+          longitude: selectedLocation.longitude,
+          latitudeDelta: 0.006,
+          longitudeDelta: 0.006,
+        });
+        setAddress(selectedLocation.address);
+        setLoading(false);
       } else {
         const fetchedAddress = await fetchAddressFromCoords(
           buenosAiresRegion.latitude,

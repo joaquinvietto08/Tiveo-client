@@ -1,9 +1,10 @@
-import { View, Text, Pressable, TextInput, FlatList } from "react-native";
+import { View, Text, Pressable, FlatList } from "react-native";
 import React, { useState, useEffect } from "react";
 import { styles } from "./LocationStyles";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 import { useRoute } from "@react-navigation/native";
+import { GooglePlacesInput } from "../../../components/map/placesInput";
 
 const defaultOptions = [
   { key: "1", name: "Mi ubicación actual" },
@@ -68,6 +69,17 @@ const Location = ({ navigation }) => {
   const [inputValue, setInputValue] = useState("");
   const [error, setError] = useState(null);
   const route = useRoute();
+  const [selectedLocation, setSelectedLocation] = useState(null);
+
+  const handlePlaceSelected = (details) => {
+    const location = {
+      latitude: details.geometry.location.lat,
+      longitude: details.geometry.location.lng,
+      address: details.formatted_address,
+    };
+    setSelectedLocation(location);
+    navigation.navigate("LocationMap", { location }); // Redirigir con los detalles seleccionados
+  };
 
   useEffect(() => {
     if (route.params?.errorMsg) {
@@ -89,6 +101,19 @@ const Location = ({ navigation }) => {
     }
   };
 
+  const renderCustomRow = (item) => {
+    return (
+      <Pressable style={styles.addressContainer}>
+        <View style={{ width: 20, alignItems: "center" }}>
+          <FontAwesome6 name="location-dot" size={18} color="black" />
+        </View>
+        <View style={{ marginLeft: 10 }}>
+          <Text style={styles.addressName}>{item.description}</Text>
+        </View>
+      </Pressable>
+    );
+  };
+
   return (
     <View
       style={{
@@ -105,18 +130,19 @@ const Location = ({ navigation }) => {
       <View style={styles.container}>
         <Text style={styles.title}>Elije tu ubicación</Text>
         <Text style={styles.subtitle}>
-          Necesitamos tu ubicacion para mostrarte los trabajadores disponibles
+          Necesitamos tu ubicación para mostrarte los trabajadores disponibles
           en tu zona
         </Text>
-        <TextInput
-          style={styles.searchContainer}
-          placeholder="Buscar direccion"
-          selectionColor={"#FF9D00"}
-          cursorColor="black"
-          value={inputValue}
-          onChangeText={setInputValue}
+      </View>
+      <View style={styles.google_inputContainer}>
+        <GooglePlacesInput
+          renderRow={(data) => renderCustomRow(data)}
+          textInputProps={{
+            onChangeText: (text) => setInputValue(text),
+          }}
         />
       </View>
+
       <View style={styles.locationsContainer}>
         {inputValue === "" ? (
           <FlatList
@@ -125,15 +151,13 @@ const Location = ({ navigation }) => {
             keyExtractor={(item) => item.key}
             showsVerticalScrollIndicator={false}
           />
-        ) : (
-          <Text>Chau</Text>
-        )}
-        {error && (
-          <View style={styles.errorContainer}>
-            <Text style={styles.errorText}>{error}</Text>
-          </View>
-        )}
+        ) : null}
       </View>
+      {error && (
+        <View style={styles.errorContainer}>
+          <Text style={styles.errorText}>{error}</Text>
+        </View>
+      )}
     </View>
   );
 };
