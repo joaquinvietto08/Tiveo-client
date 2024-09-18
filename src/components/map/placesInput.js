@@ -19,10 +19,6 @@ export const GooglePlacesInput = ({ ...props }) => {
       styles={styles}
       enablePoweredByContainer={false}
       isRowScrollable={false}
-      onPress={(data, details = null) => {
-        // Aquí manejas cuando el usuario selecciona una predicción
-        console.log("Lugar seleccionado:", data.description);
-      }}
       onFail={(error) => console.error(error)}
       {...props}
     />

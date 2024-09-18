@@ -69,17 +69,6 @@ const Location = ({ navigation }) => {
   const [inputValue, setInputValue] = useState("");
   const [error, setError] = useState(null);
   const route = useRoute();
-  const [selectedLocation, setSelectedLocation] = useState(null);
-
-  const handlePlaceSelected = (details) => {
-    const location = {
-      latitude: details.geometry.location.lat,
-      longitude: details.geometry.location.lng,
-      address: details.formatted_address,
-    };
-    setSelectedLocation(location);
-    navigation.navigate("LocationMap", { location }); // Redirigir con los detalles seleccionados
-  };
 
   useEffect(() => {
     if (route.params?.errorMsg) {
@@ -103,15 +92,24 @@ const Location = ({ navigation }) => {
 
   const renderCustomRow = (item) => {
     return (
-      <Pressable style={styles.addressContainer}>
+      <View style={styles.addressContainer}>
         <View style={{ width: 20, alignItems: "center" }}>
           <FontAwesome6 name="location-dot" size={18} color="black" />
         </View>
         <View style={{ marginLeft: 10 }}>
           <Text style={styles.addressName}>{item.description}</Text>
         </View>
-      </Pressable>
+      </View>
     );
+  };
+
+  const handleLocationSelected = (data, details) => {
+    const location = {
+      latitude: details.geometry.location.lat,
+      longitude: details.geometry.location.lng,
+      address: data.description,
+    };
+    navigation.navigate("LocationMap", { selectedLocation: location });
   };
 
   return (
@@ -139,6 +137,9 @@ const Location = ({ navigation }) => {
           renderRow={(data) => renderCustomRow(data)}
           textInputProps={{
             onChangeText: (text) => setInputValue(text),
+          }}
+          onPress={(data, details = null) => {
+            handleLocationSelected(data, details);
           }}
         />
       </View>

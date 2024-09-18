@@ -15,7 +15,7 @@ const LocationMap = ({ navigation, route }) => {
   const [address, setAddress] = useState("");
   const [loading, setLoading] = useState(true);
   const [location, setLocation] = useState(null);
-  const { getLocation, location: selectedLocation } = route.params;
+  const { getLocation, selectedLocation } = route.params;
   const mapRef = useRef(null);
 
   const buenosAiresRegion = {
@@ -59,13 +59,17 @@ const LocationMap = ({ navigation, route }) => {
           setLoading(false);
         }
       } else if (selectedLocation) {
-        setLocation({
+        const userRegion = {
           latitude: selectedLocation.latitude,
           longitude: selectedLocation.longitude,
           latitudeDelta: 0.006,
           longitudeDelta: 0.006,
-        });
+        };
+        setLocation(userRegion);
         setAddress(selectedLocation.address);
+        if (mapRef.current) {
+          mapRef.current.animateToRegion(userRegion, 1000);
+        }
         setLoading(false);
       } else {
         const fetchedAddress = await fetchAddressFromCoords(
