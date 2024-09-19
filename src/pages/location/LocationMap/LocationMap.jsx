@@ -91,7 +91,11 @@ const LocationMap = ({ navigation, route }) => {
       location.latitude,
       location.longitude
     );
-    setAddress(fetchedAddress);
+    if (fetchedAddress === " ") {
+      setAddress("Calle sin especificar");
+    } else {
+      setAddress(fetchedAddress);
+    }
   };
 
   return (
@@ -131,7 +135,7 @@ const LocationMap = ({ navigation, route }) => {
               {address || "Obteniendo dirección..."}
             </Text>
           </View>
-          {loading || address === " " ? (
+          {loading ? (
             <ActivityIndicator size="small" color="#000" />
           ) : (
             <Pressable
