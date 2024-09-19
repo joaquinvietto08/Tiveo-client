@@ -2,48 +2,18 @@ import * as Location from "expo-location";
 import Geocoder from "react-native-geocoding";
 
 export const userLocation = async () => {
-  const maxRetries = 3;
-  const retryDelay = 2000;
-
-  const getLocationWithRetry = async (attempt = 1) => {
-    try {
-      console.log(`Intentando obtener la ubicación, intento ${attempt}`);
-
-      // Intentar obtener la ubicación
-      let location = await Location.getCurrentPositionAsync({
-        accuracy: Location.Accuracy.High,
-      });
-
-      // Si obtenemos la ubicación, la devolvemos
-      return location;
-    } catch (error) {
-      console.log(`Error en el intento ${attempt}:`, error);
-
-      // Si fallamos y todavía tenemos intentos restantes, esperamos y reintentamos
-      if (attempt < maxRetries) {
-        await new Promise((resolve) => setTimeout(resolve, retryDelay));
-        return getLocationWithRetry(attempt + 1);
-      } else {
-        // Si alcanzamos el número máximo de intentos, lanzamos el error
-        throw new Error(
-          "No se pudo obtener la ubicación después de varios intentos."
-        );
-      }
-    }
-  };
-
   try {
-    // Solicitamos los permisos de ubicación
-    let { status } = await Location.requestForegroundPermissionsAsync();
-    if (status !== "granted") {
-      throw new Error("Permiso para acceder a la ubicación denegado.");
-    }
+    // Intentar obtener la ubicación con precisión alta, máximo 10 segundos de caché, y con un timeout de 5 segundos
+    let location = await Location.getCurrentPositionAsync({
+      accuracy: Location.Accuracy.Highest,
+      maximumAge: 10000, // Usar caché de hasta 10 segundos
+      timeout: 5000, // Tiempo máximo de espera de 5 segundos
+    });
 
-    // Intentamos obtener la ubicación con reintentos
-    let location = await getLocationWithRetry();
+    // Si obtenemos la ubicación, la devolvemos
     return location;
   } catch (error) {
-    console.log("Error al obtener la ubicación después de reintentos:", error);
+    console.log("Error al obtener la ubicación:", error.message);
     throw error;
   }
 };

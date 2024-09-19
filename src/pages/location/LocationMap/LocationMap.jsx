@@ -62,8 +62,8 @@ const LocationMap = ({ navigation, route }) => {
         const userRegion = {
           latitude: selectedLocation.latitude,
           longitude: selectedLocation.longitude,
-          latitudeDelta: 0.006,
-          longitudeDelta: 0.006,
+          latitudeDelta: 0.002,
+          longitudeDelta: 0.002,
         };
         setLocation(userRegion);
         setAddress(selectedLocation.address);
