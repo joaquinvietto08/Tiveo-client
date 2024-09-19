@@ -107,8 +107,9 @@ const Location = ({ navigation }) => {
     const location = {
       latitude: details.geometry.location.lat,
       longitude: details.geometry.location.lng,
-      address: data.description,
+      address: data.structured_formatting.main_text,
     };
+    console.log(location);
     navigation.navigate("LocationMap", { selectedLocation: location });
   };
 
