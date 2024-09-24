@@ -49,6 +49,7 @@ const LocationMap = ({ navigation, route }) => {
               latitude,
               longitude
             );
+
             setAddress(fetchedAddress);
           }
         } catch (error) {
@@ -91,11 +92,7 @@ const LocationMap = ({ navigation, route }) => {
       location.latitude,
       location.longitude
     );
-    if (fetchedAddress === " ") {
-      setAddress("Calle sin especificar");
-    } else {
-      setAddress(fetchedAddress);
-    }
+    setAddress(fetchedAddress);
   };
 
   return (
@@ -139,7 +136,9 @@ const LocationMap = ({ navigation, route }) => {
             <ActivityIndicator size="small" color="#000" />
           ) : (
             <Pressable
-              onPress={() => navigation.navigate("SaveAddress", { location })}
+              onPress={() =>
+                navigation.navigate("SaveAddress", { location, address })
+              }
             >
               <Text
                 style={{

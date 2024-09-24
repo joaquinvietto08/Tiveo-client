@@ -34,8 +34,11 @@ export const fetchAddressFromCoords = async (latitude, longitude) => {
     const streetName =
       addressComponents.find((component) => component.types.includes("route"))
         ?.long_name || "";
-
-    return `${streetName} ${streetNumber}`;
+    if (streetName === "" && streetNumber === "") {
+      return `Calle sin especificar`;
+    } else {
+      return `${streetName} ${streetNumber}`;
+    }
   } catch (error) {
     console.warn("Error fetching address: ", error);
     return "";

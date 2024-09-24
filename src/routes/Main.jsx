@@ -3,7 +3,7 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer } from "@react-navigation/native";
-import { useEffect, useState } from "react";
+import { useEffect, useState } from "react"; // No useContext
 import Services from "../pages/services/Services";
 import Home from "../pages/home/Home";
 import Activity from "../pages/activity/Activity";
@@ -16,6 +16,7 @@ import auth from "@react-native-firebase/auth";
 import Location from "../pages/location/Location/Location";
 import LocationMap from "../pages/location/LocationMap/LocationMap";
 import SaveAddress from "../pages/location/SaveAddress/SaveAddress";
+import { LocationProvider } from "../context/locationContext"; // Solo importamos LocationProvider
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -61,8 +62,9 @@ function MainNavigator() {
 
 const Main = () => {
   const [initializing, setInitializing] = useState(true);
-  const [user, setUser] = useState();
+  const [user, setUser] = useState(null); // Estado del usuario autenticado
 
+  // Verifica el estado de autenticación
   function onAuthStateChanged(user) {
     setUser(user);
     if (initializing) setInitializing(false);
@@ -74,27 +76,33 @@ const Main = () => {
   }, []);
 
   if (initializing) return null;
+
   return (
     <SafeAreaProvider>
-      <NavigationContainer style={{}}>
-        <StatusBar style="dark" />
-        <Stack.Navigator screenOptions={{ headerShown: false }}>
-          {user ? (
-            <>
-              <Stack.Screen name="Location" component={Location} />
-              <Stack.Screen name="LocationMap" component={LocationMap} />
-              <Stack.Screen name="SaveAddress" component={SaveAddress} />
-              <Stack.Screen name="MainNavigator" component={MainNavigator} />
-              <Stack.Screen name="ActivityDetail" component={ActivityDetail} />
-            </>
-          ) : (
-            <>
-              <Stack.Screen name="Welcome" component={Welcome} />
-              <Stack.Screen name="Login" component={Login} />
-            </>
-          )}
-        </Stack.Navigator>
-      </NavigationContainer>
+      <LocationProvider>
+        <NavigationContainer>
+          <StatusBar style="dark" />
+          <Stack.Navigator screenOptions={{ headerShown: false }}>
+            {user ? (
+              <>
+                <Stack.Screen name="Location" component={Location} />
+                <Stack.Screen name="LocationMap" component={LocationMap} />
+                <Stack.Screen name="SaveAddress" component={SaveAddress} />
+                <Stack.Screen name="MainNavigator" component={MainNavigator} />
+                <Stack.Screen
+                  name="ActivityDetail"
+                  component={ActivityDetail}
+                />
+              </>
+            ) : (
+              <>
+                <Stack.Screen name="Welcome" component={Welcome} />
+                <Stack.Screen name="Login" component={Login} />
+              </>
+            )}
+          </Stack.Navigator>
+        </NavigationContainer>
+      </LocationProvider>
     </SafeAreaProvider>
   );
 };
