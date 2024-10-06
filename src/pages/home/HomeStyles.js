@@ -7,6 +7,13 @@ export const styles = StyleSheet.create({
   gestureHandler: {
     flex: 1,
   },
+  markerFixed: {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    marginLeft: -21,
+    marginTop: -60,
+  },
   container: {
     position: "absolute",
     width: "100%",

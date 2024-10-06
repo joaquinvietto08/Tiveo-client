@@ -1,10 +1,10 @@
 import React, { forwardRef } from "react";
 import { StyleSheet, Dimensions } from "react-native";
-import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
+import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 import { mapStyle } from "./mapStyle";
 import { mapConfig } from "./mapConfig";
 
-const Map = forwardRef(({ region, children, ...props }, ref) => {
+const Map = forwardRef(({ region, markers, children, ...props }, ref) => {
   return (
     <MapView
       ref={ref}
@@ -16,6 +16,32 @@ const Map = forwardRef(({ region, children, ...props }, ref) => {
       {...props}
     >
       {children}
+
+      {markers?.map((marker, index) => (
+        <Marker
+          key={index}
+          coordinate={{
+            latitude: marker.latitude,
+            longitude: marker.longitude,
+          }}
+          title={marker.title}
+          description={marker.description}
+        >
+          {/* Si el marcador es para el hogar, usar un SVG personalizado */}
+          {marker.type === "home" ? (
+            <SvgHomeMarker /> // Componente SVG personalizado para el hogar
+          ) : (
+            // Otros marcadores pueden ser imágenes o íconos personalizados
+            <Marker
+              coordinate={{
+                latitude: marker.latitude,
+                longitude: marker.longitude,
+              }}
+              // Ruta de tu imagen para los trabajadores
+            />
+          )}
+        </Marker>
+      ))}
     </MapView>
   );
 });
