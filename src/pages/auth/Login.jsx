@@ -2,7 +2,6 @@ import React, { useState, useRef } from "react";
 import {
   View,
   Text,
-  StyleSheet,
   StatusBar,
   Pressable,
   TextInput,
@@ -17,28 +16,7 @@ import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
 import { GestureHandlerRootView, FlatList } from "react-native-gesture-handler";
 import { signInWithGoogle } from "../../actions/api/google_auth";
 import { signInWithFacebook } from "../../actions/api/facebook_auth";
-
-const countries = [
-  { name: "Argentina", code: "+54", flag: "🇦🇷" },
-  { name: "Bolivia", code: "+591", flag: "🇧🇴" },
-  { name: "Brazil", code: "+55", flag: "🇧🇷" },
-  { name: "Chile", code: "+56", flag: "🇨🇱" },
-  { name: "Colombia", code: "+57", flag: "🇨🇴" },
-  { name: "Costa Rica", code: "+506", flag: "🇨🇷" },
-  { name: "Cuba", code: "+53", flag: "🇨🇺" },
-  { name: "Ecuador", code: "+593", flag: "🇪🇨" },
-  { name: "El Salvador", code: "+503", flag: "🇸🇻" },
-  { name: "Guatemala", code: "+502", flag: "🇬🇹" },
-  { name: "Honduras", code: "+504", flag: "🇭🇳" },
-  { name: "Mexico", code: "+52", flag: "🇲🇽" },
-  { name: "Nicaragua", code: "+505", flag: "🇳🇮" },
-  { name: "Panama", code: "+507", flag: "🇵🇦" },
-  { name: "Paraguay", code: "+595", flag: "🇵🇾" },
-  { name: "Peru", code: "+51", flag: "🇵🇪" },
-  { name: "United States", code: "+1", flag: "🇺🇸" },
-  { name: "Uruguay", code: "+598", flag: "🇺🇾" },
-  { name: "Venezuela", code: "+58", flag: "🇻🇪" },
-];
+import { countries } from "../../utils/countries";
 
 const Login = ({ navigation }) => {
   const insets = useSafeAreaInsets();

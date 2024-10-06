@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useContext, useEffect } from "react";
 import { View, Text, Image, Pressable, StatusBar } from "react-native";
 import { FlatList, GestureHandlerRootView } from "react-native-gesture-handler";
 import { getIcon } from "../../utils/getIcons";
@@ -17,6 +17,8 @@ import {
   translateService,
 } from "../../utils/formatHelpers";
 import { workers } from "../../components/data/workersData";
+import Marker from "../../components/map/homeMarker";
+import { LocationContext } from "../../context/locationContext";
 
 const initialServices = [
   { key: "1", name: "Todos" },
@@ -124,6 +126,32 @@ const Home = ({ navigation }) => {
     name: "Todos",
   });
   const flatListRef = useRef(null);
+  const { locationData } = useContext(LocationContext);
+  const mapRef = useRef(null);
+
+  const userLocation = {
+    latitude: locationData.latitude,
+    longitude: locationData.longitude,
+    latitudeDelta: 0.06,
+    longitudeDelta: 0.06,
+  };
+
+  /*
+  useEffect(() => {
+            if (mapRef.current) {
+              mapRef.current.animateToRegion(userRegion, 1000);
+            }
+       
+
+        const userRegion = {
+          latitude: selectedLocation.latitude,
+          longitude: selectedLocation.longitude,
+          latitudeDelta: 0.002,
+          longitudeDelta: 0.002,
+   
+      }
+})
+*/
 
   const handleServicePress = (item) => {
     if (item.key === "100") {
@@ -138,7 +166,6 @@ const Home = ({ navigation }) => {
       flatListRef2.current?.scrollToIndex({
         index: 0,
         animated: true,
-        viewPosition: 0.1,
         viewPosition: 0.2,
       });
     }
@@ -186,7 +213,10 @@ const Home = ({ navigation }) => {
       <StatusBar translucent barStyle="dark-content" />
       <GestureHandlerRootView style={styles.gestureHandler}>
         <Pressable onPress={handleMapPress} style={{ flex: 1 }}>
-          <Map />
+          <Map ref={mapRef} initialRegion={userLocation} />
+          <View style={styles.markerFixed}>
+            <Marker />
+          </View>
         </Pressable>
         <View
           style={{
@@ -243,7 +273,7 @@ const Home = ({ navigation }) => {
                   numberOfLines={1}
                   ellipsizeMode="tail"
                 >
-                  Marcelo T de Alvear 360
+                  {locationData.address}
                 </Text>
                 <Icon name="keyboard-arrow-down" size={29} color="#000" />
               </Pressable>

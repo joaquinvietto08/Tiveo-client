@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text, StyleSheet, StatusBar, Pressable } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import Tiveo from "../../../assets/svgs/welcomeTiveo";
+import Tiveo from "../../../assets/svgs/tiveo";
 
 const Welcome = ({ navigation }) => {
   const insets = useSafeAreaInsets();

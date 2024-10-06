@@ -2,11 +2,17 @@ import { StyleSheet } from "react-native";
 
 export const styles = StyleSheet.create({
   mainContainer: {
-    backgroundColor: "#F5F5F5",
     flex: 1,
   },
   gestureHandler: {
     flex: 1,
+  },
+  markerFixed: {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    marginLeft: -21,
+    marginTop: -60,
   },
   container: {
     position: "absolute",
