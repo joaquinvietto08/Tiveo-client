@@ -1,7 +1,7 @@
 import React, {useRef, useState} from 'react'
 import {getIcon} from "../../../../utils/getIcons";
 import {Pressable, Text, View} from "react-native";
-import {styles} from "./ServicesListStyles";
+import {styles} from "./ServiceListStyles";
 import Feather from "@expo/vector-icons/Feather";
 import {translateService} from "../../../../utils/formatHelpers";
 import {FlatList} from "react-native-gesture-handler";
@@ -24,8 +24,8 @@ const ServiceButton = ({ item, isActive, onPress }) => {
     return (
         <Pressable
             style={[
-                styles.home__servicesList__button,
-                isActive ? styles.home__servicesList__activeButton : styles.home__servicesList__inactiveButton,
+                styles.home__serviceList__button,
+                isActive ? styles.home__serviceList__activeButton : styles.home__serviceList__inactiveButton,
             ]}
             onPress={onPress}
         >
@@ -44,14 +44,14 @@ const ServiceButton = ({ item, isActive, onPress }) => {
                     style={{ marginRight: 10 }}
                 />
             ) : null}
-            <Text style={isActive ? styles.home__servicesList__activeText : styles.home__servicesList__inactiveText}>
+            <Text style={isActive ? styles.home__serviceList__activeText : styles.home__serviceList__inactiveText}>
                 {translateService(item.name)}
             </Text>
         </Pressable>
     );
 };
 
-const ServicesList = ({navigation} ) => {
+const ServiceList = ({navigation} ) => {
     const [selectedService, setSelectedService] = useState({
         key: "1",
         name: "Todos",
@@ -84,18 +84,18 @@ const ServicesList = ({navigation} ) => {
     );
 
     return (
-        <View style={styles.home__servicesList__container}>
+        <View style={styles.home__serviceList__container}>
             <FlatList
                 data={[selectedService, ...filteredServices]}
                 ref={flatListRef}
                 horizontal={true}
                 showsHorizontalScrollIndicator={false}
                 keyExtractor={(item) => item.key}
-                contentContainerStyle={styles.home__servicesList__flatList}
+                contentContainerStyle={styles.home__serviceList__flatList}
                 renderItem={renderItem}
             />
         </View>
     )
 }
 
-export default ServicesList
+export default ServiceList

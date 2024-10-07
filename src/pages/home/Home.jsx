@@ -4,7 +4,7 @@ import {GestureHandlerRootView} from "react-native-gesture-handler";
 import {useSafeAreaInsets} from "react-native-safe-area-context";
 import {styles} from "./HomeStyles";
 import Map from "./features/map/Map";
-import ServicesList from "./features/servicesList/ServicesList";
+import ServiceList from "./features/serviceList/ServiceList";
 import BottomSheet from "./features/bottomSheet/BottomSheet";
 import SearchBar from "./features/searchBar/SearchBar";
 
@@ -30,7 +30,7 @@ const Home = ({navigation}) => {
                     }}
                 >
                     <SearchBar />
-                    <ServicesList navigation={navigation}/>
+                    <ServiceList navigation={navigation}/>
                 </View>
                 <BottomSheet sheetRef={sheetRef}/>
             </GestureHandlerRootView>
