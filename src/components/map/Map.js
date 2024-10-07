@@ -1,8 +1,8 @@
 import React, { forwardRef } from "react";
 import { StyleSheet, Dimensions } from "react-native";
 import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
-import { mapStyle } from "./mapStyle";
-import { mapConfig } from "./mapConfig";
+import { mapStyle } from "./mapFeatures/mapStyle";
+import { mapConfig } from "./mapFeatures/mapConfig";
 
 const Map = forwardRef(({ region, markers, children, ...props }, ref) => {
   return (
