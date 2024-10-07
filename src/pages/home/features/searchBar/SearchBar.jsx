@@ -5,11 +5,11 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 
 const SearchBar = () => {
  return (
-     <View style={styles.home__search__container}>
-         <View style={styles.home__search__subContainer}>
-             <Pressable style={styles.home__search__button}>
+     <View style={styles.home__searchBar__container}>
+         <View style={styles.home__searchBar__subContainer}>
+             <Pressable style={styles.home__searchBar__button}>
                  <Ionicons name="search-outline" size={24} color="black" />
-                 <Text style={styles.home__search__text}>
+                 <Text style={styles.home__searchBar__text}>
                      Buscar...
                  </Text>
              </Pressable>

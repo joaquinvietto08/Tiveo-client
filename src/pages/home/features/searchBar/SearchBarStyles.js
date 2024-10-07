@@ -1,13 +1,13 @@
 import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
-    home__search__container: {
+    home__searchBar__container: {
         width: "100%",
         paddingHorizontal: 20,
         justifyContent: "center",
         paddingTop: 20,
     },
-    home__search__subContainer: {
+    home__searchBar__subContainer: {
         flexDirection: "row",
         height: 50,
         backgroundColor: "#fff",
@@ -21,7 +21,7 @@ export const styles = StyleSheet.create({
         paddingRight: 7,
         alignItems: "center",
     },
-    home__search__button: {
+    home__searchBar__button: {
         flex: 1,
         height: "100%",
         borderRadius: 40,
@@ -29,7 +29,7 @@ export const styles = StyleSheet.create({
         paddingLeft: 20,
         alignItems: "center",
     },
-    home__search__text:{
+    home__searchBar__text:{
         marginLeft: 10,
         fontSize: 16,
         fontFamily: "Inter-Regular",
