@@ -27,6 +27,12 @@ export const styles = StyleSheet.create({
   saveAddress__formContainer: {
     paddingHorizontal: 20,
   },
+  saveAddress__bottomContainer: {
+    height: 100,
+    marginTop: 25,
+    alignItems: "center",
+    paddingHorizontal: 20,
+  },
   saveAddress__textLater: {
     fontFamily: "Inter-SemiBold",
     textDecorationLine: "underline",

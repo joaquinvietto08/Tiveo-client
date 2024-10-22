@@ -20,7 +20,7 @@ const Footer = ({ sheetRef }) => {
       indexVal={1}
     >
       <Location />
-      <Text style={styles.home__bottomSheet__subtitle}>
+      <Text style={styles.home__footer__subtitle}>
         25 trabajadores en tu zona
       </Text>
       <Cards />

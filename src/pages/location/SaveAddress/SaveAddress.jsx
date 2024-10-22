@@ -16,6 +16,7 @@ const SaveAddress = ({ navigation, route }) => {
   const handleSave = (formData) => {
     const locationData = {
       ...formData,
+      address: address,
       latitude: location.latitude,
       longitude: location.longitude,
     };
