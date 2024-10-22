@@ -20,7 +20,7 @@ export const userLocation = async () => {
 
 export const fetchAddressFromCoords = async (latitude, longitude) => {
   try {
-    Geocoder.init("AIzaSyByH7AinqSs06Rbter1gh1_Zmyp4S1wVLc", {
+    Geocoder.init("AIzaSyCSObYLxJn7C_deDQrB97d9JIuVzMdimZI", {
       language: "es",
     });
     const json = await Geocoder.from(latitude, longitude);

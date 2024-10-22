@@ -3,23 +3,23 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>66759050414-dccd3okq78kp67rol02ra7vnfl4tnjt2.apps.googleusercontent.com</string>
+	<string>1051392459652-dccd3okq78kp67rol02ra7vnfl4tnjt2.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.66759050414-dccd3okq78kp67rol02ra7vnfl4tnjt2</string>
+	<string>com.googleusercontent.apps.1051392459652-dccd3okq78kp67rol02ra7vnfl4tnjt2</string>
 	<key>ANDROID_CLIENT_ID</key>
-	<string>66759050414-ns2e844p5h06mvalshq9613quhhrkn4a.apps.googleusercontent.com</string>
+	<string>1051392459652-ns2e844p5h06mvalshq9613quhhrkn4a.apps.googleusercontent.com</string>
 	<key>API_KEY</key>
 	<string>AIzaSyC7Eb3a2ntZO1mcpNb_68CVn9H02ZiGlqA</string>
 	<key>GCM_SENDER_ID</key>
-	<string>66759050414</string>
+	<string>1051392459652</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.tiveo.tiveo</string>
+	<string>com.tiveo</string>
 	<key>PROJECT_ID</key>
-	<string>tiveoauth</string>
+	<string>tiveo</string>
 	<key>STORAGE_BUCKET</key>
-	<string>tiveoauth.appspot.com</string>
+	<string>tiveo.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -31,6 +31,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:66759050414:ios:1c3baa86ae09486402193f</string>
+	<string>1:1051392459652:ios:1c3baa86ae09486402193f</string>
 </dict>
 </plist>

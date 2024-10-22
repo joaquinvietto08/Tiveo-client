@@ -1,4 +1,4 @@
-package com.tiveo.tiveo
+package com.tiveo
 
 import android.os.Build
 import android.os.Bundle

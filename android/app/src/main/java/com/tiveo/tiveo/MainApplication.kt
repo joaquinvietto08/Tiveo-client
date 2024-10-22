@@ -1,4 +1,4 @@
-package com.tiveo.tiveo
+package com.tiveo
 
 import android.app.Application
 import android.content.res.Configuration

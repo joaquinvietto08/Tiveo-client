@@ -1,51 +1,26 @@
 {
   "project_info": {
-    "project_number": "66759050414",
-    "project_id": "tiveoauth",
-    "storage_bucket": "tiveoauth.appspot.com"
+    "project_number": "1051392459652",
+    "project_id": "tiveo-5f6c4",
+    "storage_bucket": "tiveo-5f6c4.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:66759050414:android:36eee8f1c10d45f902193f",
+        "mobilesdk_app_id": "1:1051392459652:android:3eab9c5258559aaeb813d1",
         "android_client_info": {
-          "package_name": "com.tiveo.tiveo"
+          "package_name": "com.tiveo"
         }
       },
-      "oauth_client": [
-        {
-          "client_id": "66759050414-ns2e844p5h06mvalshq9613quhhrkn4a.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.tiveo.tiveo",
-            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
-          }
-        },
-        {
-          "client_id": "66759050414-fl5vuaq4gm65nrfrhcp8me7796lmeadv.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
+      "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyATz1ItyVYboCogpJR4NU90fgbhzpnTATc"
+          "current_key": "AIzaSyBhvw2X2KetklU_Bz7SOM_GZpvc9nqafww"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "66759050414-fl5vuaq4gm65nrfrhcp8me7796lmeadv.apps.googleusercontent.com",
-              "client_type": 3
-            },
-            {
-              "client_id": "66759050414-dccd3okq78kp67rol02ra7vnfl4tnjt2.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.tiveo.tiveo"
-              }
-            }
-          ]
+          "other_platform_oauth_client": []
         }
       }
     }
