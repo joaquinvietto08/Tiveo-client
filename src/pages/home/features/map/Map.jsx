@@ -1,6 +1,6 @@
 import React, {useContext, useRef} from 'react'
 import {Pressable, View} from "react-native";
-import MapComponent from "../../../../components/map/Map";
+import MapComponent from "../../../../components/map/map/Map";
 import {styles} from "./MapStyles";
 import {LocationContext} from "../../../../context/locationContext";
 
