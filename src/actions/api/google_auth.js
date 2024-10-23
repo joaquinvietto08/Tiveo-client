@@ -3,7 +3,7 @@ import auth from "@react-native-firebase/auth";
 
 GoogleSignin.configure({
   webClientId:
-    "66759050414-fl5vuaq4gm65nrfrhcp8me7796lmeadv.apps.googleusercontent.com", //"client_type": 3
+    "1051392459652-4et3jq7cpc9vnnmgodsuholuut64q5eq.apps.googleusercontent.com", //"client_type": 3
 });
 
 export async function signInWithGoogle() {

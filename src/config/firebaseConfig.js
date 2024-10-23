@@ -4,12 +4,12 @@ import { getAuth } from "firebase/auth";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyBruaC-FOOdr9dpoDNJ_he7dDduLBZni8c",
-  authDomain: "tiveoauth.firebaseapp.com",
-  projectId: "tiveoauth",
-  storageBucket: "tiveoauth.appspot.com",
-  messagingSenderId: "66759050414",
-  appId: "1:66759050414:web:2dd5959a98aa29b402193f",
+  apiKey: "AIzaSyBhvw2X2KetklU_Bz7SOM_GZpvc9nqafww",
+  authDomain: "tiveo.firebaseapp.com",
+  projectId: "tiveo-5f6c4",
+  storageBucket: "tiveo.appspot.com",
+  messagingSenderId: "1051392459652",
+  appId: "1:1051392459652:web:2dd5959a98aa29b402193f",
 };
 
 // Initialize Firebase

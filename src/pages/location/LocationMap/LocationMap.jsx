@@ -1,14 +1,15 @@
-import { View, Text, Pressable, ActivityIndicator } from "react-native";
+import { View, Pressable } from "react-native";
 import React, { useEffect, useState, useRef } from "react";
 import { styles } from "./LocationMapStyle";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import Map from "../../../components/map/Map";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 import {
   userLocation,
   fetchAddressFromCoords,
 } from "../../../actions/api/userLocation";
 import Feather from "@expo/vector-icons/Feather";
-import Marker from "../../../components/map/locationMarker";
+import Footer from "./features/footer/Footer";
+import Map from "./features/map/Map";
 
 const LocationMap = ({ navigation, route }) => {
   const insets = useSafeAreaInsets();
@@ -27,64 +28,62 @@ const LocationMap = ({ navigation, route }) => {
 
   useEffect(() => {
     const fetchLocationAndAddress = async () => {
-      if (getLocation) {
-        try {
-          setLoading(true);
-          const location = await userLocation();
-          setLocation(location.coords);
-          if (location) {
-            const { latitude, longitude } = location.coords;
-            const userRegion = {
-              latitude,
-              longitude,
-              latitudeDelta: 0.002,
-              longitudeDelta: 0.002,
-            };
+      try {
+        setLoading(true);
 
-            if (mapRef.current) {
+        if (selectedLocation) {
+          const userRegion = {
+            latitude: selectedLocation.latitude,
+            longitude: selectedLocation.longitude,
+            latitudeDelta: 0.002,
+            longitudeDelta: 0.002,
+          };
+          setLocation(userRegion);
+          setAddress(selectedLocation.address);
+
+          if (mapRef.current) {
+            setTimeout(() => {
               mapRef.current.animateToRegion(userRegion, 1000);
-            }
-
-            const fetchedAddress = await fetchAddressFromCoords(
-              latitude,
-              longitude
-            );
-
-            setAddress(fetchedAddress);
+            }, 500);
           }
-        } catch (error) {
-          navigation.navigate("Location", {
-            errorMsg: "Algo salió mal, vuelve a intentarlo",
-          });
-        } finally {
-          setLoading(false);
+        } else if (getLocation) {
+          const location = await userLocation();
+          const { latitude, longitude } = location.coords;
+          const userRegion = {
+            latitude,
+            longitude,
+            latitudeDelta: 0.002,
+            longitudeDelta: 0.002,
+          };
+          const fetchedAddress = await fetchAddressFromCoords(
+            latitude,
+            longitude
+          );
+          setLocation(userRegion);
+          setAddress(fetchedAddress);
+
+          if (mapRef.current) {
+            mapRef.current.animateToRegion(userRegion, 1000);
+          }
+        } else {
+          const fetchedAddress = await fetchAddressFromCoords(
+            buenosAiresRegion.latitude,
+            buenosAiresRegion.longitude
+          );
+          setAddress(fetchedAddress);
+          setLocation(buenosAiresRegion);
         }
-      } else if (selectedLocation) {
-        const userRegion = {
-          latitude: selectedLocation.latitude,
-          longitude: selectedLocation.longitude,
-          latitudeDelta: 0.002,
-          longitudeDelta: 0.002,
-        };
-        setLocation(userRegion);
-        setAddress(selectedLocation.address);
-        if (mapRef.current) {
-          mapRef.current.animateToRegion(userRegion, 1000);
-        }
-        setLoading(false);
-      } else {
-        const fetchedAddress = await fetchAddressFromCoords(
-          buenosAiresRegion.latitude,
-          buenosAiresRegion.longitude
-        );
-        setAddress(fetchedAddress);
-        setLocation(buenosAiresRegion);
+      } catch (error) {
+        navigation.navigate("LocationSelect", {
+          errorMsg: "Algo salió mal, vuelve a intentarlo",
+        });
+      } finally {
         setLoading(false);
       }
     };
 
     fetchLocationAndAddress();
-  }, [getLocation]);
+  }, [getLocation, selectedLocation]);
 
   const onRegionChangeComplete = async (location) => {
     setLocation(location);
@@ -96,63 +95,35 @@ const LocationMap = ({ navigation, route }) => {
   };
 
   return (
-    <View style={styles.mainContainer}>
-      <View
-        style={{
-          ...styles.headerContainer,
-          paddingTop: insets.top,
-          paddingBottom: insets.bottom,
-        }}
-      >
-        <Pressable style={styles.backButton} onPress={navigation.goBack}>
-          <Feather name="arrow-left" size={24} color="black" />
-        </Pressable>
-      </View>
-      <Map
-        ref={mapRef}
-        initialRegion={buenosAiresRegion}
-        showsUserLocation={!!getLocation}
-        showsMyLocationButton={false}
-        onRegionChangeComplete={onRegionChangeComplete}
-      ></Map>
-      {address ? (
-        <View style={styles.markerFixed}>
-          <Marker />
-        </View>
-      ) : null}
-      <View style={styles.bottomContainer}>
-        <Text
-          style={{ fontFamily: "Inter-Bold", fontSize: 20, paddingLeft: 20 }}
+    <View style={styles.locationMap__mainContainer}>
+      <GestureHandlerRootView>
+        <View
+          style={{
+            ...styles.locationMap__headerContainer,
+            paddingTop: insets.top,
+            paddingBottom: insets.bottom,
+          }}
         >
-          Confirmar mi ubicacion
-        </Text>
-        <View style={{ alignItems: "center", paddingHorizontal: 20 }}>
-          <View style={styles.locationContainer}>
-            <Text style={styles.locationText}>
-              {address || "Obteniendo dirección..."}
-            </Text>
-          </View>
-          {loading ? (
-            <ActivityIndicator size="small" color="#000" />
-          ) : (
-            <Pressable
-              onPress={() =>
-                navigation.navigate("SaveAddress", { location, address })
-              }
-            >
-              <Text
-                style={{
-                  fontFamily: "Inter-SemiBold",
-                  fontSize: 14,
-                  textDecorationLine: "underline",
-                }}
-              >
-                Confirmar
-              </Text>
-            </Pressable>
-          )}
+          <Pressable
+            style={styles.locationMap__backButton}
+            onPress={navigation.goBack}
+          >
+            <Feather name="arrow-left" size={24} color="black" />
+          </Pressable>
         </View>
-      </View>
+        <Map
+          ref={mapRef}
+          getLocation={getLocation}
+          onRegionChangeComplete={onRegionChangeComplete}
+          address={address}
+        />
+        <Footer
+          address={address}
+          loading={loading}
+          location={location}
+          navigation={navigation}
+        />
+      </GestureHandlerRootView>
     </View>
   );
 };

@@ -110,9 +110,9 @@ android {
     buildToolsVersion rootProject.ext.buildToolsVersion
     compileSdk rootProject.ext.compileSdkVersion
 
-    namespace 'com.tiveo.tiveo'
+    namespace 'com.tiveo'
     defaultConfig {
-        applicationId 'com.tiveo.tiveo'
+        applicationId 'com.tiveo'
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

@@ -17,7 +17,7 @@
     <meta-data android:name="expo.modules.updates.EXPO_UPDATES_LAUNCH_WAIT_MS" android:value="0"/>
    	<meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
    	<meta-data android:name="com.facebook.sdk.ClientToken" android:value="@string/facebook_client_token"/>
-     <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyByH7AinqSs06Rbter1gh1_Zmyp4S1wVLc"/>
+     <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyCSObYLxJn7C_deDQrB97d9JIuVzMdimZI"/>
 
 
     <activity android:name="com.facebook.FacebookActivity"
@@ -45,7 +45,7 @@
         <action android:name="android.intent.action.VIEW"/>
         <category android:name="android.intent.category.DEFAULT"/>
         <category android:name="android.intent.category.BROWSABLE"/>
-        <data android:scheme="com.tiveo.tiveo"/>
+        <data android:scheme="com.tiveo"/>
       </intent-filter>
     </activity>
     <activity android:name="com.facebook.react.devsupport.DevSettingsActivity" android:exported="false"/>

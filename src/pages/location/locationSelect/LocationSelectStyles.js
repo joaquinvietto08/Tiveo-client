@@ -5,67 +5,34 @@ export const styles = StyleSheet.create({
     backgroundColor: "#F5F5F5",
     flex: 1,
   },
-  headerContainer: {
+  locationSelect__header: {
     paddingHorizontal: 20,
     paddingTop: 20,
     alignItems: "flex-end",
   },
-  headerButton: {
+  locationSelect__headerButton: {
     paddingLeft: 20,
     paddingVertical: 10,
   },
-  headerText: {
+  locationSelect__headerText: {
     fontFamily: "Inter-SemiBold",
     textDecorationLine: "underline",
   },
-  container: {
+  locationSelect__container: {
     paddingHorizontal: 20,
     paddingTop: 30,
   },
-  title: {
+  locationSelect__title: {
     fontFamily: "Inter-Bold",
     fontSize: 24,
     marginBottom: 5,
   },
-  subtitle: {
+  locationSelect__subtitle: {
     fontFamily: "Inter-SemiBold",
     fontSize: 13,
     color: "#8D8D8D",
   },
-  google_inputContainer: {
-    marginTop: 15,
-    paddingHorizontal: 20,
-    flex: 0,
-  },
-  locationsContainer: {
-    paddingHorizontal: 20,
-    paddingTop: 0,
-    flex: 1,
-  },
-  defaultContainer: {
-    paddingVertical: 15,
-    borderBottomWidth: 1,
-    borderColor: "#C8C8C8",
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  addressContainer: {
-    paddingVertical: 15,
-    borderBottomWidth: 1,
-    borderColor: "#C8C8C8",
-    flexDirection: "row",
-    flex: 1,
-  },
-  addressName: {
-    fontFamily: "Inter-Medium",
-    fontSize: 15,
-  },
-  addressDetails: {
-    fontFamily: "Inter-Medium",
-    fontSize: 13,
-    color: "#8D8D8D",
-  },
-  errorContainer: {
+  locationSelect__errorContainer: {
     position: "absolute",
     bottom: 50,
     left: 50,
@@ -77,7 +44,7 @@ export const styles = StyleSheet.create({
     justifyContent: "center",
     borderRadius: 5,
   },
-  errorText: {
+  locationSelect__errorText: {
     color: "white",
     fontFamily: "Inter-Bold",
   },

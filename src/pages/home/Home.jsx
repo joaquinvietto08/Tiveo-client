@@ -1,307 +1,37 @@
-import React, { useState, useRef, useContext, useEffect } from "react";
-import { View, Text, Image, Pressable, StatusBar } from "react-native";
-import { FlatList, GestureHandlerRootView } from "react-native-gesture-handler";
-import { getIcon } from "../../utils/getIcons";
+import React, { useRef } from "react";
+import { View, StatusBar } from "react-native";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import Map from "../../components/map/Map";
-import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
-import MaterialIcons from "@expo/vector-icons/MaterialIcons";
-import Ionicons from "@expo/vector-icons/Ionicons";
-import Icon from "react-native-vector-icons/MaterialIcons";
-import Feather from "@expo/vector-icons/Feather";
-import AntDesign from "@expo/vector-icons/AntDesign";
 import { styles } from "./HomeStyles";
-import {
-  translateType,
-  translateAvailability,
-  translateService,
-} from "../../utils/formatHelpers";
-import { workers } from "../../components/data/workersData";
-import Marker from "../../components/map/homeMarker";
-import { LocationContext } from "../../context/locationContext";
-
-const initialServices = [
-  { key: "1", name: "Todos" },
-  { key: "2", name: "electricity" },
-  { key: "3", name: "plumbing" },
-  { key: "4", name: "gardening" },
-  { key: "5", name: "locksmith" },
-  { key: "6", name: "painting" },
-  { key: "7", name: "construction" },
-  { key: "8", name: "pets" },
-  { key: "100", name: "Ver más" },
-];
-
-const ServiceButton = ({ item, isActive, onPress }) => {
-  const IconComponent =
-    item.key !== "1" && item.key !== "100" ? getIcon(item.name) : null;
-  return (
-    <Pressable
-      style={[
-        styles.serviceButton,
-        isActive ? styles.activeButton : styles.inactiveButton,
-      ]}
-      onPress={onPress}
-    >
-      {item.key === "1" ? (
-        <Feather
-          name="grid"
-          size={24}
-          color={isActive ? "#fff" : "#8D8D8D"}
-          style={{ marginRight: 10 }}
-        />
-      ) : item.key !== "100" ? (
-        <IconComponent
-          fill={isActive ? "#fff" : "#8D8D8D"}
-          height={24}
-          width={24}
-          style={{ marginRight: 10 }}
-        />
-      ) : null}
-      <Text style={isActive ? styles.activeText : styles.inactiveText}>
-        {translateService(item.name)}
-      </Text>
-    </Pressable>
-  );
-};
-
-const CardButton = ({ item, isFavorite, onToggleFavorite }) => (
-  <View style={styles.cardView}>
-    <Pressable
-      android_ripple={{ color: "#E2E2E2", borderless: true }}
-      style={styles.cardButton}
-    >
-      <View style={styles.card_headerContainer}>
-        <Image source={item.headerPhoto} style={styles.headerPhoto} />
-        <Pressable style={styles.card_favContainer} onPress={onToggleFavorite}>
-          {isFavorite ? (
-            <MaterialIcons name="favorite" size={25} color="#ff3f3f" />
-          ) : (
-            <MaterialIcons name="favorite-outline" size={25} color="#C5C5C5" />
-          )}
-        </Pressable>
-      </View>
-      <View style={styles.infoContainer}>
-        <Text style={styles.infoType}>{translateType(item.type)} • </Text>
-        <AntDesign name="star" size={12} color="#F1D000" />
-        <Text style={styles.infoRating}>{item.rating} </Text>
-        <Text style={styles.info_totalRatings}>({item.totalRatings})</Text>
-      </View>
-      <Text style={styles.infoTitle}>{item.title}</Text>
-      <View style={styles.bottom_cardContainer}>
-        {item.address !== "" && (
-          <View style={styles.addressView}>
-            <MaterialIcons name="location-pin" size={22} color="#ACACAC" />
-            <Text
-              numberOfLines={1}
-              ellipsizeMode="tail"
-              style={styles.addressText}
-            >
-              {item.address}
-            </Text>
-          </View>
-        )}
-        {item.availability === "available" ? (
-          <View style={styles.availableView}>
-            <Text style={styles.availableText}>
-              {translateAvailability(item.availability)}
-            </Text>
-          </View>
-        ) : (
-          <View style={styles.busyView}>
-            <Text style={styles.busyText}>
-              {translateAvailability(item.availability)}
-            </Text>
-          </View>
-        )}
-      </View>
-    </Pressable>
-  </View>
-);
+import Map from "./features/map/Map";
+import ServiceList from "./features/serviceList/ServiceList";
+import Footer from "./features/footer/Footer";
+import SearchBar from "./features/searchBar/SearchBar";
 
 const Home = ({ navigation }) => {
   const insets = useSafeAreaInsets();
-  const [selectedService, setSelectedService] = useState({
-    key: "1",
-    name: "Todos",
-  });
-  const flatListRef = useRef(null);
-  const { locationData } = useContext(LocationContext);
-  const mapRef = useRef(null);
-
-  const userLocation = {
-    latitude: locationData.latitude,
-    longitude: locationData.longitude,
-    latitudeDelta: 0.06,
-    longitudeDelta: 0.06,
-  };
-
-  /*
-  useEffect(() => {
-            if (mapRef.current) {
-              mapRef.current.animateToRegion(userRegion, 1000);
-            }
-       
-
-        const userRegion = {
-          latitude: selectedLocation.latitude,
-          longitude: selectedLocation.longitude,
-          latitudeDelta: 0.002,
-          longitudeDelta: 0.002,
-   
-      }
-})
-*/
-
-  const handleServicePress = (item) => {
-    if (item.key === "100") {
-      navigation.navigate("Services");
-    } else {
-      setSelectedService(item);
-      flatListRef.current?.scrollToIndex({
-        index: 0,
-        animated: true,
-        viewPosition: 0.1,
-      });
-      flatListRef2.current?.scrollToIndex({
-        index: 0,
-        animated: true,
-        viewPosition: 0.2,
-      });
-    }
-  };
-
-  const filteredServices = initialServices.filter(
-    (service) => service.key !== selectedService.key
-  );
-
-  const renderItem = ({ item }) => (
-    <ServiceButton
-      item={item}
-      isActive={item.key === selectedService.key}
-      onPress={() => handleServicePress(item)}
-    />
-  );
-
   const sheetRef = useRef(null);
-  const snapPoints = [140, 450];
-
-  const flatListRef2 = useRef(null);
-
-  const animationConfigs = {
-    duration: 400,
-  };
 
   const handleMapPress = () => {
     sheetRef.current?.snapToIndex(0);
   };
 
-  const [favorites, setFavorites] = useState({});
-  const toggleFavorite = (key) => {
-    setFavorites((prevFavorites) => ({
-      ...prevFavorites,
-      [key]: !prevFavorites[key],
-    }));
-  };
-
   return (
-    <View
-      style={{
-        ...styles.mainContainer,
-      }}
-    >
+    <View style={styles.home__mainContainer}>
       <StatusBar translucent barStyle="dark-content" />
-      <GestureHandlerRootView style={styles.gestureHandler}>
-        <Pressable onPress={handleMapPress} style={{ flex: 1 }}>
-          <Map ref={mapRef} initialRegion={userLocation} />
-          <View style={styles.markerFixed}>
-            <Marker />
-          </View>
-        </Pressable>
+      <GestureHandlerRootView>
+        <Map onPress={handleMapPress} />
         <View
           style={{
-            ...styles.container,
+            ...styles.home__container,
             paddingTop: insets.top,
             paddingBottom: insets.bottom,
           }}
         >
-          <View style={styles.searchContainer}>
-            <View style={styles.searchContainer2}>
-              <Pressable style={styles.searchButton}>
-                <Ionicons name="search-outline" size={24} color="black" />
-                <Text
-                  style={{
-                    marginLeft: 10,
-                    fontSize: 16,
-                    fontFamily: "Inter-Regular",
-                  }}
-                >
-                  Buscar...
-                </Text>
-              </Pressable>
-            </View>
-          </View>
-          <View style={styles.servicesListContainer}>
-            <FlatList
-              data={[selectedService, ...filteredServices]}
-              ref={flatListRef}
-              horizontal={true}
-              showsHorizontalScrollIndicator={false}
-              keyExtractor={(item) => item.key}
-              contentContainerStyle={styles.flatListContent}
-              renderItem={renderItem}
-            />
-          </View>
+          <SearchBar />
+          <ServiceList navigation={navigation} />
         </View>
-        <BottomSheet
-          ref={sheetRef}
-          snapPoints={snapPoints}
-          index={1}
-          handleIndicatorStyle={{ backgroundColor: "#D8D8D8" }}
-          animationConfigs={animationConfigs}
-          backgroundStyle={{
-            backgroundColor: "#F8F8F8",
-            shadowColor: "#000",
-            elevation: 7,
-          }}
-        >
-          <BottomSheetView style={styles.bottom_viewContainer}>
-            <View style={styles.locationContainer}>
-              <Pressable style={styles.locationButton}>
-                <Text
-                  style={styles.locationText}
-                  numberOfLines={1}
-                  ellipsizeMode="tail"
-                >
-                  {locationData.address}
-                </Text>
-                <Icon name="keyboard-arrow-down" size={29} color="#000" />
-              </Pressable>
-            </View>
-          </BottomSheetView>
-          <View>
-            <Text style={styles.bottomTitle}>25 trabajadores en tu zona</Text>
-            <View style={styles.subtitleContainer}>
-              <Text style={styles.bottomSubtitle}>Destacados</Text>
-              <Text style={styles.bottomMore}>Ver todos</Text>
-            </View>
-            <FlatList
-              data={workers}
-              horizontal
-              ref={flatListRef2}
-              keyExtractor={(item) => item.key}
-              contentContainerStyle={styles.cardsContainer}
-              showsHorizontalScrollIndicator={false}
-              renderItem={({ item }) => (
-                <CardButton
-                  item={item}
-                  isFavorite={!!favorites[item.key]}
-                  onToggleFavorite={() => toggleFavorite(item.key)}
-                />
-              )}
-            />
-          </View>
-        </BottomSheet>
+        <Footer sheetRef={sheetRef} />
       </GestureHandlerRootView>
     </View>
   );
