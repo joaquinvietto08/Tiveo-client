@@ -3,7 +3,7 @@ import { ActivityIndicator, Pressable, Text, View } from "react-native";
 import BottomSheet from "../../../../../components/bottomSheet/BottomSheet";
 import { styles } from "./FooterStyles";
 
-const Footer = ({ address, loading, location, navigation }) => {
+const Footer = ({ address, loading, addressComponents, navigation }) => {
   const snapPoints = [200];
 
   return (
@@ -32,7 +32,7 @@ const Footer = ({ address, loading, location, navigation }) => {
           ) : (
             <Pressable
               onPress={() =>
-                navigation.navigate("SaveAddress", { location, address })
+                navigation.navigate("SaveAddress", { addressComponents })
               }
             >
               <Text style={styles.locationMap__footer__confirmText}>

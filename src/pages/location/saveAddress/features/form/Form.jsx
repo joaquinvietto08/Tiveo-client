@@ -7,7 +7,7 @@ import PhoneInput from "../../../../../components/inputs/phoneInput/PhoneInput";
 const Form = ({ onSubmit }) => {
   const [floor, setFloor] = useState("");
   const [notes, setNotes] = useState("");
-  const [locationName, setLocationName] = useState("");
+  const [name, setName] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [selectedCountry, setSelectedCountry] = useState({
     flag: "🇦🇷",
@@ -15,16 +15,16 @@ const Form = ({ onSubmit }) => {
   });
 
   const handleSubmit = () => {
-    const sanitizedPhoneNumber = `${selectedCountry.code.replace(
-      "+",
-      ""
-    )}${phoneNumber}`;
+    const sanitizedPhoneNumber =
+      phoneNumber === ""
+        ? ""
+        : `${selectedCountry.code.replace("+", "")}${phoneNumber}`;
 
     const formData = {
       floor,
       notes,
       phoneNumber: sanitizedPhoneNumber,
-      locationName,
+      name,
     };
     onSubmit(formData);
   };
@@ -57,8 +57,8 @@ const Form = ({ onSubmit }) => {
         style={styles.saveAddress__form__nameInput}
         maxLength={30}
         placeholder="Nombre de ubicación"
-        value={locationName}
-        onChangeText={setLocationName}
+        value={name}
+        onChangeText={setName}
       />
       <Pressable
         style={styles.saveAddress__form__saveButton}

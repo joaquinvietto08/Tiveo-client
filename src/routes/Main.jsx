@@ -85,7 +85,10 @@ const Main = () => {
           <Stack.Navigator screenOptions={{ headerShown: false }}>
             {user ? (
               <>
-                <Stack.Screen name="LocationSelect" component={LocationSelect} />
+                <Stack.Screen
+                  name="LocationSelect"
+                  component={LocationSelect}
+                />
                 <Stack.Screen name="LocationMap" component={LocationMap} />
                 <Stack.Screen name="SaveAddress" component={SaveAddress} />
                 <Stack.Screen name="MainNavigator" component={MainNavigator} />

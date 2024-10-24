@@ -2,7 +2,7 @@ import React from "react";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import { StyleSheet } from "react-native";
 
-const GOOGLE_PLACES_API_KEY = "AIzaSyAj4qogv9IjSV7l7wS_dDrbAgXKqMwM_7s";
+const GOOGLE_PLACES_API_KEY = "AIzaSyCcBYIbLnlMIzRijdTr01DXGCTNfPNKUc4";
 
 export const GooglePlacesInput = ({ ...props }) => {
   return (

@@ -1,5 +1,5 @@
-import { View, Text, Pressable, TextInput, Keyboard } from "react-native";
-import React, { useContext } from "react";
+import { View, Text, Pressable } from "react-native";
+import React, { useContext, useState, useEffect } from "react";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { styles } from "./SaveAddressStyle";
 import Feather from "@expo/vector-icons/Feather";
@@ -7,28 +7,54 @@ import { LocationContext } from "../../../context/locationContext";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { Host } from "react-native-portalize";
 import Form from "./features/form/Form";
+import firestore from "@react-native-firebase/firestore";
 
 const SaveAddress = ({ navigation, route }) => {
   const insets = useSafeAreaInsets();
-  const { location, address } = route.params;
+  const { addressComponents } = route.params;
   const { setLocationData } = useContext(LocationContext);
+  const [address, setAddress] = useState("");
 
-  const handleSave = (formData) => {
-    const locationData = {
-      ...formData,
-      address: address,
-      latitude: location.latitude,
-      longitude: location.longitude,
-    };
+  useEffect(() => {
+    if (addressComponents && addressComponents.length > 0) {
+      const streetNumber = addressComponents.find((component) =>
+        component.types.includes("street_number")
+      );
+      const streetName = addressComponents.find((component) =>
+        component.types.includes("route")
+      );
+      if (streetName && streetNumber) {
+        setAddress(`${streetName.long_name} ${streetNumber.short_name}`);
+      } else {
+        setAddress(`${streetName.long_name}`);
+      }
+    }
+  }, [addressComponents]);
 
-    console.log("Datos que se guardarán:", locationData);
-
-    setLocationData(locationData);
-
-    navigation.reset({
+  const saveLocationContext = (data) => {
+    setLocationData(data);
+    /*     navigation.reset({
       index: 0,
       routes: [{ name: "MainNavigator" }],
-    });
+    }); */
+  };
+
+  const handleSaveAddress = async (formData) => {
+    const newAddressData = {
+      ...formData,
+      ...addressComponents,
+    };
+
+    if (formData) {
+      try {
+        await firestore().collection("addresses").add(newAddressData);
+        saveLocationContext(newAddressData);
+      } catch (error) {
+        console.error("Error al guardar la dirección en Firestore:", error);
+      }
+    } else {
+      console.log("formData está vacío, no se envía a Firestore");
+    }
   };
 
   return (
@@ -56,10 +82,10 @@ const SaveAddress = ({ navigation, route }) => {
             <View style={{ marginBottom: 20 }}>
               <Text style={{ fontFamily: "Inter-SemiBold" }}>{address}</Text>
             </View>
-            <Form onSubmit={handleSave} />
+            <Form onSubmit={handleSaveAddress} />
           </View>
           <View style={styles.saveAddress__bottomContainer}>
-            <Pressable onPress={() => handleSave(false)}>
+            <Pressable onPress={() => saveLocationContext(addressComponents)}>
               <Text style={styles.saveAddress__textLater}>Ahora no</Text>
             </Pressable>
           </View>

@@ -13,11 +13,30 @@ import Map from "./features/map/Map";
 
 const LocationMap = ({ navigation, route }) => {
   const insets = useSafeAreaInsets();
-  const [address, setAddress] = useState("");
+  const [addressComponents, setAddressComponents] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [location, setLocation] = useState(null);
+  const [shortAddress, setShortAddress] = useState("");
+  const [pin, setPin] = useState(false);
   const { getLocation, selectedLocation } = route.params;
   const mapRef = useRef(null);
+
+  useEffect(() => {
+    setPin(true);
+    if (addressComponents && addressComponents.address_components) {
+      setLoading(false);
+      const streetNumber = addressComponents.address_components[0]?.long_name;
+      const streetName = addressComponents.address_components[1]?.short_name;
+
+      if (streetName && streetNumber) {
+        setShortAddress(streetName + " " + streetNumber);
+      } else {
+        setShortAddress(streetName);
+      }
+    } else {
+      setLoading(true);
+      setShortAddress("");
+    }
+  }, [addressComponents]);
 
   const buenosAiresRegion = {
     latitude: -34.603684,
@@ -38,8 +57,7 @@ const LocationMap = ({ navigation, route }) => {
             latitudeDelta: 0.002,
             longitudeDelta: 0.002,
           };
-          setLocation(userRegion);
-          setAddress(selectedLocation.address);
+          setAddressComponents(selectedLocation);
 
           if (mapRef.current) {
             setTimeout(() => {
@@ -59,8 +77,7 @@ const LocationMap = ({ navigation, route }) => {
             latitude,
             longitude
           );
-          setLocation(userRegion);
-          setAddress(fetchedAddress);
+          setAddressComponents(fetchedAddress);
 
           if (mapRef.current) {
             mapRef.current.animateToRegion(userRegion, 1000);
@@ -70,8 +87,7 @@ const LocationMap = ({ navigation, route }) => {
             buenosAiresRegion.latitude,
             buenosAiresRegion.longitude
           );
-          setAddress(fetchedAddress);
-          setLocation(buenosAiresRegion);
+          setAddressComponents(fetchedAddress);
         }
       } catch (error) {
         navigation.navigate("LocationSelect", {
@@ -86,12 +102,11 @@ const LocationMap = ({ navigation, route }) => {
   }, [getLocation, selectedLocation]);
 
   const onRegionChangeComplete = async (location) => {
-    setLocation(location);
     const fetchedAddress = await fetchAddressFromCoords(
       location.latitude,
       location.longitude
     );
-    setAddress(fetchedAddress);
+    setAddressComponents(fetchedAddress);
   };
 
   return (
@@ -115,12 +130,12 @@ const LocationMap = ({ navigation, route }) => {
           ref={mapRef}
           getLocation={getLocation}
           onRegionChangeComplete={onRegionChangeComplete}
-          address={address}
+          pin={pin}
         />
         <Footer
-          address={address}
+          address={shortAddress}
           loading={loading}
-          location={location}
+          addressComponents={addressComponents}
           navigation={navigation}
         />
       </GestureHandlerRootView>
