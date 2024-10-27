@@ -33,8 +33,6 @@ export const fetchAddressFromCoords = async (latitude, longitude) => {
     // Realizar la solicitud de geocodificación
     const json = await Geocoder.from(latitude, longitude);
 
-    console.log(json);
-
     const addressComponents = json.results.find((result) =>
       result.types.includes("street_address")
     );

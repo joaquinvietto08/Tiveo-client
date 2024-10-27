@@ -3,7 +3,7 @@ import React, { useContext, useState, useEffect } from "react";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { styles } from "./SaveAddressStyle";
 import Feather from "@expo/vector-icons/Feather";
-import { LocationContext } from "../../../context/locationContext";
+import { LocationContext } from "../../../context/LocationContext";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { Host } from "react-native-portalize";
 import Form from "./features/form/Form";
@@ -12,31 +12,21 @@ import firestore from "@react-native-firebase/firestore";
 const SaveAddress = ({ navigation, route }) => {
   const insets = useSafeAreaInsets();
   const { addressComponents } = route.params;
-  const { setLocationData } = useContext(LocationContext);
+  const { setLocation } = useContext(LocationContext);
   const [address, setAddress] = useState("");
 
   useEffect(() => {
-    if (addressComponents && addressComponents.length > 0) {
-      const streetNumber = addressComponents.find((component) =>
-        component.types.includes("street_number")
-      );
-      const streetName = addressComponents.find((component) =>
-        component.types.includes("route")
-      );
-      if (streetName && streetNumber) {
-        setAddress(`${streetName.long_name} ${streetNumber.short_name}`);
-      } else {
-        setAddress(`${streetName.long_name}`);
-      }
+    const streetName = addressComponents.address_components[1]?.long_name;
+    const streetNumber = addressComponents.address_components[0]?.short_name;
+    if (streetName && streetNumber) {
+      setAddress(`${streetName} ${streetNumber}`);
+    } else if (streetName) {
+      setAddress(streetName);
     }
   }, [addressComponents]);
 
   const saveLocationContext = (data) => {
-    setLocationData(data);
-    /*     navigation.reset({
-      index: 0,
-      routes: [{ name: "MainNavigator" }],
-    }); */
+    setLocation(data);
   };
 
   const handleSaveAddress = async (formData) => {

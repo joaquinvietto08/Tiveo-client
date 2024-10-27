@@ -3,7 +3,7 @@ import { FlatList, Pressable, Text, View } from "react-native";
 import { styles } from "./OptionListStyles";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 import firestore from "@react-native-firebase/firestore";
-import { LocationContext } from "../../../../../context/locationContext";
+import { LocationContext } from "../../../../../context/LocationContext";
 
 const DefaultItem = ({ item, navigation }) => {
   let iconName;
@@ -71,7 +71,7 @@ const LocationItem = ({ item, onSelect }) => {
 
 const OptionList = ({ navigation }) => {
   const [locations, setLocations] = useState([]);
-  const { setLocationData } = useContext(LocationContext);
+  const { setLocation } = useContext(LocationContext);
   const defaultOptions = [
     { key: "1", name: "Mi ubicación actual" },
     { key: "2", name: "Seleccionar en el mapa" },
@@ -96,12 +96,7 @@ const OptionList = ({ navigation }) => {
 
   const handleSelectLocation = (item) => {
     const { key, ...locationData } = item;
-    setLocationData(locationData);
-
-    navigation.reset({
-      index: 0,
-      routes: [{ name: "MainNavigator" }],
-    });
+    setLocation(locationData);
   };
 
   const renderItem = ({ item }) => {

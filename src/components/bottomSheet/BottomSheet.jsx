@@ -8,7 +8,7 @@ const BottomSheetComponent = forwardRef(
     {
       children,
       snapPoints,
-      indexVal,
+      index,
       isOpen = true,
       overlay = false,
       onClose,
@@ -19,6 +19,7 @@ const BottomSheetComponent = forwardRef(
     const bottomSheetProps = {
       ref,
       snapPoints,
+      index,
       handleIndicatorStyle: { backgroundColor: "#D8D8D8" },
       backgroundStyle: {
         backgroundColor: "#F8F8F8",
