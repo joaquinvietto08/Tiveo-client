@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { View, Pressable, Text } from "react-native";
 import { styles } from "./FormStyles";
 import TextInput from "../../../../../components/inputs/textInput/TextInput";
 import PhoneInput from "../../../../../components/inputs/phoneInput/PhoneInput";
+import { UserContext } from "../../../../../context/UserContext";
 
 const Form = ({ onSubmit }) => {
+  const { user } = useContext(UserContext);
   const [floor, setFloor] = useState("");
   const [notes, setNotes] = useState("");
   const [name, setName] = useState("");
@@ -25,6 +27,7 @@ const Form = ({ onSubmit }) => {
       notes,
       phoneNumber: sanitizedPhoneNumber,
       name,
+      uid: user.uid,
     };
     onSubmit(formData);
   };

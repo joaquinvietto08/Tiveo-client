@@ -4,4 +4,5 @@ export const mapConfig = {
   showsCompass: false,
   showsScale: false,
   showsBuildings: false,
+  showsMyLocationButton: false,
 };

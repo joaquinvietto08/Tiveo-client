@@ -17,7 +17,7 @@ const Footer = ({ sheetRef }) => {
       ref={sheetRef}
       snapPoints={snapPoints}
       animationConfigs={animationConfigs}
-      indexVal={1}
+      index={1}
     >
       <Location />
       <Text style={styles.home__footer__subtitle}>

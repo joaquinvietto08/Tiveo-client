@@ -4,6 +4,7 @@ import { styles } from "./OptionListStyles";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 import firestore from "@react-native-firebase/firestore";
 import { LocationContext } from "../../../../../context/LocationContext";
+import { UserContext } from "../../../../../context/UserContext";
 
 const DefaultItem = ({ item, navigation }) => {
   let iconName;
@@ -72,6 +73,8 @@ const LocationItem = ({ item, onSelect }) => {
 const OptionList = ({ navigation }) => {
   const [locations, setLocations] = useState([]);
   const { setLocation } = useContext(LocationContext);
+  const { user } = useContext(UserContext);
+
   const defaultOptions = [
     { key: "1", name: "Mi ubicación actual" },
     { key: "2", name: "Seleccionar en el mapa" },
@@ -80,7 +83,11 @@ const OptionList = ({ navigation }) => {
   useEffect(() => {
     const fetchAddresses = async () => {
       try {
-        const snapshot = await firestore().collection("addresses").get();
+        const snapshot = await firestore()
+          .collection("addresses")
+          .where("uid", "==", user.uid)
+          .get();
+
         const addressesList = snapshot.docs.map((doc) => ({
           key: doc.id,
           ...doc.data(),

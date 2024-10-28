@@ -17,7 +17,6 @@ const Map = forwardRef(({ getLocation, onRegionChangeComplete, pin }, ref) => {
         ref={ref}
         initialRegion={buenosAiresRegion}
         showsUserLocation={!!getLocation}
-        showsMyLocationButton={false}
         onRegionChangeComplete={onRegionChangeComplete}
       />
       {pin ? <Pin /> : null}

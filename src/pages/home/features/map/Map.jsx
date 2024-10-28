@@ -9,15 +9,27 @@ const Map = ({ onPress }) => {
   const { location } = useContext(LocationContext);
 
   const userLocation = {
-    latitude: location.geometry.location.lat,
+    latitude: location.geometry.location.lat - 0.005,
     longitude: location.geometry.location.lng,
     latitudeDelta: 0.02,
     longitudeDelta: 0.02,
   };
 
+  const UserMarker = [
+    {
+      latitude: userLocation.latitude + 0.005,
+      longitude: userLocation.longitude,
+      type: "home",
+    },
+  ];
+
   return (
     <Pressable onPress={onPress} style={{ flex: 1 }}>
-      <MapComponent ref={mapRef} initialRegion={userLocation} />
+      <MapComponent
+        ref={mapRef}
+        initialRegion={userLocation}
+        markers={UserMarker}
+      />
       <View style={styles.home__map__marker}></View>
     </Pressable>
   );
