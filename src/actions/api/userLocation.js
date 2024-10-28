@@ -3,8 +3,13 @@ import Geocoder from "react-native-geocoding";
 
 export const userLocation = async () => {
   try {
+    const { status } = await Location.requestForegroundPermissionsAsync();
+    if (status !== "granted") {
+      throw new Error("Permiso de ubicación denegado");
+    }
     // Intentar obtener la ubicación con precisión alta, máximo 10 segundos de caché, y con un timeout de 5 segundos
     let location = await Location.getCurrentPositionAsync({
+      maximumAge: 1000, // Usar caché de hasta 1 segundo
       accuracy: Location.Accuracy.Highest,
       maximumAge: 10000, // Usar caché de hasta 10 segundos
       timeout: 5000, // Tiempo máximo de espera de 5 segundos
@@ -20,27 +25,21 @@ export const userLocation = async () => {
 
 export const fetchAddressFromCoords = async (latitude, longitude) => {
   try {
-    Geocoder.init("AIzaSyCSObYLxJn7C_deDQrB97d9JIuVzMdimZI", {
+    // Inicializar Geocoder con la API key
+    Geocoder.init("AIzaSyCcBYIbLnlMIzRijdTr01DXGCTNfPNKUc4", {
       language: "es",
     });
+
+    // Realizar la solicitud de geocodificación
     const json = await Geocoder.from(latitude, longitude);
-    const addressComponents = json.results[0].address_components;
 
-    const streetNumber =
-      addressComponents.find((component) =>
-        component.types.includes("street_number")
-      )?.long_name || "";
+    const addressComponents = json.results.find((result) =>
+      result.types.includes("street_address")
+    );
 
-    const streetName =
-      addressComponents.find((component) => component.types.includes("route"))
-        ?.long_name || "";
-    if (streetName === "" && streetNumber === "") {
-      return `Calle sin especificar`;
-    } else {
-      return `${streetName} ${streetNumber}`;
-    }
+    return addressComponents; // Devuelve todos los resultados, no solo address_components
   } catch (error) {
-    console.warn("Error fetching address: ", error);
-    return "";
+    console.warn("Error al obtener la dirección:", error);
+    return;
   }
 };

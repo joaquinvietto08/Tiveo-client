@@ -16,7 +16,7 @@
       "bundleIdentifier": "com.tiveo.tiveo",
       "googleServicesFile": "./ios-things/GoogleService-Info.plist",
       "config": {
-        "googleMapsApiKey": "AIzaSyCSObYLxJn7C_deDQrB97d9JIuVzMdimZI"
+        "googleMapsApiKey": "AIzaSyCcBYIbLnlMIzRijdTr01DXGCTNfPNKUc4"
       }
     },
     "android": {
@@ -28,7 +28,7 @@
       "googleServicesFile": "./android/app/google-services.json",
       "config": {
         "googleMaps": {
-          "apiKey": "AIzaSyCSObYLxJn7C_deDQrB97d9JIuVzMdimZI"
+          "apiKey": "AIzaSyCcBYIbLnlMIzRijdTr01DXGCTNfPNKUc4"
         }
       }
     },

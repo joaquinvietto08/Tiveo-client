@@ -5,10 +5,10 @@ export const LocationContext = createContext();
 
 // Proveedor del contexto
 export const LocationProvider = ({ children }) => {
-  const [locationData, setLocationData] = useState(null); // Estado inicial de la ubicación
+  const [location, setLocation] = useState(null); // Estado inicial de la ubicación
 
   return (
-    <LocationContext.Provider value={{ locationData, setLocationData }}>
+    <LocationContext.Provider value={{ location, setLocation }}>
       {children}
     </LocationContext.Provider>
   );
