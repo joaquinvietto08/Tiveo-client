@@ -8,6 +8,7 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { Host } from "react-native-portalize";
 import Form from "./features/form/Form";
 import firestore from "@react-native-firebase/firestore";
+import * as geofire from "geofire-common";
 import { UserContext } from "../../../context/UserContext";
 
 const SaveAddress = ({ navigation, route }) => {
@@ -25,6 +26,15 @@ const SaveAddress = ({ navigation, route }) => {
     } else if (streetName) {
       setAddress(streetName);
     }
+
+    const latitude = addressComponents.geometry.location.lat;
+    const longitude = addressComponents.geometry.location.lng;
+    const geohash = geofire.geohashForLocation([latitude, longitude]);
+
+    addressComponents.geometry = {
+      ...addressComponents.geometry,
+      geohash,
+    };
   }, [addressComponents]);
 
   const saveLocationContext = (data) => {
@@ -32,12 +42,12 @@ const SaveAddress = ({ navigation, route }) => {
   };
 
   const handleSaveAddress = async (formData) => {
-    const newAddressData = {
-      ...formData,
-      ...addressComponents,
-    };
-
     if (formData) {
+      const newAddressData = {
+        ...formData,
+        ...addressComponents,
+      };
+
       try {
         const clientRef = firestore().collection("clients").doc(user.uid);
         saveLocationContext(newAddressData);

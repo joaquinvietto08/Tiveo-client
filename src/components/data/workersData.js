@@ -12,6 +12,7 @@ export const workers = [
     photoURL: worker1,
     lat: -31.4168016,
     lng: -64.1900524,
+    geohash: "6d6m72dpz7",
     status: "available",
     services: [
       {
@@ -20,7 +21,8 @@ export const workers = [
         description: "Construcción y reparación de muebles de madera.",
         isLicensed: "San Luis 145",
         bannerImage: headerPic,
-        serviceType: "home",
+        serviceType: "flexible",
+        address: "San Luis 145",
         phone: "123-456-7890",
         completedJobs: 20,
         starRating: 4.8,
@@ -47,6 +49,7 @@ export const workers = [
     photoURL: worker2,
     lat: -31.4122982,
     lng: -64.19324499999999,
+    geohash: "6d6m71xfhg",
     status: "busy",
     services: [
       {
@@ -70,6 +73,7 @@ export const workers = [
     photoURL: worker3,
     lat: -31.4259987,
     lng: -64.1896053,
+    geohash: "6d6m5r4d3c",
     status: "available",
     services: [
       {
@@ -105,6 +109,7 @@ export const workers = [
     photoURL: worker1,
     lat: -31.4219222,
     lng: -64.1955028,
+    geohash: "6d6m5py603",
     status: "available",
     services: [
       {
@@ -128,6 +133,7 @@ export const workers = [
     photoURL: worker2,
     lat: -31.4008231,
     lng: -64.2158725,
+    geohash: "6d6m6exkvw",
     status: "available",
     services: [
       {
@@ -147,11 +153,11 @@ export const workers = [
         description: "Reparación y mantenimiento de electrodomésticos.",
         isLicensed: false,
         bannerImage: headerPic,
-        serviceType: "onsite",
+        serviceType: "flexible",
         address: "San Luis 145",
         phone: "789-012-3456",
         completedJobs: 10,
-        starRating: 4.0,
+        starRating: 4.7,
       },
     ],
   },
@@ -163,6 +169,7 @@ export const workers = [
     photoURL: worker3,
     lat: -31.45253139999999,
     lng: -64.1766169,
+    geohash: "6d6m5dhp8r",
     status: "busy",
     services: [
       {

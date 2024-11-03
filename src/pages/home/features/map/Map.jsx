@@ -1,4 +1,4 @@
-import React, { useContext, useRef } from "react";
+import React, { useContext, useRef, useEffect } from "react";
 import { Pressable, View } from "react-native";
 import MapComponent from "../../../../components/map/map/Map";
 import { styles } from "./MapStyles";

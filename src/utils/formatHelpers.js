@@ -29,6 +29,7 @@ export const translateType = (type) => {
   const typeMap = {
     home: "Servicio a domicilio",
     onsite: "Servicio en lugar",
+    flexible: "Servicio a domicilio y lugar",
   };
   return typeMap[type] || type;
 };

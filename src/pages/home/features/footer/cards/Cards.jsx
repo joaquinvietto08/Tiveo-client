@@ -57,7 +57,7 @@ const CardButton = ({ worker, isFavorite, onToggleFavorite }) => {
           {topService.description}
         </Text>
         <View style={styles.home__bottomSheet__card__addresContainer}>
-          {topService.serviceType === "onsite" && (
+          {topService.serviceType !== "home" && (
             <View style={styles.home__bottomSheet__card__addressView}>
               <MaterialIcons name="location-pin" size={22} color="#ACACAC" />
               <Text
