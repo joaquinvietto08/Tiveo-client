@@ -8,8 +8,10 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { Host } from "react-native-portalize";
 import Form from "./features/form/Form";
 import firestore from "@react-native-firebase/firestore";
+import { UserContext } from "../../../context/UserContext";
 
 const SaveAddress = ({ navigation, route }) => {
+  const { user } = useContext(UserContext);
   const insets = useSafeAreaInsets();
   const { addressComponents } = route.params;
   const { setLocation } = useContext(LocationContext);
@@ -37,13 +39,23 @@ const SaveAddress = ({ navigation, route }) => {
 
     if (formData) {
       try {
-        await firestore().collection("addresses").add(newAddressData);
+        const clientRef = firestore().collection("clients").doc(user.uid);
         saveLocationContext(newAddressData);
+        const clientSnapshot = await clientRef.get();
+        if (!clientSnapshot.exists) {
+          console.log("El cliente no existe en Firestore.");
+          return;
+        }
+
+        await clientRef.collection("addresses").add(newAddressData);
+        console.log(
+          "Dirección guardada en la subcolección addresses del cliente."
+        );
       } catch (error) {
         console.error("Error al guardar la dirección en Firestore:", error);
       }
     } else {
-      console.log("formData está vacío, no se envía a Firestore");
+      console.log("newAddressData está vacío, no se envía a Firestore");
     }
   };
 

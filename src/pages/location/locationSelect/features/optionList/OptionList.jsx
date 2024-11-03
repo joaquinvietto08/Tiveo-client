@@ -83,15 +83,20 @@ const OptionList = ({ navigation }) => {
   useEffect(() => {
     const fetchAddresses = async () => {
       try {
-        const snapshot = await firestore()
-          .collection("addresses")
-          .where("uid", "==", user.uid)
-          .get();
+        const clientRef = firestore().collection("clients").doc(user.uid);
+        const clientSnapshot = await clientRef.get();
 
-        const addressesList = snapshot.docs.map((doc) => ({
+        if (!clientSnapshot.exists) {
+          console.log("El cliente no existe en Firestore.");
+          return;
+        }
+        const addressesSnapshot = await clientRef.collection("addresses").get();
+
+        const addressesList = addressesSnapshot.docs.map((doc) => ({
           key: doc.id,
           ...doc.data(),
         }));
+
         setLocations(addressesList);
       } catch (error) {
         console.error("Error al obtener direcciones de Firestore:", error);

@@ -3,6 +3,7 @@ import { Pressable, View } from "react-native";
 import MapComponent from "../../../../components/map/map/Map";
 import { styles } from "./MapStyles";
 import { LocationContext } from "../../../../context/LocationContext";
+import { workers } from "../../../../components/data/workersData";
 
 const Map = ({ onPress }) => {
   const mapRef = useRef(null);
@@ -15,7 +16,7 @@ const Map = ({ onPress }) => {
     longitudeDelta: 0.02,
   };
 
-  const UserMarker = [
+  const user = [
     {
       latitude: userLocation.latitude + 0.005,
       longitude: userLocation.longitude,
@@ -28,7 +29,8 @@ const Map = ({ onPress }) => {
       <MapComponent
         ref={mapRef}
         initialRegion={userLocation}
-        markers={UserMarker}
+        user={user}
+        workers={workers}
       />
       <View style={styles.home__map__marker}></View>
     </Pressable>

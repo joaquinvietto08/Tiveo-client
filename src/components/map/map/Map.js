@@ -4,9 +4,10 @@ import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 import { mapStyle } from "./features/mapStyle";
 import { mapConfig } from "./features/mapConfig";
 import HomeMarker from "../markers/home/Home";
+import WorkerMarker from "../markers/worker/WorkerMarker";
 
 const MapComponent = forwardRef(
-  ({ region, markers, children, ...props }, ref) => {
+  ({ region, user, workers, children, ...props }, ref) => {
     return (
       <MapView
         ref={ref}
@@ -19,22 +20,35 @@ const MapComponent = forwardRef(
       >
         {children}
 
-        {markers?.map((UserMarker, index) => (
+        {user?.map((user, index) => (
           <Marker
             key={index}
             coordinate={{
-              latitude: UserMarker.latitude,
-              longitude: UserMarker.longitude,
+              latitude: user.latitude,
+              longitude: user.longitude,
             }}
             anchor={{ x: 0.5, y: 0.5 }}
           >
             {
-              UserMarker.type === "home" ? (
+              user.type === "home" ? (
                 <HomeMarker />
               ) : // Otros marcadores pueden ser imágenes o íconos personalizados
               null
               // Ruta de tu imagen para los trabajadores
             }
+          </Marker>
+        ))}
+
+        {workers?.map((worker, index) => (
+          <Marker
+            key={`worker-${index}`}
+            coordinate={{
+              latitude: worker.lat,
+              longitude: worker.lng,
+            }}
+            anchor={{ x: 0.5, y: 0.5 }}
+          >
+            <WorkerMarker photoURL={worker.photoURL} />
           </Marker>
         ))}
       </MapView>

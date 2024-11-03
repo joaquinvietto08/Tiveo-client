@@ -17,20 +17,20 @@ import { GestureHandlerRootView, FlatList } from "react-native-gesture-handler";
 import { signInWithGoogle } from "../../actions/api/google_auth";
 import { signInWithFacebook } from "../../actions/api/facebook_auth";
 import { countries } from "../../utils/countries";
+import firestore from "@react-native-firebase/firestore";
 
-const Login = ({ navigation }) => {
+const Login = () => {
   const insets = useSafeAreaInsets();
-
   const [selectedCountry, setSelectedCountry] = useState(countries[0]);
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const sheetRef = useRef(null);
+  const [isOpen, setIsOpen] = useState(false);
+  const snapPoints = ["75%"];
 
   const selectCountry = (country) => {
     setSelectedCountry(country);
     handleCloseBottomSheet();
   };
-
-  const sheetRef = useRef(null);
-  const [isOpen, setIsOpen] = useState(false);
-  const snapPoints = ["75%"];
 
   const handleOpenBottomSheet = () => {
     Keyboard.dismiss();
@@ -43,7 +43,46 @@ const Login = ({ navigation }) => {
     sheetRef.current?.close();
   };
 
-  const [phoneNumber, setPhoneNumber] = useState("");
+  const checkAndCreateClient = async (user) => {
+    try {
+      const clientRef = firestore().collection("clients").doc(user.uid);
+      const clientSnapshot = await clientRef.get();
+
+      if (!clientSnapshot.exists) {
+        await clientRef.set({
+          displayName: user.displayName,
+          photoURL: user.photoURL,
+        });
+        console.log("Cliente creado en Firestore.");
+      } else {
+        console.log("Cliente ya existe en Firestore.");
+      }
+    } catch (error) {
+      console.error("Error al verificar o crear cliente:", error);
+    }
+  };
+
+  const handleGoogleSignIn = () => {
+    signInWithGoogle()
+      .then((user) => {
+        console.log(user);
+        checkAndCreateClient(user.user);
+      })
+      .catch((error) => {
+        alert("Sign in failed: " + error.message);
+      });
+  };
+
+  const handleFacebookSignIn = () => {
+    signInWithFacebook()
+      .then((user) => {
+        console.log("Signed in with Facebook!");
+        checkAndCreateClient(user.user);
+      })
+      .catch((error) => {
+        alert("Sign in failed: " + error.message);
+      });
+  };
 
   return (
     <View
@@ -64,26 +103,14 @@ const Login = ({ navigation }) => {
           <View style={styles.social_authContainer}>
             <Pressable
               style={styles.social_authButton}
-              onPress={() =>
-                signInWithGoogle()
-                  .then((user) => {
-                    console.log("Signed in with Google!");
-                  })
-                  .catch((error) => {
-                    alert("Sign in failed: " + error.message);
-                  })
-              }
+              onPress={handleGoogleSignIn}
             >
               <Google />
               <Text style={styles.socialButtonText}>Continuar con Google</Text>
             </Pressable>
             <Pressable
               style={styles.social_authButton}
-              onPress={() =>
-                signInWithFacebook().then(() =>
-                  console.log("Signed in with Facebook!")
-                )
-              }
+              onPress={handleFacebookSignIn}
             >
               <Facebook size={24} />
               <Text style={styles.socialButtonText}>

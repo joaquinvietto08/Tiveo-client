@@ -106,6 +106,8 @@ const LocationMap = ({ navigation, route }) => {
       location.latitude,
       location.longitude
     );
+    console.log(fetchedAddress);
+
     setAddressComponents(fetchedAddress);
   };
 
