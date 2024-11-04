@@ -59,7 +59,7 @@ const ServiceButton = ({ item, isActive, onPress }) => {
   );
 };
 
-const ServiceList = ({ navigation }) => {
+const ServiceList = ({ navigation, onServiceSelect }) => {
   const [selectedService, setSelectedService] = useState({
     key: "1",
     name: "Todos",
@@ -71,6 +71,7 @@ const ServiceList = ({ navigation }) => {
       navigation.navigate("Services");
     } else {
       setSelectedService(item);
+      onServiceSelect(item);
       flatListRef.current?.scrollToIndex({
         index: 0,
         animated: true,

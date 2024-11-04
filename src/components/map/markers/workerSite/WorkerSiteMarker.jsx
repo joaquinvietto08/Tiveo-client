@@ -11,12 +11,14 @@ const WorkerMarker = ({ photoURL }) => {
 
 const styles = StyleSheet.create({
   markerContainer: {
-    width: 35,
-    height: 35,
+    width: 40,
+    height: 40,
     borderRadius: 5,
     overflow: "hidden",
     justifyContent: "center",
     alignItems: "center",
+    borderWidth: 2,
+    borderColor: "#fff",
   },
   workerImage: {
     width: "100%",

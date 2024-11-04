@@ -3,24 +3,21 @@ import { Pressable, View } from "react-native";
 import MapComponent from "../../../../components/map/map/Map";
 import { styles } from "./MapStyles";
 import { LocationContext } from "../../../../context/LocationContext";
-import { NearbyWorkersContext } from "../../../../context/NearbyWorkersContext";
 
-const Map = ({ onPress }) => {
+const Map = ({ onPress, filteredGeneralWorkers, filteredSiteWorkers }) => {
   const mapRef = useRef(null);
   const { location } = useContext(LocationContext);
-  const { workersInGeneralLocation, workersInSiteLocation } =
-    useContext(NearbyWorkersContext);
 
   const userLocation = {
-    latitude: location.geometry.location.lat - 0.005,
+    latitude: location.geometry.location.lat - 0.015,
     longitude: location.geometry.location.lng,
-    latitudeDelta: 0.02,
-    longitudeDelta: 0.02,
+    latitudeDelta: 0.05,
+    longitudeDelta: 0.05,
   };
 
   const user = [
     {
-      latitude: userLocation.latitude + 0.005,
+      latitude: userLocation.latitude + 0.015,
       longitude: userLocation.longitude,
       type: "home",
     },
@@ -32,8 +29,8 @@ const Map = ({ onPress }) => {
         ref={mapRef}
         initialRegion={userLocation}
         user={user}
-        workers={workersInGeneralLocation}
-        workersSite={workersInSiteLocation}
+        workers={filteredGeneralWorkers}
+        workersSite={filteredSiteWorkers}
       />
       <View style={styles.home__map__marker}></View>
     </Pressable>
