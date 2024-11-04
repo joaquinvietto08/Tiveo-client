@@ -7,6 +7,7 @@ import Services from "../pages/services/Services";
 import Activity from "../pages/activity/Activity";
 import Profile from "../pages/profile/Profile";
 import ActivityDetail from "../pages/activity/ActivityDetail";
+import { NearbyWorkersProvider } from "../context/NearbyWorkersContext";
 
 const Stack = createNativeStackNavigator();
 
@@ -47,16 +48,18 @@ const Tab = createBottomTabNavigator();
 
 const MainRoutes = () => {
   return (
-    <Tab.Navigator
-      initialRouteName="Home"
-      tabBar={(props) => <TabBar {...props} />}
-      screenOptions={{ headerShown: false }}
-    >
-      <Tab.Screen name="Home" component={HomeStack} />
-      <Tab.Screen name="Services" component={ServicesStack} />
-      <Tab.Screen name="Activity" component={ActivityStack} />
-      <Tab.Screen name="Profile" component={ProfileStack} />
-    </Tab.Navigator>
+    <NearbyWorkersProvider>
+      <Tab.Navigator
+        initialRouteName="Home"
+        tabBar={(props) => <TabBar {...props} />}
+        screenOptions={{ headerShown: false }}
+      >
+        <Tab.Screen name="Home" component={HomeStack} />
+        <Tab.Screen name="Services" component={ServicesStack} />
+        <Tab.Screen name="Activity" component={ActivityStack} />
+        <Tab.Screen name="Profile" component={ProfileStack} />
+      </Tab.Navigator>
+    </NearbyWorkersProvider>
   );
 };
 

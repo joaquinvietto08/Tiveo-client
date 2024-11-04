@@ -11,9 +11,9 @@ const WorkerMarker = ({ photoURL }) => {
 
 const styles = StyleSheet.create({
   markerContainer: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
+    width: 35,
+    height: 35,
+    borderRadius: 5,
     overflow: "hidden",
     justifyContent: "center",
     alignItems: "center",

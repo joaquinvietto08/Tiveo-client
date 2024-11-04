@@ -1,13 +1,15 @@
-import React, { useContext, useRef, useEffect } from "react";
+import React, { useContext, useRef } from "react";
 import { Pressable, View } from "react-native";
 import MapComponent from "../../../../components/map/map/Map";
 import { styles } from "./MapStyles";
 import { LocationContext } from "../../../../context/LocationContext";
-import { workers } from "../../../../components/data/workersData";
+import { NearbyWorkersContext } from "../../../../context/NearbyWorkersContext";
 
 const Map = ({ onPress }) => {
   const mapRef = useRef(null);
   const { location } = useContext(LocationContext);
+  const { workersInGeneralLocation, workersInSiteLocation } =
+    useContext(NearbyWorkersContext);
 
   const userLocation = {
     latitude: location.geometry.location.lat - 0.005,
@@ -30,7 +32,8 @@ const Map = ({ onPress }) => {
         ref={mapRef}
         initialRegion={userLocation}
         user={user}
-        workers={workers}
+        workers={workersInGeneralLocation}
+        workersSite={workersInSiteLocation}
       />
       <View style={styles.home__map__marker}></View>
     </Pressable>

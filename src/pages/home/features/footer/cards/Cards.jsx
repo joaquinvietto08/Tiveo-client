@@ -1,14 +1,14 @@
+import React, { useRef, useState, useContext } from "react";
 import { Image, Pressable, Text, View } from "react-native";
 import { styles } from "./CardsStyles";
 import { FlatList } from "react-native-gesture-handler";
-import { workers } from "../../../../../components/data/workersData"; // Importamos el JSON sin cambios
-import React, { useRef, useState } from "react";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import {
   translateAvailability,
   translateType,
 } from "../../../../../utils/formatHelpers";
 import AntDesign from "@expo/vector-icons/AntDesign";
+import { NearbyWorkersContext } from "../../../../../context/NearbyWorkersContext";
 
 const CardButton = ({ worker, isFavorite, onToggleFavorite }) => {
   const topService = worker.services.reduce((prev, current) =>
@@ -91,6 +91,9 @@ const CardButton = ({ worker, isFavorite, onToggleFavorite }) => {
 const Cards = () => {
   const flatListRef = useRef(null);
   const [favorites, setFavorites] = useState({});
+  const { workersInGeneralLocation, workersInSiteLocation } =
+    useContext(NearbyWorkersContext);
+  const workers = [...workersInGeneralLocation, ...workersInSiteLocation];
 
   const toggleFavorite = (key) => {
     setFavorites((prevFavorites) => ({
