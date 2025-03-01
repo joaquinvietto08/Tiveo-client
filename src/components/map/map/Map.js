@@ -5,10 +5,9 @@ import { mapStyle } from "./features/mapStyle";
 import { mapConfig } from "./features/mapConfig";
 import HomeMarker from "../markers/home/Home";
 import WorkerMarker from "../markers/worker/WorkerMarker";
-import WorkerSiteMarker from "../markers/workerSite/WorkerSiteMarker";
 
 const MapComponent = forwardRef(
-  ({ region, user, workers, workersSite, children, ...props }, ref) => {
+  ({ region, user, workers, children, ...props }, ref) => {
     return (
       <MapView
         ref={ref}
@@ -51,23 +50,10 @@ const MapComponent = forwardRef(
             anchor={{ x: 0.5, y: 0.5 }}
             tracksViewChanges={false}
           >
-            <WorkerMarker photoURL={worker.photoURL} />
+            <WorkerMarker worker={worker} />
           </Marker>
         ))}
 
-        {workersSite?.map((worker, index) => (
-          <Marker
-            key={`worker-${index}`}
-            coordinate={{
-              latitude: worker.lat,
-              longitude: worker.lng,
-            }}
-            anchor={{ x: 0.5, y: 0.5 }}
-            tracksViewChanges={false}
-          >
-            <WorkerSiteMarker photoURL={worker.photoURL} />
-          </Marker>
-        ))}
       </MapView>
     );
   }
