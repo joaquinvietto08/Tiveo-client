@@ -3,13 +3,10 @@ import { Image, Pressable, Text, View } from "react-native";
 import { styles } from "./CardsStyles";
 import { FlatList } from "react-native-gesture-handler";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
-import {
-  translateAvailability,
-  translateType,
-} from "../../../../../utils/formatHelpers";
+import { translateAvailability } from "../../../../../utils/formatHelpers";
 import AntDesign from "@expo/vector-icons/AntDesign";
 
-const CardButton = ({ worker, isFavorite, onToggleFavorite }) => {
+const CardButton = ({ worker }) => {
   const topService = worker.services.reduce((prev, current) =>
     prev.starRating > current.starRating ? prev : current
   );
@@ -25,25 +22,8 @@ const CardButton = ({ worker, isFavorite, onToggleFavorite }) => {
             source={topService.bannerImage}
             style={styles.home__bottomSheet__card__headerPhoto}
           />
-          <Pressable
-            style={styles.home__bottomSheet__card__favContainer}
-            onPress={onToggleFavorite}
-          >
-            {isFavorite ? (
-              <MaterialIcons name="favorite" size={25} color="#ff3f3f" />
-            ) : (
-              <MaterialIcons
-                name="favorite-outline"
-                size={25}
-                color="#C5C5C5"
-              />
-            )}
-          </Pressable>
         </View>
         <View style={styles.home__bottomSheet__card__infoContainer}>
-          <Text style={styles.home__bottomSheet__card__infoType}>
-            {translateType(topService.serviceType)} •{" "}
-          </Text>
           <AntDesign name="star" size={12} color="#F1D000" />
           <Text style={styles.home__bottomSheet__card__infoRating}>
             {topService.starRating}{" "}
