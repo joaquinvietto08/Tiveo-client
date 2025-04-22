@@ -55,9 +55,9 @@ const MainRoutes = () => {
         screenOptions={{ headerShown: false }}
       >
         <Tab.Screen name="Home" component={HomeStack} />
-        <Tab.Screen name="Services" component={ServicesStack} />
-        <Tab.Screen name="Activity" component={ActivityStack} />
-        <Tab.Screen name="Profile" component={ProfileStack} />
+        <Tab.Screen name="Servicios" component={ServicesStack} />
+        <Tab.Screen name="Actividad" component={ActivityStack} />
+        <Tab.Screen name="Mi perfil" component={ProfileStack} />
       </Tab.Navigator>
     </NearbyWorkersProvider>
   );

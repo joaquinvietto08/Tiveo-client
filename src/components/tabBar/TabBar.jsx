@@ -12,13 +12,13 @@ const TabBar = ({ state, descriptors, navigation }) => {
     Home: (props) => (
       <Octicons name="home" size={22} color={greyColor} {...props} />
     ),
-    Services: (props) => (
+    Servicios: (props) => (
       <Feather name="grid" size={23} color={greyColor} {...props} />
     ),
-    Activity: (props) => (
+    Actividad: (props) => (
       <FontAwesome5 name="list-ul" size={20} color={greyColor} {...props} />
     ),
-    Profile: (props) => (
+    "Mi perfil": (props) => (
       <FontAwesome5 name="user" size={20} color={greyColor} {...props} />
     ),
   };
@@ -67,9 +67,10 @@ const TabBar = ({ state, descriptors, navigation }) => {
             onLongPress={onLongPress}
           >
             <View style={styles.tabBarItemContainer}>
-              {icons[route.name]({
-                color: isFocused ? primaryColor : greyColor,
-              })}
+              {icons[route.name] &&
+                icons[route.name]({
+                  color: isFocused ? primaryColor : greyColor,
+                })}
             </View>
             <Text
               style={{
