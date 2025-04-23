@@ -7,38 +7,32 @@ import Map from "./features/map/Map";
 import ServiceList from "./features/serviceList/ServiceList";
 import Footer from "./features/footer/Footer";
 import SearchBar from "./features/searchBar/SearchBar";
+import WorkerPreview from "./features/workerPreview/WorkerPreview";
 import { useNearbyWorkers } from "../../context/NearbyWorkersContext";
 
 const Home = ({ navigation }) => {
   const insets = useSafeAreaInsets();
   const sheetRef = useRef(null);
-  const {
-    fetchNearbyWorkers,
-    workersInGeneralLocation,
-    workersInSiteLocation,
-  } = useNearbyWorkers();
+  const { fetchNearbyWorkers, nearbyWorkers } = useNearbyWorkers();
+
+  const [selectedWorkerId, setSelectedWorkerId] = useState(null);
+  const selectedWorker = nearbyWorkers.find(
+    (worker) => worker.uid === selectedWorkerId
+  );
 
   const [isRefreshing, setIsRefreshing] = useState(false);
-  const [filteredGeneralWorkers, setFilteredGeneralWorkers] = useState([]);
-  const [filteredSiteWorkers, setFilteredSiteWorkers] = useState([]);
+  const [filteredWorkers, setFilteredWorkers] = useState([]);
 
   useEffect(() => {
-    setFilteredGeneralWorkers(workersInGeneralLocation);
-    setFilteredSiteWorkers(workersInSiteLocation);
-  }, [workersInGeneralLocation, workersInSiteLocation]);
+    setFilteredWorkers(nearbyWorkers);
+  }, [nearbyWorkers]);
 
   const handleServiceFilter = (service) => {
     if (service.name === "Todos") {
-      setFilteredGeneralWorkers(workersInGeneralLocation);
-      setFilteredSiteWorkers(workersInSiteLocation);
+      setFilteredWorkers(nearbyWorkers);
     } else {
-      setFilteredGeneralWorkers(
-        workersInGeneralLocation.filter((worker) =>
-          worker.services.some((s) => s.service === service.name)
-        )
-      );
-      setFilteredSiteWorkers(
-        workersInSiteLocation.filter((worker) =>
+      setFilteredWorkers(
+        nearbyWorkers.filter((worker) =>
           worker.services.some((s) => s.service === service.name)
         )
       );
@@ -47,7 +41,7 @@ const Home = ({ navigation }) => {
 
   const handleRefresh = async () => {
     setIsRefreshing(true);
-    await fetchNearbyWorkers(); // Llamar a la función para actualizar los trabajadores
+    await fetchNearbyWorkers();
     setIsRefreshing(false);
   };
 
@@ -61,8 +55,8 @@ const Home = ({ navigation }) => {
       <GestureHandlerRootView>
         <Map
           onPress={handleMapPress}
-          filteredGeneralWorkers={filteredGeneralWorkers}
-          filteredSiteWorkers={filteredSiteWorkers}
+          filteredWorkers={filteredWorkers}
+          onSelectWorker={(workerId) => setSelectedWorkerId(workerId)}
         />
         <View
           style={{
@@ -86,11 +80,11 @@ const Home = ({ navigation }) => {
             />
           </ScrollView>
         </View>
-        <Footer
-          sheetRef={sheetRef}
-          filteredGeneralWorkers={filteredGeneralWorkers}
-          filteredSiteWorkers={filteredSiteWorkers}
+        <WorkerPreview
+          worker={selectedWorker}
+          onClose={() => setSelectedWorkerId(null)}
         />
+        <Footer sheetRef={sheetRef} filteredWorkers={filteredWorkers} />
       </GestureHandlerRootView>
     </View>
   );

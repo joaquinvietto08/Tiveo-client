@@ -8,9 +8,8 @@ export const NearbyWorkersContext = createContext();
 
 // Proveedor del contexto
 export const NearbyWorkersProvider = ({ children }) => {
-  const { location } = useContext(LocationContext); // Obtenemos la ubicación actual del usuario
-  const [workersInSiteLocation, setWorkersInSiteLocation] = useState([]);
-  const [workersInGeneralLocation, setWorkersInGeneralLocation] = useState([]);
+  const { location } = useContext(LocationContext);
+  const [nearbyWorkers, setNearbyWorkers] = useState([]);
 
   const radiusInKm = 1;
 
@@ -19,8 +18,7 @@ export const NearbyWorkersProvider = ({ children }) => {
     if (!location) return;
 
     const radiusInM = radiusInKm * 1000;
-    const nearbyWorkersInSite = [];
-    const nearbyWorkersInGeneral = [];
+    const nearby = [];
 
     // Calcular los límites de geohash para el área de búsqueda
     const bounds = geofire.geohashQueryBounds(
@@ -29,47 +27,29 @@ export const NearbyWorkersProvider = ({ children }) => {
     );
 
     workers.forEach((worker) => {
-      const { geohash: workerGeohash, services } = worker;
+      const { geohash: workerGeohash } = worker;
 
       const isInBounds = bounds.some(
         ([start, end]) => workerGeohash >= start && workerGeohash <= end
       );
 
-      if (!isInBounds) return;
-
-      let isAtServiceLocation = false;
-      services.forEach((service) => {
-        if (
-          (service.serviceType === "onsite" ||
-            service.serviceType === "flexible") &&
-          service.geohash === workerGeohash
-        ) {
-          isAtServiceLocation = true;
-        }
-      });
-
-      if (isAtServiceLocation) {
-        nearbyWorkersInSite.push(worker);
-      } else {
-        nearbyWorkersInGeneral.push(worker);
+      if (isInBounds) {
+        nearby.push(worker);
       }
     });
 
-    setWorkersInSiteLocation(nearbyWorkersInSite);
-    setWorkersInGeneralLocation(nearbyWorkersInGeneral);
+    setNearbyWorkers(nearby);
   };
 
   useEffect(() => {
-    // Actualizar la lista de trabajadores inicialmente cuando se monta el componente
     fetchNearbyWorkers();
   }, [location, radiusInKm]);
 
   return (
     <NearbyWorkersContext.Provider
       value={{
-        workersInSiteLocation,
-        workersInGeneralLocation,
-        fetchNearbyWorkers, // Exponemos la función para ser llamada desde otros componentes
+        nearbyWorkers,
+        fetchNearbyWorkers,
       }}
     >
       {children}

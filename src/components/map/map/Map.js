@@ -30,13 +30,7 @@ const MapComponent = forwardRef(
             anchor={{ x: 0.5, y: 0.5 }}
             tracksViewChanges={false}
           >
-            {
-              user.type === "home" ? (
-                <HomeMarker />
-              ) : // Otros marcadores pueden ser imágenes o íconos personalizados
-              null
-              // Ruta de tu imagen para los trabajadores
-            }
+            {user.type === "home" ? <HomeMarker /> : null}
           </Marker>
         ))}
 
@@ -49,11 +43,11 @@ const MapComponent = forwardRef(
             }}
             anchor={{ x: 0.5, y: 0.5 }}
             tracksViewChanges={false}
+            onPress={() => props.onSelectWorker(worker.uid)}
           >
             <WorkerMarker worker={worker} />
           </Marker>
         ))}
-
       </MapView>
     );
   }

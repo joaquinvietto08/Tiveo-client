@@ -4,7 +4,7 @@ import MapComponent from "../../../../components/map/map/Map";
 import { styles } from "./MapStyles";
 import { LocationContext } from "../../../../context/LocationContext";
 
-const Map = ({ onPress, filteredGeneralWorkers, filteredSiteWorkers }) => {
+const Map = ({ onPress, filteredWorkers, onSelectWorker }) => {
   const mapRef = useRef(null);
   const { location } = useContext(LocationContext);
 
@@ -29,8 +29,8 @@ const Map = ({ onPress, filteredGeneralWorkers, filteredSiteWorkers }) => {
         ref={mapRef}
         initialRegion={userLocation}
         user={user}
-        workers={filteredGeneralWorkers}
-        workersSite={filteredSiteWorkers}
+        workers={filteredWorkers}
+        onSelectWorker={onSelectWorker}
       />
       <View style={styles.home__map__marker}></View>
     </Pressable>

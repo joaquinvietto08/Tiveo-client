@@ -5,18 +5,23 @@ import Location from "./location/Location";
 import Cards from "./cards/Cards";
 import { styles } from "./FooterStyles";
 
-const Footer = ({ sheetRef, filteredGeneralWorkers, filteredSiteWorkers }) => {
-  const workers = [...filteredGeneralWorkers, ...filteredSiteWorkers];
+const Footer = ({ sheetRef, filteredWorkers }) => {
+  const workers = [...filteredWorkers];
   const [snapPoints, setSnapPoints] = useState(
     workers.length > 0 ? [140, 450] : [200, 200]
   );
+  const [initialRender, setInitialRender] = useState(true);
 
   const animationConfigs = {
     duration: 400,
   };
 
   useEffect(() => {
-    // Actualizar el índice del BottomSheet cuando cambien los trabajadores
+    if (initialRender) {
+      setInitialRender(false);
+      return;
+    }
+
     if (workers.length === 0) {
       setSnapPoints([200, 200]);
     } else {

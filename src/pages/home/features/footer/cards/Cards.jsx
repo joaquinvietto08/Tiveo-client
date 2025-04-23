@@ -7,10 +7,6 @@ import { translateAvailability } from "../../../../../utils/formatHelpers";
 import AntDesign from "@expo/vector-icons/AntDesign";
 
 const CardButton = ({ worker }) => {
-  const topService = worker.services.reduce((prev, current) =>
-    prev.starRating > current.starRating ? prev : current
-  );
-
   return (
     <View style={styles.home__bottomSheet__card__cardContainer}>
       <Pressable
@@ -19,35 +15,38 @@ const CardButton = ({ worker }) => {
       >
         <View style={styles.home__bottomSheet__card__headerContainer}>
           <Image
-            source={topService.bannerImage}
+            source={worker.bannerImage}
             style={styles.home__bottomSheet__card__headerPhoto}
           />
         </View>
+
         <View style={styles.home__bottomSheet__card__infoContainer}>
           <AntDesign name="star" size={12} color="#F1D000" />
           <Text style={styles.home__bottomSheet__card__infoRating}>
-            {topService.starRating}{" "}
+            {worker.starRating}{" "}
           </Text>
           <Text style={styles.home__bottomSheet__card__infotTotalRatings}>
-            ({topService.completedJobs})
+            ({worker.completedJobs})
           </Text>
         </View>
+
         <Text style={styles.home__bottomSheet__card__infoTitle}>
-          {topService.description}
+          {worker.description}
         </Text>
+
         <View style={styles.home__bottomSheet__card__addresContainer}>
-          {topService.serviceType !== "home" && (
-            <View style={styles.home__bottomSheet__card__addressView}>
-              <MaterialIcons name="location-pin" size={22} color="#ACACAC" />
-              <Text
-                numberOfLines={1}
-                ellipsizeMode="tail"
-                style={styles.home__bottomSheet__card__addressText}
-              >
-                {topService.address}
-              </Text>
-            </View>
-          )}
+          <View style={styles.home__bottomSheet__card__addressView}>
+            <MaterialIcons name="location-pin" size={22} color="#ACACAC" />
+            <Text
+              numberOfLines={1}
+              ellipsizeMode="tail"
+              style={styles.home__bottomSheet__card__addressText}
+            >
+              {/* como ya no hay address root, podés hardcodear o sacar de un servicio representativo */}
+              San Luis 145
+            </Text>
+          </View>
+
           {worker.status === "available" ? (
             <View style={styles.home__bottomSheet__card__availableView}>
               <Text style={styles.home__bottomSheet__card__availableText}>
@@ -78,24 +77,15 @@ const Cards = ({ workers }) => {
     }));
   };
 
-  const workersWithTopService = workers.map((worker) => {
-    const topService = worker.services.reduce((prev, current) =>
-      prev.starRating > current.starRating ? prev : current
-    );
-    return {
-      ...worker,
-      topService,
-    };
-  });
-
   return (
     <View>
       <View style={styles.home__bottomSheet__card__subtitleContainer}>
         <Text style={styles.home__bottomSheet__card__subtitle}>Destacados</Text>
         <Text style={styles.home__bottomSheet__card__more}>Ver todos</Text>
       </View>
+
       <FlatList
-        data={workersWithTopService}
+        data={workers}
         horizontal
         ref={flatListRef}
         keyExtractor={(item) => item.uid}

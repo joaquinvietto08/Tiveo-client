@@ -97,12 +97,12 @@ export const styles = StyleSheet.create({
     borderRadius: 5,
     height: 28,
     paddingHorizontal: 8,
-    backgroundColor: "rgba(0, 255, 128, 0.14)",
+    backgroundColor: "#D1F5E1",
     marginRight: 8,
   },
   home__bottomSheet__card__availableText: {
     fontSize: 13,
-    color: "#00EC7E",
+    color: "#00B383",
     fontFamily: "Inter-SemiBold",
   },
   home__bottomSheet__card__busyView: {
