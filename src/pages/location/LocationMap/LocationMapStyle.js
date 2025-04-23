@@ -1,14 +1,15 @@
 import { StyleSheet } from "react-native";
+import { colors } from "../../../styles/globalStyles";
 
 export const styles = StyleSheet.create({
   locationMap__mainContainer: {
     flex: 1,
-    backgroundColor: "#F5F5F5",
+    backgroundColor: colors.background,
   },
   locationMap__headerContainer: {
     width: "100%",
     height: 90,
-    backgroundColor: "#F5F5F5",
+    backgroundColor: colors.background,
     position: "absolute",
     zIndex: 1,
     top: 0,

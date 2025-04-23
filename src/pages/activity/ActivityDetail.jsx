@@ -289,7 +289,7 @@ const ActivityDetail = ({ navigation, route }) => {
 
 const styles = StyleSheet.create({
   mainContainer: {
-    backgroundColor: "#F5F5F5",
+    backgroundColor: colors.background,
     flex: 1,
   },
   headerContainer: {

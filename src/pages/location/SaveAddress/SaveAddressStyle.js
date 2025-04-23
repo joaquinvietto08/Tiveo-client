@@ -1,8 +1,9 @@
 import { StyleSheet } from "react-native";
+import { colors } from "../../../styles/globalStyles";
 
 export const styles = StyleSheet.create({
   saveAddress__mainContainer: {
-    backgroundColor: "#F5F5F5",
+    backgroundColor: colors.background,
     flex: 1,
   },
   saveAddress__headerContainer: {
