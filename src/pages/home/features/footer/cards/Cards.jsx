@@ -35,19 +35,7 @@ const CardButton = ({ worker }) => {
           {worker.description}
         </Text>
 
-        <View style={styles.home__bottomSheet__card__addresContainer}>
-          <View style={styles.home__bottomSheet__card__addressView}>
-            <MaterialIcons name="location-pin" size={22} color="#ACACAC" />
-            <Text
-              numberOfLines={1}
-              ellipsizeMode="tail"
-              style={styles.home__bottomSheet__card__addressText}
-            >
-              {/* como ya no hay address root, podés hardcodear o sacar de un servicio representativo */}
-              San Luis 145
-            </Text>
-          </View>
-
+        <View style={styles.home__bottomSheet__card__statusContainer}>
           {worker.status === "available" ? (
             <View style={styles.home__bottomSheet__card__availableView}>
               <Text style={styles.home__bottomSheet__card__availableText}>

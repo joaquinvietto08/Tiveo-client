@@ -51,11 +51,6 @@ export const styles = StyleSheet.create({
     marginTop: 5,
     paddingLeft: 8,
   },
-  home__bottomSheet__card__infoType: {
-    fontSize: 12,
-    color: "#ACACAC",
-    fontFamily: "Inter-Medium",
-  },
   home__bottomSheet__card__infoRating: {
     fontSize: 12,
     color: colors.yellow,
@@ -72,25 +67,12 @@ export const styles = StyleSheet.create({
     paddingHorizontal: 8,
     paddingTop: 6,
   },
-  home__bottomSheet__card__addresContainer: {
+  home__bottomSheet__card__statusContainer: {
     alignItems: "flex-end",
     justifyContent: "flex-end",
     flex: 1,
     paddingBottom: 8,
     flexDirection: "row",
-  },
-  home__bottomSheet__card__addressView: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginRight: "auto",
-    paddingLeft: 3,
-    paddingBottom: 1,
-  },
-  home__bottomSheet__card__addressText: {
-    maxWidth: 140,
-    fontSize: 11,
-    fontFamily: "Inter-ExtraBold",
-    color: "#ACACAC",
   },
   home__bottomSheet__card__availableView: {
     justifyContent: "center",
