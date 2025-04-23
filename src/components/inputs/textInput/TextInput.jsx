@@ -1,12 +1,13 @@
 import React from "react";
 import { TextInput } from "react-native";
 import { styles } from "./TextInputStyles";
+import { colors } from "../../../styles/globalStyles";
 
 const TextInputComponent = ({
   style,
   placeholder,
   placeholderTextColor = "#8A8A8A",
-  selectionColor = "#FF9D00",
+  selectionColor = colors.primary,
   cursorColor = "black",
   maxLength,
   value,

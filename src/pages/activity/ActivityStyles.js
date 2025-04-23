@@ -1,4 +1,5 @@
 import { StyleSheet } from "react-native";
+import { colors } from "../../styles/globalStyles";
 
 export const styles = StyleSheet.create({
   mainContainer: {
@@ -46,7 +47,7 @@ export const styles = StyleSheet.create({
     justifyContent: "center",
     height: 65,
     width: 65,
-    backgroundColor: "#F4F4F4",
+    backgroundColor: colors.background,
     borderRadius: 7,
   },
   main_infoContainer: {

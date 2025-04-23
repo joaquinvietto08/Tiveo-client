@@ -5,6 +5,7 @@ import { styles } from "./ServiceListStyles";
 import Feather from "@expo/vector-icons/Feather";
 import { translateService } from "../../../../utils/formatHelpers";
 import { FlatList } from "react-native-gesture-handler";
+import { colors } from "../../../../styles/globalStyles";
 
 const initialServices = [
   { key: "1", name: "Todos" },
@@ -35,12 +36,12 @@ const ServiceButton = ({ item, isActive, onPress }) => {
         <Feather
           name="grid"
           size={24}
-          color={isActive ? "#fff" : "#8D8D8D"}
+          color={isActive ? "#fff" : colors.gray}
           style={{ marginRight: 10 }}
         />
       ) : item.key !== "100" ? (
         <IconComponent
-          fill={isActive ? "#fff" : "#8D8D8D"}
+          fill={isActive ? "#fff" : colors.gray}
           height={24}
           width={24}
           style={{ marginRight: 10 }}

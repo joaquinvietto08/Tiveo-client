@@ -5,6 +5,7 @@ import { FlatList } from "react-native-gesture-handler";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { translateAvailability } from "../../../../../utils/formatHelpers";
 import AntDesign from "@expo/vector-icons/AntDesign";
+import { colors } from "../../../../../styles/globalStyles";
 
 const CardButton = ({ worker }) => {
   return (
@@ -21,7 +22,7 @@ const CardButton = ({ worker }) => {
         </View>
 
         <View style={styles.home__bottomSheet__card__infoContainer}>
-          <AntDesign name="star" size={12} color="#F1D000" />
+          <AntDesign name="star" size={12} color={colors.yellow} />
           <Text style={styles.home__bottomSheet__card__infoRating}>
             {worker.starRating}{" "}
           </Text>

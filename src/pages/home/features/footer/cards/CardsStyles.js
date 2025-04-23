@@ -1,4 +1,5 @@
 import { StyleSheet } from "react-native";
+import { colors } from "../../../../../styles/globalStyles";
 
 export const styles = StyleSheet.create({
   home__bottomSheet__card__subtitleContainer: {
@@ -15,7 +16,7 @@ export const styles = StyleSheet.create({
   },
   home__bottomSheet__card__more: {
     fontSize: 14,
-    color: "#FF9D00",
+    color: colors.primary,
     fontFamily: "Inter-Regular",
   },
   home__bottomSheet__card__container: {
@@ -57,12 +58,12 @@ export const styles = StyleSheet.create({
   },
   home__bottomSheet__card__infoRating: {
     fontSize: 12,
-    color: "#F1D000",
+    color: colors.yellow,
     fontFamily: "Inter-Medium",
   },
   home__bottomSheet__card__infotTotalRatings: {
     fontSize: 12,
-    color: "#ACACAC",
+    color: colors.gray,
     fontFamily: "Inter-Medium",
   },
   home__bottomSheet__card__infoTitle: {
@@ -102,7 +103,7 @@ export const styles = StyleSheet.create({
   },
   home__bottomSheet__card__availableText: {
     fontSize: 13,
-    color: "#00B383",
+    color: colors.green,
     fontFamily: "Inter-SemiBold",
   },
   home__bottomSheet__card__busyView: {
@@ -116,7 +117,7 @@ export const styles = StyleSheet.create({
   },
   home__bottomSheet__card__busyText: {
     fontSize: 13,
-    color: "#FF9D00",
+    color: colors.primary,
     fontFamily: "Inter-SemiBold",
   },
 });

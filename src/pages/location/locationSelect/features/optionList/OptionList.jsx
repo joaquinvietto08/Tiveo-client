@@ -5,6 +5,7 @@ import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 import firestore from "@react-native-firebase/firestore";
 import { LocationContext } from "../../../../../context/LocationContext";
 import { UserContext } from "../../../../../context/UserContext";
+import { colors } from "../../../../../styles/globalStyles";
 
 const DefaultItem = ({ item, navigation }) => {
   let iconName;
@@ -29,7 +30,7 @@ const DefaultItem = ({ item, navigation }) => {
       onPress={handlePress}
     >
       <View style={styles.locationSelect__optionList__iconContainer}>
-        <FontAwesome6 name={iconName} size={18} color="#FF9D00" />
+        <FontAwesome6 name={iconName} size={18} color={colors.primary} />
       </View>
       <View style={styles.locationSelect__optionList__subContainer}>
         <Text style={styles.locationSelect__optionList__optionName}>

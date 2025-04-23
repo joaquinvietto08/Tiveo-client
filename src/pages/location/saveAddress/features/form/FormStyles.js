@@ -1,4 +1,5 @@
 import { StyleSheet } from "react-native";
+import { colors } from "../../../../../styles/globalStyles";
 
 export const styles = StyleSheet.create({
   saveAddress__form__floorInput: {
@@ -19,7 +20,7 @@ export const styles = StyleSheet.create({
     height: 48,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#FF9D00",
+    backgroundColor: colors.primary,
     width: "100%",
     borderRadius: 8,
     marginTop: 35,

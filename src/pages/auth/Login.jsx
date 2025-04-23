@@ -18,6 +18,7 @@ import { signInWithGoogle } from "../../actions/api/google_auth";
 import { signInWithFacebook } from "../../actions/api/facebook_auth";
 import { countries } from "../../utils/countries";
 import firestore from "@react-native-firebase/firestore";
+import { colors } from "../../styles/globalStyles";
 
 const Login = () => {
   const insets = useSafeAreaInsets();
@@ -94,7 +95,7 @@ const Login = () => {
     >
       <StatusBar
         translucent
-        backgroundColor="#FF9D00"
+        backgroundColor={colors.primary}
         barStyle="light-content"
       />
       <GestureHandlerRootView style={{ flex: 1 }}>
@@ -148,7 +149,7 @@ const Login = () => {
                 value={phoneNumber}
                 placeholder="Ej: 123456789"
                 placeholderTextColor="#8A8A8A"
-                selectionColor={"#FF9D00"}
+                selectionColor={colors.primary}
                 cursorColor="black"
                 onChangeText={(text) => {
                   const numericText = text.replace(/[^0-9]/g, "");
@@ -157,7 +158,7 @@ const Login = () => {
               />
             </View>
           </View>
-          <Pressable style={styles.confirmButton} color="#FF9D00">
+          <Pressable style={styles.confirmButton} color={colors.primary}>
             <Text
               style={{
                 fontSize: 16,

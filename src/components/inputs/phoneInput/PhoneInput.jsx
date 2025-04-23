@@ -6,12 +6,13 @@ import Icon from "react-native-vector-icons/MaterialIcons";
 import { FlatList } from "react-native-gesture-handler";
 import { Host, Portal } from "react-native-portalize";
 import BottomSheet from "../../bottomSheet/BottomSheet";
+import { colors } from "../../../styles/globalStyles";
 
 const PhoneInputComponent = ({
   style,
   placeholder = "Ej: 123456789",
   placeholderTextColor = "#8A8A8A",
-  selectionColor = "#FF9D00",
+  selectionColor = colors.primary,
   cursorColor = "black",
   maxLength = 15,
   value,

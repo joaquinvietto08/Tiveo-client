@@ -1,4 +1,5 @@
 import { StyleSheet } from "react-native";
+import { colors } from "../../styles/globalStyles";
 
 export const styles = StyleSheet.create({
   mainContainer: {
@@ -92,7 +93,7 @@ export const styles = StyleSheet.create({
     fontFamily: "Inter-Regular",
   },
   confirmButton: {
-    backgroundColor: "#FF9D00",
+    backgroundColor: colors.primary,
     width: "100%",
     height: 48,
     borderRadius: 8,

@@ -1,4 +1,5 @@
 import { StyleSheet } from "react-native";
+import { colors } from "../../../../../styles/globalStyles";
 
 export const styles = StyleSheet.create({
   locationSelect__optionList__container: {
@@ -38,6 +39,6 @@ export const styles = StyleSheet.create({
   locationSelect__optionList__addressDetails: {
     fontFamily: "Inter-Medium",
     fontSize: 13,
-    color: "#8D8D8D",
+    color: colors.gray,
   },
 });

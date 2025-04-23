@@ -1,4 +1,5 @@
 import { StyleSheet } from "react-native";
+import { colors } from "../../../../styles/globalStyles";
 
 export const styles = StyleSheet.create({
   home__workerPreview__mainContainer: {
@@ -63,7 +64,7 @@ export const styles = StyleSheet.create({
   },
   home__workerPreview__availableText: {
     fontSize: 12,
-    color: "#00B383",
+    color: colors.green,
     fontFamily: "Inter-Bold",
   },
   home__workerPreview__busyContainer: {
@@ -76,7 +77,7 @@ export const styles = StyleSheet.create({
   },
   home__workerPreview__busyText: {
     fontSize: 12,
-    color: "#FF9D00",
+    color: colors.primary,
     fontFamily: "Inter-Bold",
   },
 });

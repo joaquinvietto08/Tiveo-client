@@ -2,6 +2,7 @@ import React, { forwardRef } from "react";
 import { Pressable } from "react-native";
 import BottomSheet from "@gorhom/bottom-sheet";
 import { styles } from "./BottomSheetStyles";
+import { colors } from "../../styles/globalStyles";
 
 const BottomSheetComponent = forwardRef(
   (
@@ -22,7 +23,7 @@ const BottomSheetComponent = forwardRef(
       index,
       handleIndicatorStyle: { backgroundColor: "#D8D8D8" },
       backgroundStyle: {
-        backgroundColor: "#F8F8F8",
+        backgroundColor: colors.background,
         shadowColor: "#000",
         elevation: 20,
       },

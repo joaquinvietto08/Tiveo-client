@@ -3,23 +3,21 @@ import React from "react";
 import Octicons from "@expo/vector-icons/Octicons";
 import Feather from "@expo/vector-icons/Feather";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
+import { colors } from "../../styles/globalStyles";
 
 const TabBar = ({ state, descriptors, navigation }) => {
-  const primaryColor = "#FF9D00";
-  const greyColor = "#8B8B8B";
-
   const icons = {
     Home: (props) => (
-      <Octicons name="home" size={22} color={greyColor} {...props} />
+      <Octicons name="home" size={22} color={colors.gray} {...props} />
     ),
     Servicios: (props) => (
-      <Feather name="grid" size={23} color={greyColor} {...props} />
+      <Feather name="grid" size={23} color={colors.gray} {...props} />
     ),
     Actividad: (props) => (
-      <FontAwesome5 name="list-ul" size={20} color={greyColor} {...props} />
+      <FontAwesome5 name="list-ul" size={20} color={colors.gray} {...props} />
     ),
     "Mi perfil": (props) => (
-      <FontAwesome5 name="user" size={20} color={greyColor} {...props} />
+      <FontAwesome5 name="user" size={20} color={colors.gray} {...props} />
     ),
   };
   return (
@@ -69,12 +67,12 @@ const TabBar = ({ state, descriptors, navigation }) => {
             <View style={styles.tabBarItemContainer}>
               {icons[route.name] &&
                 icons[route.name]({
-                  color: isFocused ? primaryColor : greyColor,
+                  color: isFocused ? colors.primary : colors.gray,
                 })}
             </View>
             <Text
               style={{
-                color: isFocused ? primaryColor : greyColor,
+                color: isFocused ? colors.primary : colors.gray,
                 fontSize: 13,
                 fontFamily: "Inter-Medium",
               }}
@@ -95,7 +93,7 @@ const styles = StyleSheet.create({
     height: 75,
     width: "100%",
     bottom: 0,
-    backgroundColor: "#F8F8F8",
+    backgroundColor: colors.background,
   },
   tabBarItem: {
     flex: 1,

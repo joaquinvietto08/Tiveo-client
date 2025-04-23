@@ -1,11 +1,12 @@
 import { StyleSheet } from "react-native";
+import { colors } from "../../../../styles/globalStyles";
 
 export const styles = StyleSheet.create({
   home__footer__subtitle: {
     fontSize: 14,
     fontFamily: "Inter-Bold",
     paddingHorizontal: 20,
-    color: "#8D8D8D",
+    color: colors.gray,
     marginBottom: 10,
   },
 });

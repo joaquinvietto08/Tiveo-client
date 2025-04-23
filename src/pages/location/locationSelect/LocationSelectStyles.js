@@ -1,4 +1,5 @@
 import { StyleSheet } from "react-native";
+import { colors } from "../../../styles/globalStyles";
 
 export const styles = StyleSheet.create({
   mainContainer: {
@@ -30,7 +31,7 @@ export const styles = StyleSheet.create({
   locationSelect__subtitle: {
     fontFamily: "Inter-SemiBold",
     fontSize: 13,
-    color: "#8D8D8D",
+    color: colors.gray,
   },
   locationSelect__errorContainer: {
     position: "absolute",

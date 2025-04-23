@@ -2,6 +2,7 @@ import React from "react";
 import { View, Text, StyleSheet, StatusBar, Pressable } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Tiveo from "../../../assets/svgs/tiveo";
+import { colors } from "../../styles/globalStyles";
 
 const Welcome = ({ navigation }) => {
   const insets = useSafeAreaInsets();
@@ -28,7 +29,7 @@ const Welcome = ({ navigation }) => {
         <Pressable
           style={styles.startButton}
           onPress={() => navigation.navigate("Login")}
-          color="#FF9D00"
+          color={colors.primary}
         >
           <Text
             style={{ fontSize: 16, fontFamily: "Inter-Medium", color: "#fff" }}
@@ -85,7 +86,7 @@ const styles = StyleSheet.create({
   },
   startButton: {
     marginTop: "auto",
-    backgroundColor: "#FF9D00",
+    backgroundColor: colors.primary,
     width: "100%",
     height: 48,
     borderRadius: 8,

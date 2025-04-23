@@ -25,6 +25,7 @@ import {
   formatTime,
   formatPrice,
 } from "../../utils/formatHelpers";
+import { colors } from "../../styles/globalStyles";
 
 //temporal
 import Valentino from "../../../assets/images/data/7.png";
@@ -298,7 +299,7 @@ const styles = StyleSheet.create({
     paddingLeft: 15,
     paddingBottom: 10,
     borderBottomWidth: 2,
-    borderBottomColor: "#FF9D00",
+    borderBottomColor: colors.primary,
   },
   arrowContainer: {
     width: 50,
