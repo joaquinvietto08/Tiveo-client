@@ -8,6 +8,7 @@ import Activity from "../pages/activity/Activity";
 import Profile from "../pages/profile/Profile";
 import ActivityDetail from "../pages/activity/ActivityDetail";
 import { NearbyWorkersProvider } from "../context/NearbyWorkersContext";
+import WorkerProfile from "../pages/workerProfile/WorkerProfile";
 
 const Stack = createNativeStackNavigator();
 
@@ -15,6 +16,7 @@ const HomeStack = () => {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="HomeIndex" component={Home} />
+      <Stack.Screen name="WorkerProfile" component={WorkerProfile} />
     </Stack.Navigator>
   );
 };

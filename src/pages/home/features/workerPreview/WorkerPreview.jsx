@@ -3,12 +3,18 @@ import { Text, View, Image, Pressable } from "react-native";
 import { styles } from "./WorkerPreviewStyles";
 import { AntDesign } from "@expo/vector-icons";
 import { translateAvailability } from "../../../../utils/formatHelpers";
+import { useNavigation } from "@react-navigation/native";
 
 const WorkerPreview = ({ worker, onClose }) => {
+  const navigation = useNavigation();
+
   if (!worker) return null;
 
   return (
-    <View style={styles.home__workerPreview__mainContainer}>
+    <Pressable
+      style={styles.home__workerPreview__mainContainer}
+      onPress={() => navigation.navigate("WorkerProfile", { worker })}
+    >
       <View style={styles.home__workerPreview__contentContainer}>
         <Image
           source={worker.photoURL}
@@ -54,7 +60,7 @@ const WorkerPreview = ({ worker, onClose }) => {
           )}
         </View>
       </View>
-    </View>
+    </Pressable>
   );
 };
 

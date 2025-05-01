@@ -16,24 +16,24 @@ export const workers = [
     status: "available",
     description: "Construcción y reparación de muebles de madera.",
     completedJobs: 22,
-    starRating: 4.8,
+    starRating: 2.7,
     bannerImage: headerPic,
     phone: "098-765-4321",
     services: [
       {
         service: "carpentry",
         title: "Carpintería",
-        isLicensed: "true",
+        isLicensed: true,
       },
       {
         service: "electricity",
         title: "Electricidad",
-        isLicensed: "false",
+        isLicensed: false,
       },
       {
         service: "plumbing",
         title: "Plomería",
-        isLicensed: "true",
+        isLicensed: true,
       },
     ],
   },
@@ -56,7 +56,7 @@ export const workers = [
       {
         service: "plumbing",
         title: "Plomería",
-        isLicensed: "false",
+        isLicensed: false,
       },
     ],
   },
@@ -79,17 +79,17 @@ export const workers = [
       {
         service: "gardening",
         title: "Jardinería",
-        isLicensed: "false",
+        isLicensed: false,
       },
       {
         service: "painting",
         title: "Pintura",
-        isLicensed: "true",
+        isLicensed: true,
       },
       {
         service: "plumbing",
         title: "Plomería",
-        isLicensed: "true",
+        isLicensed: true,
       },
     ],
   },
@@ -112,7 +112,7 @@ export const workers = [
       {
         service: "gas",
         title: "Gas",
-        isLicensed: "false",
+        isLicensed: false,
       },
     ],
   },
@@ -135,12 +135,12 @@ export const workers = [
       {
         service: "painting",
         title: "Pintura",
-        isLicensed: "true",
+        isLicensed: true,
       },
       {
         service: "technology",
         title: "Tecnologia",
-        isLicensed: "false",
+        isLicensed: false,
       },
     ],
   },
@@ -163,7 +163,7 @@ export const workers = [
       {
         service: "locksmith",
         title: "Cerrajería",
-        isLicensed: "true",
+        isLicensed: true,
       },
     ],
   },
