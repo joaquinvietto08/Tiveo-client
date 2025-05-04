@@ -17,6 +17,7 @@ const Services = () => {
     >
       <ScrollView showsVerticalScrollIndicator={false}>
         <ServicesList />
+        <ServicesList />
       </ScrollView>
     </View>
   );

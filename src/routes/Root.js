@@ -6,6 +6,7 @@ import LocationRoutes from "./LocationRoutes";
 import AuthRoutes from "./AuthRoutes";
 import { UserContext } from "../context/UserContext";
 import { LocationContext } from "../context/LocationContext";
+import WorkerProfile from "../pages/workerProfile/WorkerProfile";
 
 const Stack = createNativeStackNavigator();
 
@@ -18,7 +19,10 @@ const Root = () => {
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         {user ? (
           location ? (
-            <Stack.Screen name="Main" component={MainRoutes} />
+            <>
+              <Stack.Screen name="Main" component={MainRoutes} />
+              <Stack.Screen name="WorkerProfile" component={WorkerProfile} />
+            </>
           ) : (
             <Stack.Screen name="Location" component={LocationRoutes} />
           )

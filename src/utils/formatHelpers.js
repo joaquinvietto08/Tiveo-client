@@ -65,3 +65,11 @@ export const translateStatus = (status) => {
 
   return statusMap[status] || status;
 };
+
+export const getMonthsOfExperience = (joinedDateStr) => {
+  const joined = new Date(joinedDateStr);
+  const now = new Date();
+  const years = now.getFullYear() - joined.getFullYear();
+  const months = now.getMonth() - joined.getMonth();
+  return years * 12 + months;
+};
