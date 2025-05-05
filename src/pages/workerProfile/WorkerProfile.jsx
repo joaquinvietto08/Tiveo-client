@@ -10,14 +10,12 @@ import { colors } from "../../styles/globalStyles";
 import Licensed from "../../../assets/svgs/worker/licensed";
 import Warranty from "../../../assets/svgs/worker/warranty";
 import { getMonthsOfExperience } from "../../utils/formatHelpers";
-import { useNavigation } from "@react-navigation/native";
-import { useLayoutEffect } from "react";
+import Default from "./features/default/Default"
 
-const WorkerProfile = () => {
+const WorkerProfile = ({ bottom = 'default' }) => {
   const insets = useSafeAreaInsets();
   const route = useRoute();
   const { worker } = route.params;
-  console.log(worker);
 
   return (
     <View
@@ -123,40 +121,8 @@ const WorkerProfile = () => {
           </View>
         </View>
         <View style={styles.workerProfile__divider} />
-
-        <View style={styles.workerProfile__Bottom}>
-          <Text style={styles.workerProfile__sectionTitle}>
-            Servicios que ofrece
-          </Text>
-          <View style={styles.workerProfile__tagsWrapper}>
-            {["Jardinería", "Gas", "Plomería", "Carpintería"].map(
-              (service, index) => (
-                <View key={index} style={styles.workerProfile__tag}>
-                  {/* Podés reemplazar esta Image por un SVG si tenés */}
-
-                  <Text style={styles.workerProfile__tagText}>{service}</Text>
-                </View>
-              )
-            )}
-          </View>
-
-          <View style={styles.workerProfile__availabilityRow}>
-            <Text style={styles.workerProfile__availabilityLabel}>
-              Disponibilidad:
-            </Text>
-            <View style={styles.workerProfile__availabilityNow}>
-              <Text style={styles.workerProfile__availabilityText}>
-                Ahora mismo
-              </Text>
-            </View>
-          </View>
-
-          <View style={styles.workerProfile__buttonWrapper}>
-            <Text style={styles.workerProfile__buttonText}>
-              Solicitar ahora
-            </Text>
-          </View>
-        </View>
+        {bottom === 'default' && <Default worker={worker}/>}
+        
       </ScrollView>
     </View>
   );
