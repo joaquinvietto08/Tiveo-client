@@ -6,12 +6,28 @@ export const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: colors.background,
   },
+  workerProfile__scrollContent: {
+    flexGrow: 1,
+  },
   workerProfile__topGradient: {
     position: "absolute",
     top: 0,
     left: 0,
     right: 0,
     height: 40,
+    zIndex: 900,
+  },
+  workerProfile__backContainer: {
+    backgroundColor: colors.white,
+    borderRadius: 100,
+    width: 35,
+    height: 35,
+    justifyContent: "center",
+    alignItems: "center",
+    position: "absolute",
+    top: 40,
+    left: 15,
+    right: 0,
     zIndex: 1000,
   },
   workerProfile__banner: {
@@ -40,11 +56,18 @@ export const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     marginTop: 4,
+    backgroundColor: colors.lightGray,
+    borderRadius: 6,
+    /*     borderWidth: 1,
+    borderColor: colors.black,
+     */
+    alignSelf: "center",
+    paddingHorizontal: 6,
   },
   workerProfile__ratingText: {
-    marginLeft: 6,
+    marginLeft: 4,
     fontSize: 14,
-    color: "#444",
+    color: colors.black,
     fontFamily: "Inter-Regular",
   },
   workerProfile__body: {
@@ -119,5 +142,5 @@ export const styles = StyleSheet.create({
   workerProfile__guaranteeDescription: {
     fontSize: 13,
     fontFamily: "Inter-Light",
-  }  
+  },
 });

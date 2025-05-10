@@ -23,17 +23,14 @@ export const workers = [
     services: [
       {
         service: "carpentry",
-        title: "Carpintería",
         isLicensed: true,
       },
       {
         service: "electricity",
-        title: "Electricidad",
         isLicensed: false,
       },
       {
         service: "plumbing",
-        title: "Plomería",
         isLicensed: true,
       },
     ],
@@ -57,7 +54,6 @@ export const workers = [
     services: [
       {
         service: "plumbing",
-        title: "Plomería",
         isLicensed: false,
       },
     ],
@@ -81,17 +77,14 @@ export const workers = [
     services: [
       {
         service: "gardening",
-        title: "Jardinería",
         isLicensed: false,
       },
       {
         service: "painting",
-        title: "Pintura",
         isLicensed: true,
       },
       {
         service: "plumbing",
-        title: "Plomería",
         isLicensed: true,
       },
     ],
@@ -115,7 +108,6 @@ export const workers = [
     services: [
       {
         service: "gas",
-        title: "Gas",
         isLicensed: false,
       },
     ],
@@ -139,12 +131,10 @@ export const workers = [
     services: [
       {
         service: "painting",
-        title: "Pintura",
         isLicensed: true,
       },
       {
         service: "technology",
-        title: "Tecnologia",
         isLicensed: false,
       },
     ],
@@ -168,7 +158,6 @@ export const workers = [
     services: [
       {
         service: "locksmith",
-        title: "Cerrajería",
         isLicensed: true,
       },
     ],

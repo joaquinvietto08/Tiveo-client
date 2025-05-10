@@ -25,6 +25,14 @@ export const translateService = (service) => {
   return serviceMap[service] || service;
 };
 
+export const translateAvailabilityRequest = (availability) => {
+  const availabilityRequestMap = {
+    available: "Ahora mismo",
+    busy: "A coordinar",
+  };
+  return availabilityRequestMap[availability] || availability;
+};
+
 export const translateAvailability = (availability) => {
   const availabilityMap = {
     available: "Disponible",
@@ -66,10 +74,22 @@ export const translateStatus = (status) => {
   return statusMap[status] || status;
 };
 
-export const getMonthsOfExperience = (joinedDateStr) => {
+export const getTimeExperience = (joinedDateStr, mode = "number") => {
   const joined = new Date(joinedDateStr);
   const now = new Date();
   const years = now.getFullYear() - joined.getFullYear();
   const months = now.getMonth() - joined.getMonth();
-  return years * 12 + months;
+  const totalMonths = years * 12 + months;
+
+  if (mode === "number") {
+    return totalMonths >= 12 ? Math.floor(totalMonths / 12) : totalMonths;
+  }
+
+  if (mode === "label") {
+    return totalMonths >= 12
+      ? "Años de experiencia en Tiveo"
+      : "Meses de experiencia en Tiveo";
+  }
+
+  return "";
 };

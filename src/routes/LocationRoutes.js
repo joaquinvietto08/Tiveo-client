@@ -1,7 +1,7 @@
 import React from "react";
-import LocationSelect from "../pages/location/LocationSelect/LocationSelect";
-import LocationMap from "../pages/location/LocationMap/LocationMap";
-import SaveAddress from "../pages/location/SaveAddress/SaveAddress";
+import LocationSelect from "../pages/location/locationSelect/LocationSelect";
+import LocationMap from "../pages/location/locationMap/LocationMap";
+import SaveAddress from "../pages/location/saveAddress/SaveAddress";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 const Stack = createNativeStackNavigator();

@@ -1,18 +1,19 @@
 import React from "react";
-import { View, ScrollView, Text, Image } from "react-native";
+import { View, ScrollView, Text, Image, Pressable } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useRoute } from "@react-navigation/native";
 import { AntDesign } from "@expo/vector-icons";
 import { styles } from "./WorkerProfileStyles";
 import { StatusBar } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
+import Feather from "@expo/vector-icons/Feather";
 import { colors } from "../../styles/globalStyles";
 import Licensed from "../../../assets/svgs/worker/licensed";
 import Warranty from "../../../assets/svgs/worker/warranty";
-import { getMonthsOfExperience } from "../../utils/formatHelpers";
-import Default from "./features/default/Default"
+import { getTimeExperience } from "../../utils/formatHelpers";
+import Default from "./features/default/Default";
 
-const WorkerProfile = ({ bottom = 'default' }) => {
+const WorkerProfile = ({ navigation, bottom = "default" }) => {
   const insets = useSafeAreaInsets();
   const route = useRoute();
   const { worker } = route.params;
@@ -29,8 +30,17 @@ const WorkerProfile = ({ bottom = 'default' }) => {
         style={styles.workerProfile__topGradient}
       />
       <StatusBar translucent barStyle="light-content" />
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <ScrollView
+        contentContainerStyle={styles.workerProfile__scrollContent}
+        showsVerticalScrollIndicator={false}
+      >
         <View>
+          <Pressable
+            style={styles.workerProfile__backContainer}
+            onPress={navigation.goBack}
+          >
+            <Feather name="arrow-left" size={20} color="black" />
+          </Pressable>
           <Image
             source={worker.bannerImage}
             style={styles.workerProfile__banner}
@@ -48,21 +58,9 @@ const WorkerProfile = ({ bottom = 'default' }) => {
           </Text>
 
           <View style={styles.workerProfile__ratingContainer}>
-            {Array.from({ length: 5 }, (_, i) => (
-              <AntDesign
-                key={i}
-                name="star"
-                size={16}
-                color={
-                  i < Math.round(worker.starRating)
-                    ? colors.yellow
-                    : colors.gray
-                }
-                style={{ marginRight: 2 }}
-              />
-            ))}
+            <AntDesign name="star" size={16} color={colors.black} />
             <Text style={styles.workerProfile__ratingText}>
-              {worker.starRating} ({worker.completedJobs})
+              {worker.starRating}
             </Text>
           </View>
           <View style={styles.workerProfile__body}>
@@ -84,11 +82,11 @@ const WorkerProfile = ({ bottom = 'default' }) => {
           <View style={styles.workerProfile__row}>
             <View style={styles.workerProfile__leftFixed}>
               <Text style={styles.workerProfile__number}>
-                {getMonthsOfExperience(worker.joinedAt)}
+                {getTimeExperience(worker.joinedAt, "number")}
               </Text>
             </View>
             <Text style={styles.workerProfile__label}>
-              Meses de experiencia en Tiveo.
+              {getTimeExperience(worker.joinedAt, "label")}
             </Text>
           </View>
 
@@ -121,8 +119,7 @@ const WorkerProfile = ({ bottom = 'default' }) => {
           </View>
         </View>
         <View style={styles.workerProfile__divider} />
-        {bottom === 'default' && <Default worker={worker}/>}
-        
+        {bottom === "default" && <Default worker={worker} />}
       </ScrollView>
     </View>
   );

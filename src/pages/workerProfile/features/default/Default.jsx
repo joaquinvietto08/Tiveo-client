@@ -2,7 +2,12 @@ import React from "react";
 import { View, Text } from "react-native";
 import { styles } from "./DefaultStyles";
 import { getIcon } from "../../../../utils/getIcons";
-import { translateService } from "../../../../utils/formatHelpers";
+import {
+  translateService,
+  translateAvailabilityRequest,
+} from "../../../../utils/formatHelpers";
+import Available from "../../../../../assets/svgs/worker/available";
+import Busy from "../../../../../assets/svgs/worker/busy";
 
 const Default = ({ worker }) => {
   const services = worker?.services || [];
@@ -17,7 +22,7 @@ const Default = ({ worker }) => {
           const IconComponent = getIcon(serviceObj.service);
           return (
             <View key={index} style={styles.workerProfile__default__tag}>
-              <IconComponent style={styles.workerProfile__default__icon} />
+              <IconComponent height={24} width={24} />
               <Text style={styles.workerProfile__default__tagText}>
                 {translateService(serviceObj.service)}
               </Text>
@@ -26,21 +31,37 @@ const Default = ({ worker }) => {
         })}
       </View>
 
-      <View style={styles.workerProfile__default__availabilityRow}>
-        <Text style={styles.workerProfile__default__availabilityLabel}>
-          Disponibilidad:
-        </Text>
-        <View style={styles.workerProfile__default__availabilityNow}>
-          <Text style={styles.workerProfile__default__availabilityText}>
-            Ahora mismo
+      <View style={styles.workerProfile__default__StatusContainer}>
+        <View style={styles.workerProfile__default__StatusRow}>
+          <Text style={styles.workerProfile__default__StatusLabel}>
+            Disponibilidad:
           </Text>
+          <View style={styles.workerProfile__default__StatusIconContainer}>
+            {worker.status === "available" ? (
+              <Available height={20} width={20} />
+            ) : (
+              <Busy height={20} width={20} />
+            )}
+          </View>
+          <View style={styles.workerProfile__default__Status}>
+            <Text style={styles.workerProfile__default__StatusText}>
+              {translateAvailabilityRequest(worker.status)}
+            </Text>
+          </View>
         </View>
-      </View>
-
-      <View style={styles.workerProfile__default__buttonWrapper}>
-        <Text style={styles.workerProfile__default__buttonText}>
-          Solicitar ahora
-        </Text>
+        {worker.status === "available" ? (
+          <View style={styles.workerProfile__default__buttonWrapperAvailable}>
+            <Text style={styles.workerProfile__default__buttonTextAvailable}>
+              Solicitar ahora
+            </Text>
+          </View>
+        ) : (
+          <View style={styles.workerProfile__default__buttonWrapperBusy}>
+            <Text style={styles.workerProfile__default__buttonTextBusy}>
+              Coordinar visita
+            </Text>
+          </View>
+        )}
       </View>
     </View>
   );

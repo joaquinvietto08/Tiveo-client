@@ -14,65 +14,89 @@ export const styles = StyleSheet.create({
   workerProfile__default__tagsWrapper: {
     flexDirection: "row",
     flexWrap: "wrap",
-    gap: 10,
+    gap: 8,
     marginBottom: 16,
   },
   workerProfile__default__tag: {
     flexDirection: "row",
+    gap: 10,
     alignItems: "center",
-    borderWidth: 1,
-    borderColor: "#ccc",
+    backgroundColor: colors.lightGray,
     borderRadius: 10,
     paddingVertical: 6,
-    paddingHorizontal: 12,
+    paddingHorizontal: 8,
   },
   workerProfile__default__tagIcon: {
     width: 16,
     height: 16,
+    fill: colors.black,
   },
   workerProfile__default__tagText: {
     fontSize: 14,
     fontFamily: "Inter-Regular",
   },
-  workerProfile__default__icon: {
-
+  workerProfile__default__StatusContainer: {
+    flex: 1,
+    justifyContent: "flex-end",
+    paddingBottom: 20,
   },
-  workerProfile__default__availabilityRow: {
+  workerProfile__default__StatusRow: {
     flexDirection: "row",
     alignItems: "center",
     marginTop: 10,
   },
 
-  workerProfile__default__availabilityLabel: {
+  workerProfile__default__StatusLabel: {
     fontFamily: "Inter-SemiBold",
     marginRight: 8,
   },
 
-  workerProfile__default__availabilityNow: {
+  workerProfile__default__StatusIconContainer: {
+    backgroundColor: colors.primary,
+    borderRadius: 6,
+    paddingHorizontal: 6,
+    paddingVertical: 2,
+    marginRight: 6,
+  },
+  workerProfile__default__Status: {
     flexDirection: "row",
     alignItems: "center",
   },
 
-  workerProfile__default__availabilityIcon: {
+  workerProfile__default__StatusIcon: {
     width: 16,
     height: 16,
     marginRight: 4,
   },
-  workerProfile__default__availabilityText: {
+  workerProfile__default__StatusText: {
     fontSize: 14,
     fontFamily: "Inter-Regular",
   },
-  workerProfile__default__buttonWrapper: {
+  workerProfile__default__buttonWrapperAvailable: {
     backgroundColor: colors.primary,
     borderRadius: 8,
     paddingVertical: 12,
     alignItems: "center",
     justifyContent: "center",
     marginTop: 15,
-    marginBottom: 10,
   },
-  workerProfile__default__buttonText: {
+  workerProfile__default__buttonTextAvailable: {
     color: "#fff",
+    fontFamily: "Inter-Bold",
+    fontSize: 16,
+  },
+  workerProfile__default__buttonWrapperBusy: {
+    borderWidth: 1,
+    borderColor: colors.black,
+    backgroundColor: colors.black,
+    borderRadius: 8,
+    paddingVertical: 12,
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: 15,
+  },
+  workerProfile__default__buttonTextBusy: {
+    color: colors.white,
     fontFamily: "Inter-Bold",
     fontSize: 16,
   },
