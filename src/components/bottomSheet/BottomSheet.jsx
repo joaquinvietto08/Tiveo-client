@@ -13,6 +13,7 @@ const BottomSheetComponent = forwardRef(
       isOpen = true,
       overlay = false,
       onClose,
+      handleStyle,
       ...props
     },
     ref
@@ -21,6 +22,7 @@ const BottomSheetComponent = forwardRef(
       ref,
       snapPoints,
       index,
+      handleStyle,
       handleIndicatorStyle: { backgroundColor: "#D8D8D8" },
       backgroundStyle: {
         backgroundColor: colors.background,

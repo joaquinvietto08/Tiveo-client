@@ -1,4 +1,3 @@
-import React from "react";
 import { TextInput } from "react-native";
 import { styles } from "./TextInputStyles";
 import { colors } from "../../../styles/globalStyles";

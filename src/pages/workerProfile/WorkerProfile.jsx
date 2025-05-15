@@ -1,4 +1,3 @@
-import React from "react";
 import { View, ScrollView, Text, Image, Pressable } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useRoute } from "@react-navigation/native";
