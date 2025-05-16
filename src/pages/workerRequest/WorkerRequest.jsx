@@ -5,18 +5,12 @@ import { styles } from "./WorkerRequestStyles";
 import { StatusBar } from "react-native";
 import Feather from "@expo/vector-icons/Feather";
 import { useRoute } from "@react-navigation/native";
-import TextInput from "../../components/inputs/textInput/TextInput";
-import { getIcon } from "../../utils/getIcons";
-import {
-  formatDate,
-  formatTime,
-  translateService,
-} from "../../utils/formatHelpers";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import CategoriesBottomSheet from "./features/CategoriesBottomSheet/CategoriesBottomSheet";
-import Available from "../../../assets/svgs/worker/available";
-import Busy from "../../../assets/svgs/worker/busy";
 import MomentBottomSheet from "./features/MomentBottomSheet/MomentBottomSheet";
+import CategoriesSelect from "./features/CategoriesSelect/CategoriesSelect";
+import MomentSelect from "./features/MomentSelect/MomentSelect";
+import Description from "./features/Description/Description";
 
 const WorkerRequest = ({ navigation }) => {
   const insets = useSafeAreaInsets();
@@ -53,8 +47,6 @@ const WorkerRequest = ({ navigation }) => {
   const [isMomentOpen, setIsMomentOpen] = useState(false);
   const [scheduledDateTime, setScheduledDateTime] = useState(null);
 
-  console.log(scheduledDateTime);
-
   const handleOpenMoment = () => {
     setIsMomentOpen(true);
     momentSheetRef.current?.snapToIndex(0);
@@ -86,78 +78,17 @@ const WorkerRequest = ({ navigation }) => {
               Solicitar trabajador
             </Text>
           </View>
-          <View style={styles.workerRequest__description}>
-            <Text style={styles.workerRequest__sectionTitle}>
-              Describe brevemente lo que necesitas
-            </Text>
-            <TextInput
-              style={styles.workerRequest__inputText}
-              maxLength={250}
-              multiline={true}
-            />
-            <Text style={styles.workerRequest__sectionTitle}>Imagenes gg </Text>
-          </View>
-          <View style={styles.workerRequest__category}>
-            <Text style={styles.workerRequest__sectionTitle}>Categoría</Text>
-            <View style={styles.workerRequest__tagsWrapper}>
-              {selectedServices.map((srv, i) => {
-                const Icon = getIcon(srv);
-                return (
-                  <View key={i} style={styles.workerRequest__tag}>
-                    <Icon height={24} width={24} />
-                    <Text style={styles.workerRequest__tagText}>
-                      {translateService(srv)}
-                    </Text>
-                  </View>
-                );
-              })}
-              <Pressable
-                style={styles.workerRequest__categoriesSelect}
-                onPress={handleOpenCategories}
-              >
-                <Text style={styles.workerRequest__categoriesSelectText}>
-                  Seleccionar
-                </Text>
-              </Pressable>
-            </View>
-          </View>
-          <View style={styles.workerRequest__moment}>
-            <Text style={styles.workerRequest__sectionTitle}>
-              Indica en que momento lo preferís
-            </Text>
-            <View style={styles.workerRequest__momentOptions}>
-              <Pressable
-                style={[
-                  styles.workerRequest__momentOption,
-                  momentOption === "now" &&
-                    styles.workerRequest__momentOptionSelected,
-                ]}
-                onPress={() => setMomentOption("now")}
-              >
-                <Available height={30} width={30} />
-                <Text style={styles.workerRequest__dateText}>
-                  Ahora{"\n"}mismo
-                </Text>
-              </Pressable>
-              <Pressable
-                style={[
-                  styles.workerRequest__momentOption,
-                  momentOption === "schedule" &&
-                    styles.workerRequest__momentOptionSelected,
-                ]}
-                onPress={handleOpenMoment}
-              >
-                <Busy height={30} width={30} />
-                <Text style={styles.workerRequest__timeText}>
-                  {momentOption === "schedule" && scheduledDateTime
-                    ? `${formatDate(scheduledDateTime)}\n${formatTime(
-                        scheduledDateTime
-                      )} hs`
-                    : "Coordinar"}
-                </Text>
-              </Pressable>
-            </View>
-          </View>
+          <Description />
+          <CategoriesSelect
+            selectedServices={selectedServices}
+            onOpenCategories={handleOpenCategories}
+          />
+          <MomentSelect
+            momentOption={momentOption}
+            setMomentOption={setMomentOption}
+            handleOpenMoment={handleOpenMoment}
+            scheduledDateTime={scheduledDateTime}
+          />
         </ScrollView>
 
         <CategoriesBottomSheet
