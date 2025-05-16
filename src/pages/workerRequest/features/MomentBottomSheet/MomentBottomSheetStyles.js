@@ -27,11 +27,18 @@ export const styles = StyleSheet.create({
     height: 80,
     marginTop: 20,
   },
-  momentBottomSheet__momentSelector: {
+  momentBottomSheet__dateSelector: {
     width: 130,
     height: "100%",
     justifyContent: "center",
-    alignItems: "center",
+    alignItems: "flex-end",
+    paddingRight: 20,
+  },
+  momentBottomSheet__timeSelector: {
+    width: 130,
+    height: "100%",
+    justifyContent: "center",
+    paddingLeft: 20,
   },
   momentBottomSheet__momentSelectorText: {
     fontFamily: "Inter-SemiBold",

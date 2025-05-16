@@ -50,7 +50,7 @@ export const styles = StyleSheet.create({
     flexDirection: "row",
     gap: 10,
     alignItems: "center",
-    backgroundColor: colors.lightGray,
+    backgroundColor: colors.primary,
     borderRadius: 10,
     paddingVertical: 6,
     paddingHorizontal: 8,
@@ -111,9 +111,15 @@ export const styles = StyleSheet.create({
   workerRequest__momentIcon: {
     marginRight: 8,
   },
-  workerRequest__momentText: {
+  workerRequest__dateText: {
     fontSize: 16,
     fontFamily: "Inter-Regular",
     textAlign: "center",
+  },
+
+  workerRequest__timeText: {
+    fontSize: 16,
+    fontFamily: "Inter-Regular",
+    textAlign: "left",
   },
 });

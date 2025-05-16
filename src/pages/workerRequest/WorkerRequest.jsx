@@ -7,7 +7,11 @@ import Feather from "@expo/vector-icons/Feather";
 import { useRoute } from "@react-navigation/native";
 import TextInput from "../../components/inputs/textInput/TextInput";
 import { getIcon } from "../../utils/getIcons";
-import { translateService } from "../../utils/formatHelpers";
+import {
+  formatDate,
+  formatTime,
+  translateService,
+} from "../../utils/formatHelpers";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import CategoriesBottomSheet from "./features/CategoriesBottomSheet/CategoriesBottomSheet";
 import Available from "../../../assets/svgs/worker/available";
@@ -47,6 +51,9 @@ const WorkerRequest = ({ navigation }) => {
   const [momentOption, setMomentOption] = useState("now");
   const momentSheetRef = useRef(null);
   const [isMomentOpen, setIsMomentOpen] = useState(false);
+  const [scheduledDateTime, setScheduledDateTime] = useState(null);
+
+  console.log(scheduledDateTime);
 
   const handleOpenMoment = () => {
     setIsMomentOpen(true);
@@ -128,7 +135,7 @@ const WorkerRequest = ({ navigation }) => {
                 onPress={() => setMomentOption("now")}
               >
                 <Available height={30} width={30} />
-                <Text style={styles.workerRequest__momentText}>
+                <Text style={styles.workerRequest__dateText}>
                   Ahora{"\n"}mismo
                 </Text>
               </Pressable>
@@ -141,19 +148,17 @@ const WorkerRequest = ({ navigation }) => {
                 onPress={handleOpenMoment}
               >
                 <Busy height={30} width={30} />
-                <Text style={styles.workerRequest__momentText}>Coordinar</Text>
+                <Text style={styles.workerRequest__timeText}>
+                  {momentOption === "schedule" && scheduledDateTime
+                    ? `${formatDate(scheduledDateTime)}\n${formatTime(
+                        scheduledDateTime
+                      )} hs`
+                    : "Coordinar"}
+                </Text>
               </Pressable>
             </View>
           </View>
         </ScrollView>
-
-        <MomentBottomSheet
-          ref={momentSheetRef}
-          selected={momentOption}
-          snapPoints={snapPoints}
-          onClose={handleCloseMoment}
-          isOpen={isMomentOpen}
-        />
 
         <CategoriesBottomSheet
           ref={categorySheetRef}
@@ -163,6 +168,17 @@ const WorkerRequest = ({ navigation }) => {
           snapPoints={snapPoints}
           onClose={handleCloseCategories}
           isOpen={isCategoryOpen}
+        />
+
+        <MomentBottomSheet
+          ref={momentSheetRef}
+          snapPoints={snapPoints}
+          onClose={handleCloseMoment}
+          isOpen={isMomentOpen}
+          onConfirm={(chosenDate) => {
+            setScheduledDateTime(chosenDate);
+            setMomentOption("schedule");
+          }}
         />
       </GestureHandlerRootView>
     </View>

@@ -54,12 +54,13 @@ export const formatDate = (dateTimeString) => {
 };
 
 export const formatTime = (dateTimeString) => {
-  const date = new Date(dateTimeString);
-  return date.toLocaleTimeString("es-AR", {
-    hour: "2-digit",
-    minute: "2-digit",
-    hour12: false,
-  });
+  const iso =
+    dateTimeString instanceof Date
+      ? dateTimeString.toISOString()
+      : dateTimeString;
+  const m = iso.match(/T(\d{2}):(\d{2})/);
+  if (m) return `${m[1]}:${m[2]}`;
+  return iso.substr(11, 5);
 };
 
 export const translateStatus = (status) => {
