@@ -6,13 +6,14 @@ import { StatusBar } from "react-native";
 import Feather from "@expo/vector-icons/Feather";
 import { useRoute } from "@react-navigation/native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import CategoriesBottomSheet from "./features/CategoriesBottomSheet/CategoriesBottomSheet";
-import MomentBottomSheet from "./features/MomentBottomSheet/MomentBottomSheet";
+import CategoriesBottomSheet from "./features/CategoriesSelect/CategoriesBottomSheet/CategoriesBottomSheet";
+import MomentBottomSheet from "./features/MomentSelect/MomentBottomSheet/MomentBottomSheet";
 import CategoriesSelect from "./features/CategoriesSelect/CategoriesSelect";
 import MomentSelect from "./features/MomentSelect/MomentSelect";
 import Description from "./features/Description/Description";
+import Default from "./features/Bottom/Default/Default";
 
-const WorkerRequest = ({ navigation }) => {
+const WorkerRequest = ({ navigation, bottom = "default" }) => {
   const insets = useSafeAreaInsets();
   const { worker } = useRoute().params;
   const services = worker?.services || [];
@@ -42,7 +43,10 @@ const WorkerRequest = ({ navigation }) => {
   };
 
   /* Moment */
-  const [momentOption, setMomentOption] = useState("now");
+  const isAvailable = worker.status === "available";
+  const [momentOption, setMomentOption] = useState(
+    isAvailable ? "now" : "schedule"
+  );
   const momentSheetRef = useRef(null);
   const [isMomentOpen, setIsMomentOpen] = useState(false);
   const [scheduledDateTime, setScheduledDateTime] = useState(null);
@@ -88,7 +92,9 @@ const WorkerRequest = ({ navigation }) => {
             setMomentOption={setMomentOption}
             handleOpenMoment={handleOpenMoment}
             scheduledDateTime={scheduledDateTime}
+            isAvailable={isAvailable}
           />
+          {bottom === "default" && <Default worker={worker} />}
         </ScrollView>
 
         <CategoriesBottomSheet

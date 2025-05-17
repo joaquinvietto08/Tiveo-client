@@ -1,14 +1,16 @@
 import { View, Pressable, Text } from "react-native";
 import { styles } from "./MomentSelectStyles";
-import Available from "../../../../../assets/svgs/worker/available.svg";
-import Busy from "../../../../../assets/svgs/worker/busy.svg";
+import Available from "../../../../../assets/svgs/worker/available";
+import Busy from "../../../../../assets/svgs/worker/busy";
 import { formatDate, formatTime } from "../../../../utils/formatHelpers";
+import { colors } from "../../../../styles/globalStyles";
 
 const MomentSelect = ({
   momentOption,
   setMomentOption,
   handleOpenMoment,
   scheduledDateTime,
+  isAvailable,
 }) => {
   return (
     <View style={styles.WR__momentSelect__moment}>
@@ -17,6 +19,7 @@ const MomentSelect = ({
       </Text>
       <View style={styles.WR__momentSelect__momentOptions}>
         <Pressable
+          disabled={!isAvailable}
           style={[
             styles.WR__momentSelect__momentOption,
             momentOption === "now" &&
@@ -24,8 +27,17 @@ const MomentSelect = ({
           ]}
           onPress={() => setMomentOption("now")}
         >
-          <Available height={30} width={30} />
-          <Text style={styles.WR__momentSelect__dateText}>
+          <Available
+            height={30}
+            width={30}
+            fill={isAvailable ? "#000" : colors.gray}
+          />
+          <Text
+            style={[
+              styles.WR__momentSelect__dateText,
+              !isAvailable && { color: colors.gray },
+            ]}
+          >
             Ahora{"\n"}mismo
           </Text>
         </Pressable>
@@ -33,18 +45,34 @@ const MomentSelect = ({
           style={[
             styles.WR__momentSelect__momentOption,
             momentOption === "schedule" &&
-              styles.WR__momentSelect__momentOptionSelected,
+              styles.WR__momentSelect__scheduleOptionSelected,
           ]}
           onPress={handleOpenMoment}
         >
-          <Busy height={30} width={30} />
-          <Text style={styles.WR__momentSelect__timeText}>
-            {momentOption === "schedule" && scheduledDateTime
-              ? `${formatDate(scheduledDateTime)}\n${formatTime(
-                  scheduledDateTime
-                )} hs`
-              : "Coordinar"}
-          </Text>
+          <Busy
+            height={30}
+            width={30}
+            fill={momentOption === "schedule" ? colors.white : ""}
+          />
+          {momentOption === "schedule" && scheduledDateTime ? (
+            <View>
+              <Text style={styles.WR__momentSelect__timeText} numberOfLines={1}>
+                {formatDate(scheduledDateTime)}
+              </Text>
+              <Text style={styles.WR__momentSelect__timeText}>
+                {formatTime(scheduledDateTime)} hs
+              </Text>
+            </View>
+          ) : (
+            <Text
+              style={[
+                styles.WR__momentSelect__disableTimeText,
+                !isAvailable && { color: colors.white },
+              ]}
+            >
+              {isAvailable ? "Coordinar" : "Seleccionar"}
+            </Text>
+          )}
         </Pressable>
       </View>
     </View>

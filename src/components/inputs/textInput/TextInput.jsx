@@ -11,11 +11,16 @@ const TextInputComponent = ({
   maxLength,
   value,
   onChangeText,
+  borderless = false,
   ...props
 }) => {
   return (
     <TextInput
-      style={[styles.inputs__textInput__container, style]}
+      style={[
+        styles.inputs__textInput__container,
+        borderless && { borderWidth: 0 },
+        style,
+      ]}
       placeholder={placeholder}
       placeholderTextColor={placeholderTextColor}
       selectionColor={selectionColor}

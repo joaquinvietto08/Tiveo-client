@@ -11,7 +11,6 @@ export const styles = StyleSheet.create({
     flexDirection: "row",
     flexWrap: "wrap",
     justifyContent: "space-between",
-    marginTop: 10,
     width: "100%",
   },
   servicesList__buttonView: {
@@ -19,8 +18,7 @@ export const styles = StyleSheet.create({
     width: "31%",
     height: 105,
     backgroundColor: "#FFFFFF",
-    /*     shadowColor: "#000000",
-    elevation: 1, */
+    marginVertical: 7,
   },
   servicesList__buttonViewSelected: {
     borderWidth: 1,

@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { colors } from "../../../../styles/globalStyles";
+import { colors } from "../../../../../styles/globalStyles";
 
 export const styles = StyleSheet.create({
   momentBottomSheet__content: {
@@ -28,14 +28,14 @@ export const styles = StyleSheet.create({
     marginTop: 20,
   },
   momentBottomSheet__dateSelector: {
-    width: 130,
+    width: 200,
     height: "100%",
     justifyContent: "center",
     alignItems: "flex-end",
     paddingRight: 20,
   },
   momentBottomSheet__timeSelector: {
-    width: 130,
+    width: 200,
     height: "100%",
     justifyContent: "center",
     paddingLeft: 20,

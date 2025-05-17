@@ -58,9 +58,6 @@ export const styles = StyleSheet.create({
     marginTop: 4,
     backgroundColor: colors.lightGray,
     borderRadius: 6,
-    /*     borderWidth: 1,
-    borderColor: colors.black,
-     */
     alignSelf: "center",
     paddingHorizontal: 6,
   },
@@ -95,6 +92,7 @@ export const styles = StyleSheet.create({
     height: 1,
     backgroundColor: colors.gray,
     width: "90%",
+    marginHorizontal: 20,
     alignSelf: "center",
     marginVertical: 20,
   },

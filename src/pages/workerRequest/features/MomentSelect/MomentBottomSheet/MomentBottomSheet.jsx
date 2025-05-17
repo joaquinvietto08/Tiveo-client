@@ -1,11 +1,11 @@
 import React, { forwardRef, useState, useMemo } from "react";
 import { View, Text, Pressable } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
-import BottomSheet from "../../../../components/bottomSheet/BottomSheet";
+import BottomSheet from "../../../../../components/bottomSheet/BottomSheet";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { styles } from "./MomentBottomSheetStyles";
-import { colors } from "../../../../styles/globalStyles";
-import { formatDate, formatTime } from "../../../../utils/formatHelpers";
+import { colors } from "../../../../../styles/globalStyles";
+import { formatDate, formatTime } from "../../../../../utils/formatHelpers";
 
 const MomentBottomSheet = forwardRef(
   ({ snapPoints, onClose, isOpen, onConfirm }, ref) => {

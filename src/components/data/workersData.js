@@ -87,6 +87,42 @@ export const workers = [
         service: "plumbing",
         isLicensed: true,
       },
+      {
+        service: "electricity",
+        isLicensed: false,
+      },
+      {
+        service: "locksmith",
+        isLicensed: true,
+      },
+      {
+        service: "ironwork",
+        isLicensed: true,
+      },
+      {
+        service: "technology",
+        isLicensed: false,
+      },
+      {
+        service: "beauty",
+        isLicensed: true,
+      },
+      {
+        service: "vehicles",
+        isLicensed: true,
+      },
+      {
+        service: "freight",
+        isLicensed: false,
+      },
+      {
+        service: "events",
+        isLicensed: true,
+      },
+      {
+        service: "photography",
+        isLicensed: true,
+      },
     ],
   },
   {

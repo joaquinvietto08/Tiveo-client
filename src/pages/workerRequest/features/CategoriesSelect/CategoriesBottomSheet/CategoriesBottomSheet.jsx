@@ -1,11 +1,11 @@
 import { forwardRef } from "react";
 import { View, Text, Pressable } from "react-native";
-import BottomSheet from "../../../../components/bottomSheet/BottomSheet";
+import BottomSheet from "../../../../../components/bottomSheet/BottomSheet";
 import { styles } from "./CategoriesBottomSheetStyles";
-import ServicesList from "../../../../components/servicesList/ServicesList";
+import ServicesList from "../../../../../components/servicesList/ServicesList";
 import { BottomSheetScrollView } from "@gorhom/bottom-sheet";
 import AntDesign from "@expo/vector-icons/AntDesign";
-import { colors } from "../../../../styles/globalStyles";
+import { colors } from "../../../../../styles/globalStyles";
 
 const CategoriesBottomSheet = forwardRef(
   ({ services, selected, onToggle, snapPoints, onClose, isOpen }, ref) => {

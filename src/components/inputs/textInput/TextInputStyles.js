@@ -1,4 +1,5 @@
 import { StyleSheet } from "react-native";
+import { colors } from "../../../styles/globalStyles";
 
 export const styles = StyleSheet.create({
   inputs__textInput__container: {
@@ -6,7 +7,7 @@ export const styles = StyleSheet.create({
     paddingVertical: 9,
     paddingHorizontal: 15,
     borderWidth: 1,
-    borderColor: "#C8C8C8",
+    borderColor: colors.gray,
     borderRadius: 8,
     width: "100%",
     backgroundColor: "#FFF",
