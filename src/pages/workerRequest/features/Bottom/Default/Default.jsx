@@ -1,8 +1,26 @@
 import { Image, Pressable, Text, View } from "react-native";
 import { styles } from "./DefaultStyles";
 import { AntDesign } from "@expo/vector-icons";
+import { useRequestValues } from "../../../utils/requestValues";
+import firestore from "@react-native-firebase/firestore";
 
-const Default = ({ worker }) => {
+const Default = ({ worker, data }) => {
+  const values = useRequestValues(data, worker);
+
+  const handleSaveWorkRequest = async () => {
+    try {
+      await firestore()
+        .collection("workRequest")
+        .add({
+          ...values,
+          createdAt: firestore.FieldValue.serverTimestamp(),
+          status: "pending",
+        });
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <View style={styles.WR__defaultBottom__container}>
       <View style={styles.WR__defaultBottom__hr}></View>
@@ -27,7 +45,10 @@ const Default = ({ worker }) => {
           </View>
         </View>
       </View>
-      <Pressable style={styles.WR__defaultBottom__button}>
+      <Pressable
+        style={styles.WR__defaultBottom__button}
+        onPress={handleSaveWorkRequest}
+      >
         <Text style={styles.WR__defaultBottom__buttonText}>
           Enviar solicitud
         </Text>

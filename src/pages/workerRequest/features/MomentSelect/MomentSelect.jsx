@@ -9,6 +9,7 @@ const MomentSelect = ({
   momentOption,
   setMomentOption,
   handleOpenMoment,
+  setScheduledDateTime,
   scheduledDateTime,
   isAvailable,
 }) => {
@@ -25,7 +26,10 @@ const MomentSelect = ({
             momentOption === "now" &&
               styles.WR__momentSelect__momentOptionSelected,
           ]}
-          onPress={() => setMomentOption("now")}
+          onPress={() => {
+            setMomentOption("now");
+            setScheduledDateTime(null);
+          }}
         >
           <Available
             height={30}

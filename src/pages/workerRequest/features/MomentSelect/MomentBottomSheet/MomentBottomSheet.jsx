@@ -73,7 +73,6 @@ const MomentBottomSheet = forwardRef(
             <DateTimePicker
               value={date}
               mode={mode}
-              timeZoneOffsetInMinutes={0}
               display="default"
               onChange={(e, sel) => {
                 setShow(false);

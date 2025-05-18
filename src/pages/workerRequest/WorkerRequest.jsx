@@ -17,6 +17,8 @@ const WorkerRequest = ({ navigation, bottom = "default" }) => {
   const insets = useSafeAreaInsets();
   const { worker } = useRoute().params;
   const services = worker?.services || [];
+  const [description, setDescription] = useState("");
+  const [images, setImages] = useState([]);
 
   const snapPoints = ["45%"];
 
@@ -82,7 +84,11 @@ const WorkerRequest = ({ navigation, bottom = "default" }) => {
               Solicitar trabajador
             </Text>
           </View>
-          <Description />
+          <Description
+            setImages={setImages}
+            setDescription={setDescription}
+            images={images}
+          />
           <CategoriesSelect
             selectedServices={selectedServices}
             onOpenCategories={handleOpenCategories}
@@ -91,10 +97,22 @@ const WorkerRequest = ({ navigation, bottom = "default" }) => {
             momentOption={momentOption}
             setMomentOption={setMomentOption}
             handleOpenMoment={handleOpenMoment}
+            setScheduledDateTime={setScheduledDateTime}
             scheduledDateTime={scheduledDateTime}
             isAvailable={isAvailable}
           />
-          {bottom === "default" && <Default worker={worker} />}
+          {bottom === "default" && (
+            <Default
+              worker={worker}
+              data={[
+                description,
+                images,
+                selectedServices,
+                momentOption,
+                scheduledDateTime,
+              ]}
+            />
+          )}
         </ScrollView>
 
         <CategoriesBottomSheet

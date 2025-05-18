@@ -8,9 +8,7 @@ import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 
 const MAX_IMAGES = 4;
 
-const Description = () => {
-  const [images, setImages] = useState([]);
-
+const Description = ({ setDescription, setImages, images }) => {
   useEffect(() => {
     // Pedimos permiso para acceder a la galería
     (async () => {
@@ -58,6 +56,7 @@ const Description = () => {
           multiline={true}
           borderless
           placeholder={"Texto de ejemplo..."}
+          onChangeText={setDescription}
         />
         <View style={styles.WR__description__hr} />
         <Pressable
