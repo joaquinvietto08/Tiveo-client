@@ -42,4 +42,31 @@ export const styles = StyleSheet.create({
   WR__description__imageButtonText: {
     fontFamily: "Inter-Regular",
   },
+  WR__description__imagePreviewContainer: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    paddingLeft: 20,
+    marginBottom: 8,
+  },
+  WR__description__imagePreview: {
+    width: 70,
+    height: 70,
+    borderRadius: 5,
+    marginRight: 8,
+    marginBottom: 8,
+  },
+  WR__description__imageWrapper: {
+    position: "relative",
+  },
+  WR__description__removeButton: {
+    position: "absolute",
+    backgroundColor: "rgba(255,255,255,0.8)",
+    top: 2,
+    right: 10,
+    borderRadius: 50,
+    width: 24,
+    height: 24,
+    justifyContent: "center",
+    alignItems: "center",
+  },
 });
