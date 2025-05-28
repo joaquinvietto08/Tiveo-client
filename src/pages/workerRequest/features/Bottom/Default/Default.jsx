@@ -7,10 +7,10 @@ import firestore from "@react-native-firebase/firestore";
 const Default = ({ worker, data }) => {
   const values = useRequestValues(data, worker);
 
-  const handleSaveWorkRequest = async () => {
+  const handleSaveActivity = async () => {
     try {
       await firestore()
-        .collection("workRequest")
+        .collection("activity")
         .add({
           ...values,
           createdAt: firestore.FieldValue.serverTimestamp(),
@@ -47,7 +47,7 @@ const Default = ({ worker, data }) => {
       </View>
       <Pressable
         style={styles.WR__defaultBottom__button}
-        onPress={handleSaveWorkRequest}
+        onPress={handleSaveActivity}
       >
         <Text style={styles.WR__defaultBottom__buttonText}>
           Enviar solicitud

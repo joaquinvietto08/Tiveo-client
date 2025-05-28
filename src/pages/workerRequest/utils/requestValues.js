@@ -9,15 +9,15 @@ export const buildRequestValues = (
   location
 ) => ({
   user: {
-    userId: user.user.uid,
-    displayName: user.user.displayName,
+    userId: user.uid,
+    displayName: user.displayName,
   },
   address: {
-    addressId: location.location.place_id,
-    address: location.location.formatted_address,
-    floor: location.location?.floor,
-    instructions: location.location?.notes,
-    phone: location.location?.phoneNumber,
+    addressId: location.place_id,
+    address: location.formatted_address,
+    floor: location?.floor,
+    instructions: location?.notes,
+    phone: location?.phoneNumber,
   },
   worker: {
     workerId: worker.uid,
@@ -33,7 +33,7 @@ export const buildRequestValues = (
 });
 
 export const useRequestValues = (data, worker) => {
-  const user = useContext(UserContext);
-  const location = useContext(LocationContext);
+  const { user } = useContext(UserContext);
+  const { location } = useContext(LocationContext);
   return buildRequestValues(data, worker, user, location);
 };

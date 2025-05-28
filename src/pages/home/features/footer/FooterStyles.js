@@ -2,6 +2,9 @@ import { StyleSheet } from "react-native";
 import { colors } from "../../../../styles/globalStyles";
 
 export const styles = StyleSheet.create({
+  home__footer__scrollView: {
+    marginBottom: 80,
+  },
   home__footer__subtitle: {
     fontSize: 14,
     fontFamily: "Inter-Bold",

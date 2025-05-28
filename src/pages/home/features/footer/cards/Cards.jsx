@@ -1,8 +1,6 @@
-import React, { useRef, useState } from "react";
 import { Image, Pressable, Text, View } from "react-native";
 import { styles } from "./CardsStyles";
 import { FlatList } from "react-native-gesture-handler";
-import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { translateAvailability } from "../../../../../utils/formatHelpers";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { colors } from "../../../../../styles/globalStyles";
@@ -56,16 +54,6 @@ const CardButton = ({ worker }) => {
 };
 
 const Cards = ({ workers }) => {
-  const flatListRef = useRef(null);
-  const [favorites, setFavorites] = useState({});
-
-  const toggleFavorite = (key) => {
-    setFavorites((prevFavorites) => ({
-      ...prevFavorites,
-      [key]: !prevFavorites[key],
-    }));
-  };
-
   return (
     <View>
       <View style={styles.home__bottomSheet__card__subtitleContainer}>
@@ -76,17 +64,10 @@ const Cards = ({ workers }) => {
       <FlatList
         data={workers}
         horizontal
-        ref={flatListRef}
         keyExtractor={(item) => item.uid}
         contentContainerStyle={styles.home__bottomSheet__card__container}
         showsHorizontalScrollIndicator={false}
-        renderItem={({ item }) => (
-          <CardButton
-            worker={item}
-            isFavorite={!!favorites[item.uid]}
-            onToggleFavorite={() => toggleFavorite(item.uid)}
-          />
-        )}
+        renderItem={({ item }) => <CardButton worker={item} />}
       />
     </View>
   );

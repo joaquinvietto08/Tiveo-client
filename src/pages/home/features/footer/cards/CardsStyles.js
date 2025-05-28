@@ -21,10 +21,10 @@ export const styles = StyleSheet.create({
   },
   home__bottomSheet__card__container: {
     paddingHorizontal: 20,
+    gap: 15,
   },
   home__bottomSheet__card__cardContainer: {
     borderRadius: 10,
-    marginRight: 15,
     width: 260,
     height: 220,
     backgroundColor: "#FFFFFF",
