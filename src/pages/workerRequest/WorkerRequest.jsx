@@ -19,6 +19,11 @@ const WorkerRequest = ({ navigation, bottom = "default" }) => {
   const services = worker?.services || [];
   const [description, setDescription] = useState("");
   const [images, setImages] = useState([]);
+  const scrollRef = useRef(null);
+
+  const scrollToBottom = () => {
+    scrollRef.current?.scrollToEnd({ animated: true });
+  };
 
   const snapPoints = ["45%"];
 
@@ -73,6 +78,7 @@ const WorkerRequest = ({ navigation, bottom = "default" }) => {
       <StatusBar translucent barStyle="dark-content" />
       <GestureHandlerRootView style={{ flex: 1 }}>
         <ScrollView
+          ref={scrollRef}
           contentContainerStyle={styles.workerRequest__scrollContent}
           showsVerticalScrollIndicator={false}
         >
@@ -111,6 +117,7 @@ const WorkerRequest = ({ navigation, bottom = "default" }) => {
                 momentOption,
                 scheduledDateTime,
               ]}
+              onRequestScrollToBottom={scrollToBottom}
             />
           )}
         </ScrollView>

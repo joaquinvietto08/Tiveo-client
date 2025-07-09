@@ -71,7 +71,7 @@ const LocationItem = ({ item, onSelect }) => {
   );
 };
 
-const OptionList = ({ navigation }) => {
+const OptionList = ({ navigation, setShowLoading }) => {
   const [locations, setLocations] = useState([]);
   const { setLocation } = useContext(LocationContext);
   const { user } = useContext(UserContext);
@@ -101,6 +101,10 @@ const OptionList = ({ navigation }) => {
         setLocations(addressesList);
       } catch (error) {
         console.error("Error al obtener direcciones de Firestore:", error);
+      } finally {
+        setTimeout(() => {
+          setShowLoading(false);
+        }, 1500);
       }
     };
 

@@ -1,13 +1,19 @@
-import { Image, Pressable, Text, View } from "react-native";
+import { Image, Text, View } from "react-native";
 import { styles } from "./DefaultStyles";
 import { AntDesign } from "@expo/vector-icons";
 import { useRequestValues } from "../../../utils/requestValues";
 import firestore from "@react-native-firebase/firestore";
+import LoadingButton from "../../../../../components/inputs/loadingButton/LoadingButton";
+import { useState } from "react";
 
-const Default = ({ worker, data }) => {
+const Default = ({ worker, data, onRequestScrollToBottom }) => {
   const values = useRequestValues(data, worker);
+  const [loading, setLoading] = useState(false);
 
   const handleSaveActivity = async () => {
+    onRequestScrollToBottom?.();
+
+    setLoading(true);
     try {
       await firestore()
         .collection("activity")
@@ -18,6 +24,10 @@ const Default = ({ worker, data }) => {
         });
     } catch (error) {
       console.error(error);
+    } finally {
+      setTimeout(() => {
+        setLoading(false);
+      }, 3000);
     }
   };
 
@@ -45,14 +55,11 @@ const Default = ({ worker, data }) => {
           </View>
         </View>
       </View>
-      <Pressable
-        style={styles.WR__defaultBottom__button}
+      <LoadingButton
+        text="Enviar solicitud"
+        loading={loading}
         onPress={handleSaveActivity}
-      >
-        <Text style={styles.WR__defaultBottom__buttonText}>
-          Enviar solicitud
-        </Text>
-      </Pressable>
+      />
       <Text style={styles.WR__defaultBottom__infoText}>
         Recordá que podes cancelar sin costo hasta{"\n"}15 minutos antes de que
         llegue el trabajador
