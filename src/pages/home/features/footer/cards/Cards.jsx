@@ -19,6 +19,9 @@ const CardButton = ({ worker }) => {
           />
         </View>
 
+        <Text style={styles.home__bottomSheet__card__infoTitle}>
+          {worker.description}
+        </Text>
         <View style={styles.home__bottomSheet__card__infoContainer}>
           <AntDesign name="star" size={12} color={colors.yellow} />
           <Text style={styles.home__bottomSheet__card__infoRating}>
@@ -28,10 +31,6 @@ const CardButton = ({ worker }) => {
             ({worker.completedJobs})
           </Text>
         </View>
-
-        <Text style={styles.home__bottomSheet__card__infoTitle}>
-          {worker.description}
-        </Text>
 
         <View style={styles.home__bottomSheet__card__statusContainer}>
           {worker.status === "available" ? (

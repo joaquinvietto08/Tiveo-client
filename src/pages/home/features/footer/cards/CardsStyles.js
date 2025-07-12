@@ -48,7 +48,6 @@ export const styles = StyleSheet.create({
   home__bottomSheet__card__infoContainer: {
     flexDirection: "row",
     alignItems: "center",
-    marginTop: 5,
     paddingLeft: 8,
   },
   home__bottomSheet__card__infoRating: {

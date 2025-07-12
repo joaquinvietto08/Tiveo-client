@@ -11,6 +11,7 @@ import { UserContext } from "../../../../context/UserContext";
 const Footer = ({ sheetRef, filteredWorkers }) => {
   const { activity } = useContext(UserContext);
   const workers = [...filteredWorkers];
+  console.log(workers)
   const [snapPoints, setSnapPoints] = useState(
     workers.length > 0 ? [140, 450] : [200, 200]
   );
@@ -38,7 +39,6 @@ const Footer = ({ sheetRef, filteredWorkers }) => {
       ref={sheetRef}
       snapPoints={snapPoints}
       animationConfigs={animationConfigs}
-      index={1}
     >
       <Location />
       <BottomSheetScrollView

@@ -49,6 +49,14 @@ const Home = ({ navigation }) => {
     sheetRef.current?.snapToIndex(0);
   };
 
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      sheetRef.current?.snapToIndex(1);
+    }, 300);
+
+    return () => clearTimeout(timeout);
+  }, []);
+
   return (
     <View style={styles.home__mainContainer}>
       <StatusBar translucent barStyle="dark-content" />

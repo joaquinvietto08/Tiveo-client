@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import * as geofire from "geofire-common";
 import { workers } from "../components/data/workersData";
-import { LocationContext } from "../context/LocationContext";
+import { LocationContext } from "./LocationContext";
 
 // Crear el contexto
 export const NearbyWorkersContext = createContext();
