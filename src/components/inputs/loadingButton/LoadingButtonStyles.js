@@ -20,7 +20,6 @@ export const styles = StyleSheet.create({
     position: "absolute",
   },
   inputs__loadingButton__button: {
-    backgroundColor: colors.primary,
     height: 50,
     justifyContent: "center",
     alignItems: "center",

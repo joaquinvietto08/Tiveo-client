@@ -2,10 +2,11 @@ import React from 'react';
 import {styles} from "./ServicesListStyles";
 import {getIcon} from "../../../../utils/getIcons";
 import {Pressable, Text, View} from "react-native";
-import {services} from "../../../../utils/servicesData";
+import {servicesData} from "../../../../utils/servicesData";
+import { translateService } from '../../../../utils/formatHelpers';
 
 const ServiceButton = ({ item }) => {
-    const IconComponent = getIcon(item.icon);
+    const IconComponent = getIcon(item.name);
     return (
         <View style={styles.services__servicesList__buttonView}>
             <Pressable
@@ -20,7 +21,7 @@ const ServiceButton = ({ item }) => {
 };
 
 const ServiceButton2 = ({ item }) => {
-    const IconComponent = getIcon(item.icon);
+    const IconComponent = getIcon(item.name);
     const firstServiceButtons = services
         .slice(0, 18)
         .map((item) => <ServiceButton key={item.key} item={item} />);
@@ -36,18 +37,18 @@ const ServiceButton2 = ({ item }) => {
                 style={styles.services__servicesList__button2}
             >
                 <IconComponent style={styles.services__servicesList__icon} />
-                <Text style={styles.services__servicesList__name}>{item.name}</Text>
+                <Text style={styles.services__servicesList__name}>{translateService(item.name)}</Text>
             </Pressable>
         </View>
     );
 };
 
 const ServicesList = () => {
-    const firstServiceButtons = services
+    const firstServiceButtons = servicesData
         .slice(0, 18)
         .map((item) => <ServiceButton key={item.key} item={item} />);
 
-    const secondServiceButtons = services
+    const secondServiceButtons = servicesData
         .slice(18)
         .map((item) => <ServiceButton2 key={item.key} item={item} />);
 

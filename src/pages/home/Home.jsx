@@ -9,10 +9,12 @@ import Footer from "./features/footer/Footer";
 import SearchBar from "./features/searchBar/SearchBar";
 import WorkerPreview from "./features/workerPreview/WorkerPreview";
 import { useNearbyWorkers } from "../../context/NearbyWorkersContext";
+import { useRoute } from "@react-navigation/native";
 
 const Home = ({ navigation }) => {
   const insets = useSafeAreaInsets();
   const sheetRef = useRef(null);
+  const route = useRoute();
   const { fetchNearbyWorkers, nearbyWorkers } = useNearbyWorkers();
 
   const [selectedWorkerId, setSelectedWorkerId] = useState(null);
@@ -38,6 +40,13 @@ const Home = ({ navigation }) => {
       );
     }
   };
+
+   useEffect(() => {
+    if (route.params?.openSheet) {
+      sheetRef.current?.snapToIndex(1);
+      navigation.setParams({ openSheet: false });
+    }
+  }, [route.params?.openSheet]);
 
   const handleRefresh = async () => {
     setIsRefreshing(true);

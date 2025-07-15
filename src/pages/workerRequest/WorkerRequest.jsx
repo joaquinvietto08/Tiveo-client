@@ -1,10 +1,10 @@
-import { useRef, useState } from "react";
-import { View, ScrollView, Pressable, Text } from "react-native";
+import { useRef, useState, useEffect } from "react";
+import { View, ScrollView, Pressable, Text, BackHandler } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { styles } from "./WorkerRequestStyles";
 import { StatusBar } from "react-native";
 import Feather from "@expo/vector-icons/Feather";
-import { useRoute } from "@react-navigation/native";
+import { useRoute, useNavigation } from "@react-navigation/native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import CategoriesBottomSheet from "./features/CategoriesSelect/CategoriesBottomSheet/CategoriesBottomSheet";
 import MomentBottomSheet from "./features/MomentSelect/MomentBottomSheet/MomentBottomSheet";
@@ -12,14 +12,25 @@ import CategoriesSelect from "./features/CategoriesSelect/CategoriesSelect";
 import MomentSelect from "./features/MomentSelect/MomentSelect";
 import Description from "./features/Description/Description";
 import Default from "./features/Bottom/Default/Default";
+import Advance from "./features/Bottom/Advance/Advance";
+import { servicesData } from "../../utils/servicesData";
+import Confirm from "../../components/confirm/Confirm";
 
-const WorkerRequest = ({ navigation, bottom = "default" }) => {
+const WorkerRequest = () => {
   const insets = useSafeAreaInsets();
-  const { worker } = useRoute().params;
-  const services = worker?.services || [];
+  const navigation = useNavigation();
+  const route = useRoute();
+  const { bottom = "default", worker } = route.params;
+
   const [description, setDescription] = useState("");
   const [images, setImages] = useState([]);
   const scrollRef = useRef(null);
+
+  const advancedServices = servicesData.map((s) => ({
+    service: s.name,
+    key: s.key,
+  }));
+  const services = bottom === "default" ? worker?.services : advancedServices;
 
   const scrollToBottom = () => {
     scrollRef.current?.scrollToEnd({ animated: true });
@@ -50,7 +61,7 @@ const WorkerRequest = ({ navigation, bottom = "default" }) => {
   };
 
   /* Moment */
-  const isAvailable = worker.status === "available";
+  const isAvailable = worker?.status === "busy" ? false : true;
   const [momentOption, setMomentOption] = useState(
     isAvailable ? "now" : "schedule"
   );
@@ -66,6 +77,31 @@ const WorkerRequest = ({ navigation, bottom = "default" }) => {
     momentSheetRef.current?.close();
     setIsMomentOpen(false);
   };
+
+  const [success, setSuccess] = useState(false);
+
+  const handleSuccess = () => {
+    setSuccess(true);
+  };
+
+  const [blockBack, setBlockBack] = useState(false);
+
+  useEffect(() => {
+    if (blockBack) {
+      const backHandlerSub = BackHandler.addEventListener(
+        "hardwareBackPress",
+        () => true
+      );
+      const removeBeforeRemove = navigation.addListener("beforeRemove", (e) => {
+        e.preventDefault();
+      });
+
+      return () => {
+        backHandlerSub.remove();
+        removeBeforeRemove();
+      };
+    }
+  }, [blockBack, navigation]);
 
   return (
     <View
@@ -107,7 +143,7 @@ const WorkerRequest = ({ navigation, bottom = "default" }) => {
             scheduledDateTime={scheduledDateTime}
             isAvailable={isAvailable}
           />
-          {bottom === "default" && (
+          {bottom === "default" ? (
             <Default
               worker={worker}
               data={[
@@ -118,9 +154,25 @@ const WorkerRequest = ({ navigation, bottom = "default" }) => {
                 scheduledDateTime,
               ]}
               onRequestScrollToBottom={scrollToBottom}
+              onSuccess={handleSuccess}
+              setBlockBack={setBlockBack}
+            />
+          ) : (
+            <Advance
+              data={[
+                description,
+                images,
+                selectedServices,
+                momentOption,
+                scheduledDateTime,
+              ]}
+              onRequestScrollToBottom={scrollToBottom}
+              setBlockBack={setBlockBack}
             />
           )}
         </ScrollView>
+
+        {success && <Confirm />}
 
         <CategoriesBottomSheet
           ref={categorySheetRef}
