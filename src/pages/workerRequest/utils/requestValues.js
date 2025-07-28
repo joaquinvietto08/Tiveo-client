@@ -14,7 +14,7 @@ export const buildRequestValues = (
   },
   address: {
     addressId: location.place_id,
-    address: location.formatted_address,
+    address: location.formatted_address.split(",")[0],
     floor: location?.floor || "",
     instructions: location?.notes || "",
     phone: location?.phoneNumber || "",

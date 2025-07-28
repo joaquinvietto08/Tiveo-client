@@ -17,15 +17,16 @@ const Advance = ({ data, onRequestScrollToBottom, setBlockBack }) => {
     setLoading(true);
     setBlockBack(true);
 
-    let ok = false;
+    let requestId = null;
     try {
-      await firestore()
+      const docRef = await firestore()
         .collection("request")
         .add({
           ...values,
           createdAt: firestore.FieldValue.serverTimestamp(),
           status: "requested",
         });
+      requestId = docRef.id;
       ok = true;
     } catch (error) {
       console.error(error);
@@ -33,7 +34,11 @@ const Advance = ({ data, onRequestScrollToBottom, setBlockBack }) => {
       setTimeout(() => {
         setLoading(false);
       }, 3000);
-      if (!ok) {
+      if (ok && requestId) {
+        setTimeout(() => {
+          navigation.navigate("AdvanceSearch", { values, requestId });
+        }, 4100);
+      } else {
         setBlockBack(false);
       }
     }

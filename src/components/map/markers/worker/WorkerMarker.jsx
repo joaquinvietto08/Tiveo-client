@@ -1,24 +1,29 @@
-import React from "react";
 import { View, Image, StyleSheet, Text } from "react-native";
 import { getIcon } from "../../../../utils/getIcons";
+import { colors } from "../../../../styles/globalStyles";
 
 const WorkerMarker = ({ worker }) => {
   const displayedServices = worker.services.slice(0, 2);
   const extraServicesCount = worker.services.length - displayedServices.length;
 
   return (
-    <View style={styles.markerContainer}>
-      <Image source={worker.photoURL} style={styles.workerImage} />
-      <View style={styles.servicesContainer}>
+    <View style={styles.map__markers__worker__markerContainer}>
+      <Image
+        source={worker.photoURL}
+        style={styles.map__markers__worker__workerImage}
+      />
+      <View style={styles.map__markers__worker__servicesContainer}>
         {extraServicesCount > 0 && (
-          <View style={styles.serviceIcon}>
-            <Text style={styles.extraText}>+{extraServicesCount}</Text>
+          <View style={styles.map__markers__worker__serviceIcon}>
+            <Text style={styles.map__markers__worker__serviceText}>
+              +{extraServicesCount}
+            </Text>
           </View>
         )}
         {displayedServices.map((service, index) => {
           const ServiceIcon = getIcon(service.service); // Obtén el ícono correspondiente
           return (
-            <View key={index} style={styles.serviceIcon}>
+            <View key={index} style={styles.map__markers__worker__serviceIcon}>
               <ServiceIcon width={16} height={16} />
             </View>
           );
@@ -29,39 +34,39 @@ const WorkerMarker = ({ worker }) => {
 };
 
 const styles = StyleSheet.create({
-  markerContainer: {
+  map__markers__worker__markerContainer: {
     width: 68,
     height: 56,
     alignItems: "center",
   },
-  workerImage: {
+  map__markers__worker__workerImage: {
     width: 46,
     height: 46,
     borderRadius: 50,
   },
-  servicesContainer: {
+  map__markers__worker__servicesContainer: {
     position: "absolute",
     bottom: 0,
     flexDirection: "row-reverse",
     alignItems: "center",
     justifyContent: "center",
   },
-  serviceIcon: {
+  map__markers__worker__serviceIcon: {
     width: 24,
     height: 24,
     borderRadius: 12,
     marginRight: -8,
-    backgroundColor: "#eee",
+    backgroundColor: colors.lightGray,
     justifyContent: "center",
     alignItems: "center",
     marginHorizontal: 1,
     borderWidth: 1,
-    borderColor: "#fff",
+    borderColor: colors.white,
   },
-  extraText: {
+  map__markers__worker__serviceText: {
     fontSize: 12,
-    fontWeight: "bold",
-    color: "#333",
+    color: colors.black,
+    fontFamily: "Inter-Bold",
     marginLeft: 3,
   },
 });

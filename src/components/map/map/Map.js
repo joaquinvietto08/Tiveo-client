@@ -5,9 +5,10 @@ import { mapStyle } from "./features/mapStyle";
 import { mapConfig } from "./features/mapConfig";
 import HomeMarker from "../markers/home/Home";
 import WorkerMarker from "../markers/worker/WorkerMarker";
+import PostulantMarker from "../markers/postulant/PostulantMarker";
 
 const MapComponent = forwardRef(
-  ({ region, user, workers, children, ...props }, ref) => {
+  ({ region, user, workers, workerType, children, ...props }, ref) => {
     return (
       <MapView
         ref={ref}
@@ -37,15 +38,16 @@ const MapComponent = forwardRef(
         {workers?.map((worker, index) => (
           <Marker
             key={`worker-${index}`}
-            coordinate={{
-              latitude: worker.lat,
-              longitude: worker.lng,
-            }}
+            coordinate={{ latitude: worker.lat, longitude: worker.lng }}
             anchor={{ x: 0.5, y: 0.5 }}
             tracksViewChanges={false}
             onPress={() => props.onSelectWorker(worker.uid)}
           >
-            <WorkerMarker worker={worker} />
+            {workerType === "postulant" ? (
+              <PostulantMarker postulant={worker} />
+            ) : (
+              <WorkerMarker worker={worker} />
+            )}
           </Marker>
         ))}
       </MapView>
