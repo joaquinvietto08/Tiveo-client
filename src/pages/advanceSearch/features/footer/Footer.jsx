@@ -14,11 +14,13 @@ import {
 import Available from "../../../../../assets/svgs/worker/available.svg";
 import Busy from "../../../../../assets/svgs/worker/busy.svg";
 import Licensed from "../../../../../assets/svgs/worker/licensed";
+import { useNavigation } from "@react-navigation/native";
 
-const Footer = ({ sheetRef, values, trabajadores }) => {
+const Footer = ({ sheetRef, values, workers }) => {
   const snapPoints = [90, 700];
   const animationConfigs = { duration: 400 };
   const scrollRef = useRef(null);
+  const navigation = useNavigation();
 
   return (
     <BottomSheet
@@ -37,11 +39,11 @@ const Footer = ({ sheetRef, values, trabajadores }) => {
         style={styles.advanceSearch__footer__scrollView}
       >
         <Text style={styles.advanceSearch__footer__postCountText}>
-          {trabajadores.length === 0
+          {workers.length === 0
             ? "Buscando trabajadores"
-            : trabajadores.length === 1
+            : workers.length === 1
             ? "Un trabajador postulado"
-            : `${trabajadores.length} trabajadores postulados`}
+            : `${workers.length} trabajadores postulados`}
         </Text>
         <View style={styles.advanceSearch__footer__detailRow}>
           <View style={styles.advanceSearch__footer__iconsContainer}>
@@ -106,16 +108,17 @@ const Footer = ({ sheetRef, values, trabajadores }) => {
           Trabajadores encontrados
         </Text>
         <View style={styles.advanceSearch__footer__workersContainer}>
-          {trabajadores.length === 0 ? (
+          {workers.length === 0 ? (
             <Text style={styles.advanceSearch__footer__noPostulantsText}>
               Aquí aparecerán los trabajadores que se postulen a tu solicitud
             </Text>
           ) : (
-            trabajadores.map((w) => (
+            workers.map((w) => (
               <Pressable
                 key={w.uid}
                 style={styles.advanceSearch__footer__card}
                 android_ripple={{ color: "#E2E2E2", borderless: false }}
+                onPress={() => navigation.navigate("WorkerProfile", { worker: w,  bottom:"advance" })}
               >
                 {/* Header de la tarjeta */}
                 <View style={styles.advanceSearch__footer__cardHeader}>

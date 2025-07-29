@@ -11,11 +11,12 @@ import Licensed from "../../../assets/svgs/worker/licensed";
 import Warranty from "../../../assets/svgs/worker/warranty";
 import { getTimeExperience } from "../../utils/formatHelpers";
 import Default from "./features/default/Default";
+import Advance from "./features/advance/Advance";
 
-const WorkerProfile = ({ navigation, bottom = "default" }) => {
+const WorkerProfile = ({ navigation }) => {
   const insets = useSafeAreaInsets();
   const route = useRoute();
-  const { worker } = route.params;
+  const { worker, bottom = "default" } = route.params;
 
   return (
     <View
@@ -119,6 +120,7 @@ const WorkerProfile = ({ navigation, bottom = "default" }) => {
         </View>
         <View style={styles.workerProfile__divider} />
         {bottom === "default" && <Default worker={worker} />}
+        {bottom === "advance" && <Advance worker={worker} />}
       </ScrollView>
     </View>
   );

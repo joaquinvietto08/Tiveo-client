@@ -7,8 +7,7 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import Map from "./features/map/Map";
 import Footer from "./features/footer/Footer";
 import Feather from "@expo/vector-icons/Feather";
-import postulantsData from "../../components/data/postulantsData";
-import { workers } from "../../components/data/workersData";
+import postulants from "../../components/data/postulantsData";
 
 const AdvanceSearch = () => {
   const insets = useSafeAreaInsets();
@@ -18,18 +17,6 @@ const AdvanceSearch = () => {
   const { values, requestId } = route.params;
 
   const [selectedWorkerId, setSelectedWorkerId] = useState(null);
-  const [postulants, setPostulants] = useState([]);
-
-  useEffect(() => {
-    const merged = postulantsData.map((post) => {
-      const workerInfo = workers.find((w) => w.uid === post.uid) || {};
-      return {
-        ...workerInfo,
-        ...post,
-      };
-    });
-    setPostulants(merged);
-  }, []);
 
   const handleMapPress = () => {
     sheetRef.current?.snapToIndex(0);
@@ -61,7 +48,7 @@ const AdvanceSearch = () => {
             paddingBottom: insets.bottom,
           }}
         ></View>
-        <Footer sheetRef={sheetRef} values={values} trabajadores={postulants} />
+        <Footer sheetRef={sheetRef} values={values} workers={postulants} />
       </GestureHandlerRootView>
     </View>
   );

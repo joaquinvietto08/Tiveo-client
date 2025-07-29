@@ -11,11 +11,12 @@ const WorkerPreview = ({ worker, onClose }) => {
   if (!worker) return null;
 
   return (
-    <Pressable
-      style={styles.home__workerPreview__mainContainer}
-      onPress={() => navigation.navigate("WorkerProfile", { worker })}
-    >
-      <View style={styles.home__workerPreview__contentContainer}>
+    <View style={styles.home__workerPreview__mainContainer}>
+      <Pressable
+        style={styles.home__workerPreview__contentContainer}
+        onPress={() => navigation.navigate("WorkerProfile", { worker })}
+        android_ripple={{ color: "#E2E2E2", borderless: false }}
+      >
         <Image
           source={worker.photoURL}
           style={styles.home__workerPreview__image}
@@ -59,8 +60,8 @@ const WorkerPreview = ({ worker, onClose }) => {
             </View>
           )}
         </View>
-      </View>
-    </Pressable>
+      </Pressable>
+    </View>
   );
 };
 
