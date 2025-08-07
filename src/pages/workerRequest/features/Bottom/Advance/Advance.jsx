@@ -6,7 +6,7 @@ import firestore from "@react-native-firebase/firestore";
 import LoadingButton from "../../../../../components/inputs/loadingButton/LoadingButton";
 import { useNavigation } from "@react-navigation/native";
 
-const Advance = ({ data, onRequestScrollToBottom, setBlockBack }) => {
+const Advance = ({ data, onRequestScrollToBottom, setBlockBack, onSuccess }) => {
   const values = useRequestValues(data);
   const navigation = useNavigation();
 
@@ -36,7 +36,8 @@ const Advance = ({ data, onRequestScrollToBottom, setBlockBack }) => {
       }, 3000);
       if (ok && requestId) {
         setTimeout(() => {
-          navigation.navigate("AdvanceSearch", { values, requestId });
+          navigation.navigate("AdvanceSearch", { values, requestId, onSuccess, setBlockBack, onRequestScrollToBottom });
+          setBlockBack(false);
         }, 4100);
       } else {
         setBlockBack(false);

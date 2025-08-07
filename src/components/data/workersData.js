@@ -18,6 +18,7 @@ export const workers = [
     description: "Construcción y reparación de muebles de madera.",
     completedJobs: 22,
     starRating: 2.7,
+    amountRating: 10,
     bannerImage: headerPic,
     phone: "098-765-4321",
     services: [
@@ -49,6 +50,7 @@ export const workers = [
     description: "Reparación de cañerías y griferías.",
     completedJobs: 30,
     starRating: 4.7,
+    amountRating: 23,
     bannerImage: headerPic,
     phone: "234-567-8901",
     services: [
@@ -72,6 +74,7 @@ export const workers = [
     description: "Servicios de pintura para interiores y exteriores.",
     completedJobs: 32,
     starRating: 4.7,
+    amountRating: 13,
     bannerImage: headerPic,
     phone: "456-789-0123",
     services: [
@@ -139,6 +142,7 @@ export const workers = [
     description: "Instalaciones de gas.",
     completedJobs: 50,
     starRating: 4.4,
+    amountRating: 34,
     bannerImage: headerPic,
     phone: "567-890-1234",
     services: [
@@ -162,6 +166,7 @@ export const workers = [
     description: "Servicios de pintura y reparación de electrodomésticos.",
     completedJobs: 22,
     starRating: 4.5,
+    amountRating: 10,
     bannerImage: headerPic,
     phone: "678-901-2345",
     services: [
@@ -189,6 +194,7 @@ export const workers = [
     description: "Servicio de cerrajería 24hs.",
     completedJobs: 18,
     starRating: 4.3,
+    amountRating: 9,
     bannerImage: headerPic,
     phone: "890-123-4567",
     services: [

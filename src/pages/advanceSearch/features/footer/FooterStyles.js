@@ -124,12 +124,34 @@ export const styles = StyleSheet.create({
     color: colors.black,
     fontFamily: "Inter-SemiBold",
   },
-  advanceSearch__footer__iconBox: {
-    marginRight: 8,
-    backgroundColor: colors.primary,
-    paddingHorizontal: 4,
-    paddingVertical: 2,
-    borderRadius: 6,
+  advanceSearch__footer__infoRowMoment: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
+  },
+  advanceSearch__footer__infoSubContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    paddingVertical: 5,
+    paddingHorizontal: 10,
+    gap: 8,
+    borderRadius: 40,
+  },
+  advanceSearch__footer__infoAvailable: {
+    backgroundColor: "#D1F5E1",
+  },
+  advanceSearch__footer__infoBusy: {
+    backgroundColor: "#FFF4E2",
+  },
+  advanceSearch__footer__infoText: {
+    fontSize: 14,
+    fontFamily: "Inter-SemiBold",
+  },
+  advanceSearch__footer__infoTextAvailable: {
+    color: colors.green,
+  },
+  advanceSearch__footer__infoTextBusy: {
+    color: colors.primary,
   },
   advanceSearch__footer__messageContainer: {
     backgroundColor: "#F3F4F6",

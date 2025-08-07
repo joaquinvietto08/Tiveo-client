@@ -167,6 +167,7 @@ const WorkerRequest = () => {
                 scheduledDateTime,
               ]}
               onRequestScrollToBottom={scrollToBottom}
+              onSuccess={handleSuccess}
               setBlockBack={setBlockBack}
             />
           )}

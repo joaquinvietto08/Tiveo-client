@@ -17,10 +17,11 @@ export const styles = StyleSheet.create({
   },
   WR__categoriesSelect__tag: {
     flexDirection: "row",
-    gap: 10,
+    gap: 4,
     alignItems: "center",
-    backgroundColor: colors.primary,
     borderRadius: 10,
+    borderWidth: 1,
+    borderColor: colors.black,
     paddingVertical: 6,
     paddingHorizontal: 8,
   },

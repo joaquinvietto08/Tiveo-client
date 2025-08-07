@@ -16,7 +16,7 @@ import Advance from "./features/advance/Advance";
 const WorkerProfile = ({ navigation }) => {
   const insets = useSafeAreaInsets();
   const route = useRoute();
-  const { worker, bottom = "default" } = route.params;
+  const { worker, bottom = "default", values } = route.params;
 
   return (
     <View
@@ -25,10 +25,6 @@ const WorkerProfile = ({ navigation }) => {
         paddingBottom: insets.bottom,
       }}
     >
-      <LinearGradient
-        colors={["rgba(0,0,0,0.80)", "transparent"]}
-        style={styles.workerProfile__topGradient}
-      />
       <StatusBar translucent barStyle="light-content" />
       <ScrollView
         contentContainerStyle={styles.workerProfile__scrollContent}
@@ -41,6 +37,10 @@ const WorkerProfile = ({ navigation }) => {
           >
             <Feather name="arrow-left" size={20} color="black" />
           </Pressable>
+          <LinearGradient
+            colors={["rgba(0,0,0,0.80)", "transparent"]}
+            style={styles.workerProfile__topGradient}
+          />
           <Image
             source={worker.bannerImage}
             style={styles.workerProfile__banner}
@@ -58,9 +58,24 @@ const WorkerProfile = ({ navigation }) => {
           </Text>
 
           <View style={styles.workerProfile__ratingContainer}>
-            <AntDesign name="star" size={16} color={colors.black} />
+            {Array.from({ length: 5 }).map((_, i) => {
+              const idx = i + 1;
+              const filledStars = Math.floor(worker.starRating);
+              return (
+                <AntDesign
+                  key={idx}
+                  name="star"
+                  size={16}
+                  color={idx <= filledStars ? colors.primary : colors.lightGray}
+                  style={{ marginHorizontal: 2 }}
+                />
+              );
+            })}
             <Text style={styles.workerProfile__ratingText}>
               {worker.starRating}
+            </Text>
+            <Text style={styles.workerProfile__ratingText}>
+              ({worker.amountRating})
             </Text>
           </View>
           <View style={styles.workerProfile__body}>
@@ -69,15 +84,14 @@ const WorkerProfile = ({ navigation }) => {
             </Text>
             {worker.services.some((s) => s.isLicensed) && (
               <View style={styles.workerProfile__licensedContainer}>
+                <Licensed width={18} height={18} />
                 <Text style={styles.workerProfile__licensedText}>
                   Matriculado
                 </Text>
-                <Licensed width={18} height={18} />
               </View>
             )}
           </View>
         </View>
-        <View style={styles.workerProfile__divider} />
         <View style={styles.workerProfile__experienceSection}>
           <View style={styles.workerProfile__row}>
             <View style={styles.workerProfile__leftFixed}>
@@ -100,27 +114,23 @@ const WorkerProfile = ({ navigation }) => {
               Trabajos realizados
             </Text>
           </View>
-
-          <View style={styles.workerProfile__guaranteeWrapper}>
-            <View style={styles.workerProfile__guaranteeRow}>
-              <View style={styles.workerProfile__leftFixed}>
-                <Warranty width={30} height={30} fill={colors.primary} />
-              </View>
-              <View style={styles.workerProfile__guaranteeTitleContainer}>
-                <Text style={styles.workerProfile__guaranteeTitle}>
-                  Trabajo protegido con garantía
-                </Text>
-                <Text style={styles.workerProfile__guaranteeDescription}>
-                  Pagando el trabajo por la app contás con la {"\n"}
-                  protección de la garantía.
-                </Text>
-              </View>
+        </View>
+        <View style={styles.workerProfile__guaranteeWrapper}>
+          <View style={styles.workerProfile__guaranteeRow}>
+            <Warranty width={30} height={30} fill={colors.primary} />
+            <View style={styles.workerProfile__guaranteeTitleContainer}>
+              <Text style={styles.workerProfile__guaranteeTitle}>
+                Trabajo protegido con garantía
+              </Text>
+              <Text style={styles.workerProfile__guaranteeDescription}>
+                Pagando el trabajo por la app contás con la protección de la
+                garantía.
+              </Text>
             </View>
           </View>
         </View>
-        <View style={styles.workerProfile__divider} />
         {bottom === "default" && <Default worker={worker} />}
-        {bottom === "advance" && <Advance worker={worker} />}
+        {bottom === "advance" && <Advance worker={worker} values={values} />}
       </ScrollView>
     </View>
   );

@@ -118,9 +118,14 @@ const Footer = ({ sheetRef, values, workers }) => {
                 key={w.uid}
                 style={styles.advanceSearch__footer__card}
                 android_ripple={{ color: "#E2E2E2", borderless: false }}
-                onPress={() => navigation.navigate("WorkerProfile", { worker: w,  bottom:"advance" })}
+                onPress={() =>
+                  navigation.navigate("WorkerProfile", {
+                    worker: w,
+                    bottom: "advance",
+                    values,
+                  })
+                }
               >
-                {/* Header de la tarjeta */}
                 <View style={styles.advanceSearch__footer__cardHeader}>
                   <Image
                     source={
@@ -146,12 +151,11 @@ const Footer = ({ sheetRef, values, workers }) => {
                       {w.starRating.toFixed(1)}
                     </Text>
                     <Text style={styles.advanceSearch__footer__ratingCount}>
-                      ({w.completedJobs})
+                      ({w.amountRating})
                     </Text>
                   </View>
                 </View>
 
-                {/* Body de la tarjeta */}
                 <View style={styles.advanceSearch__footer__cardBody}>
                   <View style={styles.advanceSearch__footer__infoRow}>
                     <Text style={styles.advanceSearch__footer__infoLabel}>
@@ -161,23 +165,35 @@ const Footer = ({ sheetRef, values, workers }) => {
                       {w.price != null ? formatPrice(w.price) : "A definir"}
                     </Text>
                   </View>
-                  <View style={styles.advanceSearch__footer__infoRow}>
-                    <View style={styles.advanceSearch__footer__iconBox}>
+                  <View style={styles.advanceSearch__footer__infoRowMoment}>
+                    <View
+                      style={[
+                        styles.advanceSearch__footer__infoSubContainer,
+                        w.moment === "now"
+                          ? styles.advanceSearch__footer__infoAvailable
+                          : styles.advanceSearch__footer__infoBusy,
+                      ]}
+                    >
                       {w.moment === "now" ? (
-                        <Available height={20} width={20} fill={colors.black} />
+                        <Available height={20} width={20} fill={colors.green} />
                       ) : (
-                        <Busy height={20} width={20} fill={colors.black} />
+                        <Busy height={20} width={20} fill={colors.primary} />
                       )}
+                      <Text
+                        style={[
+                          styles.advanceSearch__footer__infoText,
+                          w.moment === "now"
+                            ? styles.advanceSearch__footer__infoTextAvailable
+                            : styles.advanceSearch__footer__infoTextBusy,
+                        ]}
+                      >
+                        {w.moment === "now"
+                          ? "Ahora mismo"
+                          : `${formatDate(w.scheduledDateTime)} • ${formatTime(
+                              w.scheduledDateTime
+                            )} hs`}
+                      </Text>
                     </View>
-
-                    <Text style={styles.advanceSearch__footer__infoValue}>
-                      {w.moment === "now"
-                        ? "Ahora mismo"
-                        : formatDate(w.scheduledDateTime) +
-                          " • " +
-                          formatTime(w.scheduledDateTime) +
-                          " hs"}
-                    </Text>
                   </View>
                   {w.message && (
                     <View

@@ -15,6 +15,7 @@ const Default = ({ worker, data, onRequestScrollToBottom, onSuccess, setBlockBac
     onRequestScrollToBottom?.();
     setLoading(true);
     setBlockBack(true);
+    console.log(values)
 
     let ok = false;
     try {

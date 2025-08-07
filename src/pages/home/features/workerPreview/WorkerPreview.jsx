@@ -35,7 +35,7 @@ const WorkerPreview = ({ worker, onClose }) => {
           <View style={styles.home__workerPreview__ratingContainer}>
             <AntDesign name="star" size={14} color="black" />
             <Text style={styles.home__workerPreview__ratingText}>
-              {worker.starRating} ({worker.completedJobs})
+              {worker.starRating} ({worker.amountRating})
             </Text>
           </View>
 
