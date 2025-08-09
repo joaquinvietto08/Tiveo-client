@@ -167,13 +167,19 @@ const WorkerRequest = () => {
                 scheduledDateTime,
               ]}
               onRequestScrollToBottom={scrollToBottom}
-              onSuccess={handleSuccess}
               setBlockBack={setBlockBack}
             />
           )}
         </ScrollView>
 
-        {success && <Confirm />}
+        {success && (
+          <Confirm
+            title="Solicitud enviada"
+            text={
+              "Recordá que este trabajo todavía no está confirmado.\nPodés ver el estado en el inicio."
+            }
+          />
+        )}
 
         <CategoriesBottomSheet
           ref={categorySheetRef}

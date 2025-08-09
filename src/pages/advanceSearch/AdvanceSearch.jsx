@@ -25,6 +25,23 @@ const AdvanceSearch = () => {
     navigation.navigate("HomeIndex", { openSheet: true });
   };
 
+  useEffect(() => {
+    if (!selectedWorkerId) return;
+
+    const w = postulants.find(
+      (p) => p.uid === selectedWorkerId
+    );
+
+    if (w) {
+      navigation.navigate("WorkerProfile", {
+        worker: w,
+        bottom: "advance",
+        values,
+      });
+      setSelectedWorkerId(null)
+    }
+  }, [selectedWorkerId]);
+
   return (
     <View style={styles.advanceSearch__mainContainer}>
       <StatusBar translucent barStyle="dark-content" />

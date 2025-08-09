@@ -5,7 +5,7 @@ import { styles } from "./ConfirmStyles";
 import { colors } from "../../styles/globalStyles";
 import { useNavigation } from "@react-navigation/native";
 
-const Confirm = () => {
+const Confirm = ({text, title}) => {
   const navigation = useNavigation();
 
   // 1) Animated values
@@ -63,15 +63,14 @@ const Confirm = () => {
         <Animated.Text
           style={[styles.checkIconText, { opacity: titleOpacity }]}
         >
-          Solicitud enviada
+          {title}
         </Animated.Text>
       </View>
 
       {/* 6) Bottom con fade */}
       <Animated.View style={[styles.checkContainerBottom, { opacity: bottomOpacity }]}>
         <Text style={styles.checkTextBottom}>
-          Recordá que este trabajo todavía no está confirmado.{"\n"}
-          Podés ver el estado en el inicio.
+          {text}
         </Text>
         <Pressable style={styles.checkButton} onPress={handleGoHome}>
           <Text style={styles.checkButtonText}>Volver al inicio</Text>

@@ -12,12 +12,23 @@ import { useNavigation } from "@react-navigation/native";
 import { colors } from "../../../../styles/globalStyles";
 import LoadingButton from "../../../../components/inputs/loadingButton/LoadingButton";
 import firestore from "@react-native-firebase/firestore";
+import { useState } from "react";
 
-const Advance = ({ worker, values }) => {
-  const status =
-    worker.moment === "now" ? "going" : "confirm";
+const Advance = ({
+  worker,
+  values,
+  onRequestScrollToBottom,
+  onSuccess,
+  setBlockBack,
+}) => {
+  const [loading, setLoading] = useState(false);
+  const status = worker.moment === "now" ? "going" : "confirm";
 
   const handleSaveActivity = async () => {
+    onRequestScrollToBottom?.();
+    setLoading(true);
+    setBlockBack(true);
+
     const activityPayload = {
       ...values,
       moment: worker.moment,
@@ -32,14 +43,25 @@ const Advance = ({ worker, values }) => {
       status,
     };
 
-    console.log(activityPayload);
-
     let ok = false;
     try {
       await firestore().collection("activity").add(activityPayload);
       ok = true;
     } catch (error) {
       console.error(error);
+    } finally {
+      setTimeout(() => {
+        setLoading(false);
+      }, 3000);
+
+      // segundo timeout para onSuccess y desbloquear
+      if (ok) {
+        setTimeout(() => {
+          onSuccess();
+        }, 4100);
+      } else {
+        setBlockBack(false);
+      }
     }
   };
 
@@ -134,6 +156,7 @@ const Advance = ({ worker, values }) => {
       <View style={styles.workerProfile__advance__BottomContainer}>
         <LoadingButton
           text="Confirmar solicitud"
+          loading={loading}
           onPress={handleSaveActivity}
         />
         <Text style={styles.workerProfile__advance__infoText}>

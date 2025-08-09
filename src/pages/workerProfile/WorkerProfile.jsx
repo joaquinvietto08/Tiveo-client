@@ -1,4 +1,11 @@
-import { View, ScrollView, Text, Image, Pressable } from "react-native";
+import {
+  View,
+  ScrollView,
+  Text,
+  Image,
+  Pressable,
+  BackHandler,
+} from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useRoute } from "@react-navigation/native";
 import { AntDesign } from "@expo/vector-icons";
@@ -12,11 +19,42 @@ import Warranty from "../../../assets/svgs/worker/warranty";
 import { getTimeExperience } from "../../utils/formatHelpers";
 import Default from "./features/default/Default";
 import Advance from "./features/advance/Advance";
+import Confirm from "../../components/confirm/Confirm";
+import { useEffect, useRef, useState } from "react";
 
 const WorkerProfile = ({ navigation }) => {
   const insets = useSafeAreaInsets();
   const route = useRoute();
   const { worker, bottom = "default", values } = route.params;
+  const scrollRef = useRef(null);
+
+  const scrollToBottom = () => {
+    scrollRef.current?.scrollToEnd({ animated: true });
+  };
+
+  const [blockBack, setBlockBack] = useState(false);
+  useEffect(() => {
+    if (blockBack) {
+      const backHandlerSub = BackHandler.addEventListener(
+        "hardwareBackPress",
+        () => true
+      );
+      const removeBeforeRemove = navigation.addListener("beforeRemove", (e) => {
+        e.preventDefault();
+      });
+
+      return () => {
+        backHandlerSub.remove();
+        removeBeforeRemove();
+      };
+    }
+  }, [blockBack, navigation]);
+
+  const [success, setSuccess] = useState(false);
+
+  const handleSuccess = () => {
+    setSuccess(true);
+  };
 
   return (
     <View
@@ -25,8 +63,12 @@ const WorkerProfile = ({ navigation }) => {
         paddingBottom: insets.bottom,
       }}
     >
-      <StatusBar translucent barStyle="light-content" />
+      <StatusBar
+        translucent
+        barStyle={success ? "dark-content" : "light-content"}
+      />
       <ScrollView
+        ref={scrollRef}
         contentContainerStyle={styles.workerProfile__scrollContent}
         showsVerticalScrollIndicator={false}
       >
@@ -130,8 +172,22 @@ const WorkerProfile = ({ navigation }) => {
           </View>
         </View>
         {bottom === "default" && <Default worker={worker} />}
-        {bottom === "advance" && <Advance worker={worker} values={values} />}
+        {bottom === "advance" && (
+          <Advance
+            worker={worker}
+            values={values}
+            onRequestScrollToBottom={scrollToBottom}
+            onSuccess={handleSuccess}
+            setBlockBack={setBlockBack}
+          />
+        )}
       </ScrollView>
+      {success && (
+        <Confirm
+          title="Trabajo confirmado"
+          text={"Podés ver el estado de la solicitud en el inicio."}
+        />
+      )}
     </View>
   );
 };

@@ -20,18 +20,20 @@ const Footer = ({ sheetRef, filteredWorkers }) => {
     duration: 400,
   };
 
-  useEffect(() => {
-    if (initialRender) {
-      setInitialRender(false);
-      return;
-    }
+useEffect(() => {
+  if (initialRender) {
+    setInitialRender(false);
+    return;
+  }
 
-    if (workers.length === 0) {
-      setSnapPoints([200, 200]);
-    } else {
-      setSnapPoints([140, 450]);
-    }
-  }, [workers.length]);
+  if (workers.length === 0 && activity.length === 0) {
+    setSnapPoints([200, 200]);
+  } else if (workers.length === 0 && activity.length > 0) {
+    setSnapPoints([140, 350]);
+  } else {
+    setSnapPoints([140, 450]);
+  }
+}, [workers.length, activity.length]);
 
   return (
     <BottomSheet
