@@ -20,7 +20,7 @@ const WorkerRequest = () => {
   const insets = useSafeAreaInsets();
   const navigation = useNavigation();
   const route = useRoute();
-  const { bottom = "default", worker } = route.params;
+  const { bottom = "default", worker, initialSelectedServices = [] } = route.params;
 
   const [description, setDescription] = useState("");
   const [images, setImages] = useState([]);
@@ -39,7 +39,7 @@ const WorkerRequest = () => {
   const snapPoints = ["45%"];
 
   /* Services */
-  const [selectedServices, setSelectedServices] = useState([]);
+  const [selectedServices, setSelectedServices] = useState(initialSelectedServices);
   const categorySheetRef = useRef(null);
   const [isCategoryOpen, setIsCategoryOpen] = useState(false);
 

@@ -69,7 +69,7 @@ const ServiceList = ({ navigation, onServiceSelect }) => {
 
   const handleServicePress = (item) => {
     if (item.key === "100") {
-      navigation.navigate("Services");
+      navigation.navigate("Servicios");
     } else {
       setSelectedService(item);
       onServiceSelect(item);

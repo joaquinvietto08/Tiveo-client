@@ -20,10 +20,6 @@ export const styles = StyleSheet.create({
     width: "31%",
     height: 105,
     backgroundColor: "#FFFFFF",
-    shadowColor: "#000000",
-    shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
     elevation: 2,
   },
   services__servicesList__button: {
@@ -52,10 +48,6 @@ export const styles = StyleSheet.create({
     width: "47%",
     height: 105,
     backgroundColor: "#FFFFFF",
-    shadowColor: "#000000",
-    shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
     elevation: 2,
   },
   services__servicesList__button2: {
