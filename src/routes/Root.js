@@ -9,6 +9,7 @@ import { LocationContext } from "../context/LocationContext";
 import WorkerProfile from "../pages/workerProfile/WorkerProfile";
 import WorkerRequest from "../pages/workerRequest/WorkerRequest";
 import AdvanceSearch from "../pages/advanceSearch/AdvanceSearch";
+import Messages from "../pages/messages/Messages";
 
 const Stack = createNativeStackNavigator();
 
@@ -26,6 +27,7 @@ const Root = () => {
               <Stack.Screen name="WorkerProfile" component={WorkerProfile} />
               <Stack.Screen name="WorkerRequest" component={WorkerRequest} />
               <Stack.Screen name="AdvanceSearch" component={AdvanceSearch} />
+              <Stack.Screen name="Messages" component={Messages} />
             </>
           ) : (
             <Stack.Screen name="Location" component={LocationRoutes} />

@@ -116,6 +116,7 @@ const Activity = ({ navigation }) => {
                           },
                           styles.messagesButton,
                         ]}
+                        onPress={() => navigation.navigate("Messages")}
                       >
                         <Text>Mensajes</Text>
                       </Pressable>
