@@ -39,7 +39,7 @@ export const styles = StyleSheet.create({
 
   messages__chat__time: {
     marginTop: 4,
-    fontSize: 10,
+    fontSize: 12,
     fontFamily: "Inter-Regular",
     textAlign: "right",
     color: colors.black,

@@ -3,7 +3,7 @@ import { View, Text, FlatList } from "react-native";
 import { styles } from "./ChatStyles";
 
 const ChatItem = React.memo(({ text, sender, timestamp }) => {
-  const isMe = sender === "me";
+  const isMe = sender === "client";
   return (
     <View
       style={[
@@ -24,6 +24,7 @@ const ChatItem = React.memo(({ text, sender, timestamp }) => {
 });
 
 const Chat = ({ data }) => {
+  console.log(data)
   const renderItem = useCallback(
     ({ item }) => (
       <ChatItem

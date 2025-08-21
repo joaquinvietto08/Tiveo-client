@@ -6,8 +6,11 @@ import { colors } from "../../../../../../styles/globalStyles";
 import Available from "../../../../../../../assets/svgs/worker/available.svg";
 import Busy from "../../../../../../../assets/svgs/worker/busy.svg";
 import { formatDate, formatTime } from "../../../../../../utils/formatHelpers";
+import { useNavigation } from "@react-navigation/native";
 
 const StatusCard = ({
+  activityId,
+  worker,
   status,
   extraCount,
   services,
@@ -17,6 +20,8 @@ const StatusCard = ({
   moment,
   name,
 }) => {
+  const navigation = useNavigation();
+
   const getStyleCard = (status) => {
     return styles[`home__bottomSheet__statusCard__card__${status}`] || {};
   };
@@ -74,6 +79,7 @@ const StatusCard = ({
                 styles.home__bottomSheet__statusCard__messagesButton,
                 getStyleMessagesButton(status),
               ]}
+              onPress={() => navigation.navigate("Messages", {activityId, worker})}
             >
               <Text
                 style={[

@@ -5,14 +5,7 @@ import Feather from "@expo/vector-icons/Feather";
 import { useNavigation } from "@react-navigation/native";
 import { colors } from "../../../../styles/globalStyles";
 
-const worker = {
-  workerId: 7,
-  firstName: "Octavio",
-  lastName: "Gaggio",
-  profilePicture: require("../../../../../assets/images/data/7.png"), // ajustá extensión si es .jpg
-};
-
-const Header = () => {
+const Header = ({worker}) => {
   const navigation = useNavigation();
 
   return (

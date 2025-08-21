@@ -20,6 +20,8 @@ const Works = () => {
     });
 
   const renderItem = ({ item }) => {
+    const id = item.id;
+    const worker = item.worker|| {};
     const services = item.services || [];
     const address = item.address.address.split(",")[0] || [];
     const status = item.status || [];
@@ -31,6 +33,8 @@ const Works = () => {
 
     return (
       <StatusCard
+        activityId={id}
+        worker={worker}
         status={status}
         displayedServices={displayed}
         extraCount={extraCount}

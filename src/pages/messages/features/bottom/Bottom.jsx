@@ -1,40 +1,25 @@
-import React, { useEffect } from "react";
-import { styles } from "./BottomStyles";
-import { Pressable, View } from "react-native";
-import * as ImagePicker from "expo-image-picker";
+import React, { useState, useEffect } from "react";
+import { Alert, Pressable, View } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import TextInputComponent from "../../../../components/inputs/textInput/TextInput";
 import ImageIcon from "../../../../../assets/svgs/image";
 import { colors } from "../../../../styles/globalStyles";
+import { styles } from "./BottomStyles";
 
-const Bottom = () => {
-  useEffect(() => {
-    // Pedimos permiso para acceder a la galería
-    (async () => {
-      const { status } =
-        await ImagePicker.requestMediaLibraryPermissionsAsync();
-      if (status !== "granted") {
-        Alert.alert(
-          "Permiso denegado",
-          "Para subir imágenes necesitas habilitar el acceso a la galería."
-        );
-      }
-    })();
-  }, []);
+const MAXLEN = 100;
 
-  const pickImages = async () => {
-    if (images.length >= MAX_IMAGES) return;
+const Bottom = ({ onSendText }) => {
+  const [text, setText] = useState("");
+
+  const handleSend = async () => {
+    const t = text.trim();
+    if (!t) return;
+    setText("");
     try {
-      const result = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.Images,
-        allowsMultipleSelection: true,
-        selectionLimit: 4 - images.length,
-      });
-      if (!result.canceled) {
-        const newUris = result.assets.map((asset) => asset.uri);
-      }
+      await onSendText?.(t);
     } catch (e) {
-      console.warn("Error al seleccionar imágenes:", e);
+      console.warn("Error al enviar:", e);
+      Alert.alert("Error", "No se pudo enviar el mensaje.");
     }
   };
 
@@ -43,19 +28,30 @@ const Bottom = () => {
       <View style={styles.messages__bottom__subcontainer}>
         <Pressable
           style={styles.messages__bottom__imageButton}
-          onPress={pickImages}
+          onPress={() => {}}
         >
           <ImageIcon />
         </Pressable>
+
         <TextInputComponent
-          placeholder={"Escribe un mensaje..."}
+          placeholder="Escribe un mensaje..."
           style={styles.messages__bottom__input}
           borderless
-          multiline={true}
-          maxLength={100}
+          multiline
+          maxLength={MAXLEN}
+          value={text}
+          onChangeText={setText}
         />
       </View>
-      <Pressable style={styles.messages__bottom__sendButton}>
+
+      <Pressable
+        style={[
+          styles.messages__bottom__sendButton,
+          !text.trim() && { opacity: 0.5 },
+        ]}
+        onPress={handleSend}
+        disabled={!text.trim()}
+      >
         <Ionicons name="send" size={24} color={colors.black} />
       </Pressable>
     </View>
