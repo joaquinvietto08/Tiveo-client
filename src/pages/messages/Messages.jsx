@@ -7,7 +7,11 @@ import Chat from "./features/chat/Chat";
 import Header from "./features/header/Header";
 import Bottom from "./features/bottom/Bottom";
 import { UserContext } from "../../context/UserContext";
-import { listenMessages, sendTextMessage } from "./utils/firebaseChat";
+import {
+  listenMessages,
+  sendTextMessage,
+  sendImageMessage,
+} from "./utils/firebaseChat";
 
 const formatTime = (ts) => {
   try {
@@ -36,27 +40,35 @@ const Messages = ({ route }) => {
   }, [activityId]);
 
   // Mapear a lo que tu Chat espera
-const DATA = useMemo(() => {
-  return rawMessages.map((m) => {
-    return {
-      id: m.id,
-      text: m.text || "",
-      sender: m.sender,
-      timestamp: formatTime(m.createdAt),
-    };
-  });
-}, [rawMessages, myUid]);
+  const DATA = useMemo(() => {
+    return rawMessages.map((m) => {
+      return {
+        id: m.id,
+        text: m.text || "",
+        imageUrl: m.type === "image" ? m.imageUrl : undefined,
+        type: m.type,
+        sender: m.sender,
+        timestamp: formatTime(m.createdAt),
+      };
+    });
+  }, [rawMessages, myUid]);
 
-
-  // Handler: enviar texto (sin imágenes por ahora)
   const handleSendText = async (text) => {
     if (!text?.trim()) return;
-    console.log(text);
     await sendTextMessage({
       activityId,
       text: text.trim(),
       clientId: myUid,
     });
+  };
+
+  const handleSendImage = async ({ uri }) => {
+    if (!uri) return;
+    if (!activityId || !myUid) {
+      console.warn("Faltan ids", { activityId, myUid });
+      return;
+    }
+    await sendImageMessage({ activityId, uri, clientId: myUid });
   };
 
   return (
@@ -68,8 +80,8 @@ const DATA = useMemo(() => {
     >
       <StatusBar backgroundColor={colors.white} barStyle="dark-content" />
       <Header worker={worker} />
-      <Chat data={DATA} />
-      <Bottom onSendText={handleSendText} />
+      <Chat data={[...DATA].reverse()} />
+      <Bottom onSendText={handleSendText} onSendImage={handleSendImage} />
     </View>
   );
 };
