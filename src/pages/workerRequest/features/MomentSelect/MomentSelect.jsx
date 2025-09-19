@@ -48,7 +48,7 @@ const MomentSelect = ({
         <Pressable
           style={[
             styles.WR__momentSelect__momentOption,
-            momentOption === "schedule" &&
+            momentOption === "scheduled" &&
               styles.WR__momentSelect__scheduleOptionSelected,
           ]}
           onPress={handleOpenMoment}
@@ -56,9 +56,9 @@ const MomentSelect = ({
           <Busy
             height={30}
             width={30}
-            fill={momentOption === "schedule" ? colors.white : ""}
+            fill={momentOption === "scheduled" ? colors.white : ""}
           />
-          {momentOption === "schedule" && scheduledDateTime ? (
+          {momentOption === "scheduled" && scheduledDateTime ? (
             <View>
               <Text style={styles.WR__momentSelect__timeText} numberOfLines={1}>
                 {formatDate(scheduledDateTime)}

@@ -44,7 +44,7 @@ export default [
     uid: "worker2",
     price: null,
     message: null,
-    moment: "schedule",
+    moment: "scheduled",
     scheduledDateTime: new Date("2025-07-22T21:50:00-03:00"),
     firstName: "Luis",
     lastName: "Martínez",
@@ -93,7 +93,7 @@ export default [
     price: 15032,
     message:
       "Buen día, puedo empezar mañana, viva peron, vivasdfnsjdf  sdfjsdjf  h bdshf",
-    moment: "schedule",
+    moment: "scheduled",
     scheduledDateTime: new Date("2025-07-22T21:50:00-03:00"),
     firstName: "Ana",
     lastName: "López",

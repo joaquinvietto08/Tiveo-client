@@ -6,7 +6,6 @@ export const styles = StyleSheet.create({
     backgroundColor: colors.background,
     flex: 1,
   },
-  scrollViewContainer: {},
   main_activityContainer: {
     marginTop: 70,
     alignItems: "center",
@@ -85,21 +84,16 @@ export const styles = StyleSheet.create({
     overflow: "hidden",
     borderBottomLeftRadius: 7,
     borderBottomRightRadius: 7,
-    borderBottomWidth: 1,
-    borderLeftWidth: 1,
-    borderRightWidth: 1,
-    borderColor: "#BFBFBF",
+
   },
   cancellButton: {
     width: "50%",
     justifyContent: "center",
     alignItems: "center",
-    borderRightWidth: 1,
-    borderColor: "#BFBFBF",
   },
   messagesButton: {
     width: "50%",
     justifyContent: "center",
     alignItems: "center",
-  },
+  }
 });

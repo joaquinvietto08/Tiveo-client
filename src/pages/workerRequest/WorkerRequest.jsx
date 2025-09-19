@@ -63,7 +63,7 @@ const WorkerRequest = () => {
   /* Moment */
   const isAvailable = worker?.status === "busy" ? false : true;
   const [momentOption, setMomentOption] = useState(
-    isAvailable ? "now" : "schedule"
+    isAvailable ? "now" : "scheduled"
   );
   const momentSheetRef = useRef(null);
   const [isMomentOpen, setIsMomentOpen] = useState(false);
@@ -198,7 +198,7 @@ const WorkerRequest = () => {
           isOpen={isMomentOpen}
           onConfirm={(chosenDate) => {
             setScheduledDateTime(chosenDate);
-            setMomentOption("schedule");
+            setMomentOption("scheduled");
           }}
         />
       </GestureHandlerRootView>

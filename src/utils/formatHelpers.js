@@ -62,12 +62,20 @@ export const formatTime = (dateTimeString) => {
   });
 };
 
-export const translateStatus = (status) => {
+export const translateStatus = (status, moment) => {
+  if (status === "confirm") {
+    if (moment === "scheduled") {
+      return "Programado";
+    }
+    if (moment === "now") {
+      return "Confirmado";
+    }
+  }
   const statusMap = {
     pending: "Pendiente",
+    going: "En camino",
     cancelled: "Cancelado",
     finished: "Finalizado",
-    scheduled: "Programado",
     "on-progress": "en progreso",
   };
 
