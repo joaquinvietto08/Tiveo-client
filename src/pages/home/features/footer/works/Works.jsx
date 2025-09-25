@@ -9,7 +9,7 @@ const MAX_SERVICES = 6;
 
 const Works = () => {
   const { activity } = useContext(UserContext);
-  const statusPriority = ["going", "pending", "working", "confirm"];
+  const statusPriority = ["done", "going", "pending", "working", "confirm"];
 
   const filteredRequests = activity
     .filter((item) => statusPriority.includes(item.status))

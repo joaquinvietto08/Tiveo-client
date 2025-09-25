@@ -71,6 +71,44 @@ const StatusCard = ({
             <ProgressBar styleAttr="Horizontal" color={colors.primary} />
           </>
         );
+      case "done":
+        return (
+          <View style={styles.home__bottomSheet__statusCard__confirmContainer}>
+            <Pressable
+              style={[
+                styles.home__bottomSheet__statusCard__messagesButton,
+                getStyleMessagesButton(status),
+              ]}
+              onPress={() =>
+                navigation.navigate("Payment", { activityId, worker })
+              }
+            >
+              <Text
+                style={[
+                  styles.home__bottomSheet__statusCard__messagesButtonText,
+                  getStyleMessagesButtonText(status),
+                ]}
+              >
+                Realizar pago
+              </Text>
+            </Pressable>
+            <Pressable
+              style={[
+                styles.home__bottomSheet__statusCard__detailsButton,
+                getStyleDetailsButton(status),
+              ]}
+            >
+              <Text
+                style={[
+                  styles.home__bottomSheet__statusCard__detailsButtonText,
+                  getStyleDetailsButtonText(status),
+                ]}
+              >
+                Ver detalles
+              </Text>
+            </Pressable>
+          </View>
+        );
       default:
         return (
           <View style={styles.home__bottomSheet__statusCard__confirmContainer}>
@@ -79,7 +117,9 @@ const StatusCard = ({
                 styles.home__bottomSheet__statusCard__messagesButton,
                 getStyleMessagesButton(status),
               ]}
-              onPress={() => navigation.navigate("Messages", {activityId, worker})}
+              onPress={() =>
+                navigation.navigate("Messages", { activityId, worker })
+              }
             >
               <Text
                 style={[
@@ -216,6 +256,18 @@ const StatusCard = ({
               numberOfLines={1}
             >
               En camino a {address}
+            </Text>
+          </>
+        ) : status === "done" ? (
+          <>
+            <Text
+              style={[
+                styles.home__bottomSheet__statusCard__momentText,
+                getStyleMomentText(status),
+              ]}
+              numberOfLines={1}
+            >
+              {name} completo su trabajo
             </Text>
           </>
         ) : (

@@ -75,7 +75,7 @@ export const translateStatus = (status, moment) => {
     pending: "Pendiente",
     going: "En camino",
     cancelled: "Cancelado",
-    finished: "Finalizado",
+    done: "Finalizado",
     "on-progress": "en progreso",
   };
 

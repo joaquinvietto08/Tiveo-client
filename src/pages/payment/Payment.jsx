@@ -1,63 +1,55 @@
-import React, { useState } from "react";
-import { View, Button, ActivityIndicator, Linking } from "react-native";
-import InAppBrowser from "react-native-inappbrowser-reborn";
+import { View, Text, StatusBar, ScrollView, Pressable } from "react-native";
+import { styles } from "./PaymentStyles";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { colors } from "../../styles/globalStyles";
- 
-const Payment = () => {
-  const [loading, setLoading] = useState(false);
+import Warranty from "../../../assets/svgs/worker/warranty";
+import Resumen from "./components/resumen/Resumen";
+import Footer from "./components/footer/Footer";
+import { useRef } from "react";
+import Feather from "@expo/vector-icons/Feather";
 
-  const startCheckout = async () => {
-    try {
-      setLoading(true);
+const Payment = ({ navigation }) => {
+  const insets = useSafeAreaInsets();
+  const scrollRef = useRef(null);
 
-      // 👉 1. Pedimos la preferencia a tu backend
-      const res = await fetch(
-        "https://createpreference-fpeb5gaoea-uc.a.run.app",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            id: "1234545",
-            title: "Trabajo de Carlos José",
-            unit_price: 4000,
-          }),
-        }
-      );
-
-      const data = await res.json();
-      const initPoint = data.init_point;
-
-      console.log("✅ Preferencia creada:", data);
-
-      // 👉 2. Abrimos Checkout Pro
-      if (await InAppBrowser.isAvailable()) {
-        await InAppBrowser.open(initPoint, {
-          // Opciones Android
-          showTitle: true,
-          toolbarColor: colors.primary,
-          enableUrlBarHiding: true,
-          enableDefaultShare: false,
-        });
-      } else {
-        Linking.openURL(initPoint);
-      }
-    } catch (error) {
-      console.error("❌ Error al abrir Checkout Pro:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const workerName = "Carlos José";
 
   return (
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      {loading ? (
-        <ActivityIndicator size="large" />
-      ) : (
-        <Button title="Pagar $4000" onPress={startCheckout} />
-      )}
+    <View
+      style={[
+        styles.payment__mainContainer,
+        { paddingTop: insets.top, paddingBottom: insets.bottom },
+      ]}
+    >
+      <ScrollView
+        ref={scrollRef}
+        contentContainerStyle={styles.payment__scrollContent}
+        showsVerticalScrollIndicator={false}
+      >
+        <StatusBar backgroundColor={colors.primary} />
+        <Pressable
+          style={styles.payment__backContainer}
+          onPress={navigation.goBack}
+        >
+          <Feather name="arrow-left" size={20} color="black" />
+        </Pressable>
+        <View style={styles.payment__header}>
+          <Text style={styles.payment__worker}>
+            ¡{workerName} terminó su trabajo!
+          </Text>
+        </View>
+        <Resumen />
+        <View style={styles.payment__warrantyContainer}>
+          <Warranty width={40} height={40} fill={colors.primary} />
+          <Text style={styles.payment__warrantyText}>
+            Pagando el trabajo por la app contas con la proteccion de la
+            garantia.
+          </Text>
+        </View>
+        <Footer />
+      </ScrollView>
     </View>
   );
-}
-
+};
 
 export default Payment;

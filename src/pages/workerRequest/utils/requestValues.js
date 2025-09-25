@@ -30,6 +30,7 @@ export const buildRequestValues = (
   services,
   scheduledDateTime,
   moment,
+  paymentStatus: "pending"
 });
 
 export const useRequestValues = (data, worker) => {

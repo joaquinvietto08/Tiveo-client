@@ -8,6 +8,10 @@ export const styles = StyleSheet.create({
     height: 130,
     padding: 15,
   },
+  home__bottomSheet__statusCard__card__done: {
+    backgroundColor: colors.white,
+    borderWidth: 1,
+  },
   home__bottomSheet__statusCard__card__pending: {
     backgroundColor: colors.white,
     borderWidth: 1,
@@ -35,6 +39,9 @@ export const styles = StyleSheet.create({
   home__bottomSheet__statusCard__servicesText: {
     fontFamily: "Inter-SemiBold",
     fontSize: 18,
+  },
+  home__bottomSheet__statusCard__title__done: {
+    color: colors.black,
   },
   home__bottomSheet__statusCard__title__pending: {
     color: colors.black,
@@ -83,6 +90,9 @@ export const styles = StyleSheet.create({
   home__bottomSheet__statusCard__momentText: {
     fontFamily: "Inter-Medium",
   },
+  home__bottomSheet__statusCard__momentText__done: {
+    color: colors.black,
+  },
   home__bottomSheet__statusCard__momentText__pending: {
     color: colors.black,
   },
@@ -112,6 +122,9 @@ export const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
+  home__bottomSheet__statusCard__messagesButton__done: {
+    backgroundColor: colors.primary,
+  },
   home__bottomSheet__statusCard__messagesButton__confirm: {
     backgroundColor: colors.white,
   },
@@ -132,6 +145,9 @@ export const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
+  home__bottomSheet__statusCard__detailsButton__done: {
+    borderColor: colors.black,
+  },
   home__bottomSheet__statusCard__detailsButton__confirm: {
     borderColor: colors.white,
   },
@@ -145,6 +161,9 @@ export const styles = StyleSheet.create({
   /* **************** */
   home__bottomSheet__statusCard__messagesButtonText: {
     fontFamily: "Inter-SemiBold",
+  },
+  home__bottomSheet__statusCard__messagesButtonText__done: {
+    color: colors.black,
   },
   home__bottomSheet__statusCard__messagesButtonText__confirm: {
     color: colors.black,
@@ -160,6 +179,9 @@ export const styles = StyleSheet.create({
 
   home__bottomSheet__statusCard__detailsButtonText: {
     fontFamily: "Inter-SemiBold",
+  },
+  home__bottomSheet__statusCard__detailsButtonText__done: {
+    color: colors.black,
   },
   home__bottomSheet__statusCard__detailsButtonText__confirm: {
     color: colors.white,
