@@ -1,18 +1,55 @@
-import { View, Text, StatusBar, ScrollView, Pressable } from "react-native";
+import {
+  View,
+  Text,
+  StatusBar,
+  ScrollView,
+  Pressable,
+  BackHandler,
+} from "react-native";
 import { styles } from "./PaymentStyles";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { colors } from "../../styles/globalStyles";
 import Warranty from "../../../assets/svgs/worker/warranty";
 import Resumen from "./components/resumen/Resumen";
 import Footer from "./components/footer/Footer";
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Feather from "@expo/vector-icons/Feather";
+import Confirm from "../../components/confirm/Confirm";
 
 const Payment = ({ navigation }) => {
   const insets = useSafeAreaInsets();
   const scrollRef = useRef(null);
 
   const workerName = "Carlos José";
+
+  const scrollToBottom = () => {
+    scrollRef.current?.scrollToEnd({ animated: true });
+  };
+
+  const [success, setSuccess] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("Trabajo pagado");
+
+  const handleSuccess = () => {
+    setSuccess(true);
+  };
+
+  const [blockBack, setBlockBack] = useState(false);
+  useEffect(() => {
+    if (blockBack) {
+      const backHandlerSub = BackHandler.addEventListener(
+        "hardwareBackPress",
+        () => true
+      );
+      const removeBeforeRemove = navigation.addListener("beforeRemove", (e) => {
+        e.preventDefault();
+      });
+
+      return () => {
+        backHandlerSub.remove();
+        removeBeforeRemove();
+      };
+    }
+  }, [blockBack, navigation]);
 
   return (
     <View
@@ -46,8 +83,24 @@ const Payment = ({ navigation }) => {
             garantia.
           </Text>
         </View>
-        <Footer />
+        <Footer
+          onRequestScrollToBottom={scrollToBottom}
+          onSuccess={handleSuccess}
+          setBlockBack={setBlockBack}
+          setSuccesMessage={setSuccessMessage}
+        />
       </ScrollView>
+
+      {success && (
+        <Confirm
+          title={successMessage}
+          text={
+            "Podes ver los detalles del trabajo y pago realizado en tu historial actividad"
+          }
+          buttonBack={"Cambiar metodo de pago"}
+          setSuccess={setSuccess}
+        />
+      )}
     </View>
   );
 };

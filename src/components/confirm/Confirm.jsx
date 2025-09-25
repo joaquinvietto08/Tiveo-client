@@ -5,13 +5,13 @@ import { styles } from "./ConfirmStyles";
 import { colors } from "../../styles/globalStyles";
 import { useNavigation } from "@react-navigation/native";
 
-const Confirm = ({text, title}) => {
+const Confirm = ({ text = "", title, buttonBack = "", setSuccess }) => {
   const navigation = useNavigation();
 
   // 1) Animated values
-  const slideAnim     = useRef(new Animated.Value(1000)).current; // contenedor abajo
-  const titleOpacity  = useRef(new Animated.Value(0)).current;   // título invisible
-  const bottomOpacity = useRef(new Animated.Value(0)).current;   // bottom invisible
+  const slideAnim = useRef(new Animated.Value(1000)).current; // contenedor abajo
+  const titleOpacity = useRef(new Animated.Value(0)).current; // título invisible
+  const bottomOpacity = useRef(new Animated.Value(0)).current; // bottom invisible
 
   useEffect(() => {
     // 2) animación de slide up (500ms)
@@ -68,13 +68,16 @@ const Confirm = ({text, title}) => {
       </View>
 
       {/* 6) Bottom con fade */}
-      <Animated.View style={[styles.checkContainerBottom, { opacity: bottomOpacity }]}>
-        <Text style={styles.checkTextBottom}>
-          {text}
-        </Text>
+      <Animated.View
+        style={[styles.checkContainerBottom, { opacity: bottomOpacity }]}
+      >
+        <Text style={styles.checkTextBottom}>{text}</Text>
         <Pressable style={styles.checkButton} onPress={handleGoHome}>
           <Text style={styles.checkButtonText}>Volver al inicio</Text>
         </Pressable>
+        {buttonBack && (
+          <Text style={styles.checkButtonBack} onPress={() => setSuccess(false)}>{buttonBack}</Text>
+        )}
       </Animated.View>
     </Animated.View>
   );

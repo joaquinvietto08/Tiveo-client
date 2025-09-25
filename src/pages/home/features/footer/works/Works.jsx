@@ -26,6 +26,7 @@ const Works = () => {
     const address = item.address.address.split(",")[0] || [];
     const status = item.status || [];
     const moment = item.moment || [];
+    const payment = item.paymentStatus || [];
     const name = item.worker.firstName || [];
     const scheduledDateTime = item.scheduledDateTime || [];
     const displayed = services.slice(0, MAX_SERVICES);
@@ -34,6 +35,7 @@ const Works = () => {
     return (
       <StatusCard
         activityId={id}
+        payment={payment}
         worker={worker}
         status={status}
         displayedServices={displayed}

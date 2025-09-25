@@ -5,7 +5,6 @@ export const styles = StyleSheet.create({
   inputs__loadingButton__overlay: {
     backgroundColor: "rgba(0, 0, 0, 0.3)",
     justifyContent: "flex-end",
-    paddingBottom: 60,
     alignItems: "center",
     flex: 1,
   },

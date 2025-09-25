@@ -18,6 +18,7 @@ const StatusCard = ({
   address,
   scheduledDateTime,
   moment,
+  payment,
   name,
 }) => {
   const navigation = useNavigation();
@@ -89,7 +90,11 @@ const StatusCard = ({
                   getStyleMessagesButtonText(status),
                 ]}
               >
-                Realizar pago
+                {payment === "pending" ? (
+                  <Text>Realizar pago</Text>
+                ) : (
+                  <Text>Modificar pago</Text>
+                )}
               </Text>
             </Pressable>
             <Pressable

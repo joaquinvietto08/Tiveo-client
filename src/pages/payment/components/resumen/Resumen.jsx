@@ -5,6 +5,16 @@ import { formatPrice } from "../../../../utils/formatHelpers";
 const Resumen = () => {
   const items = [
     { id: "1", label: "Trabajo de plomería", value: 24000 },
+    { id: "2", label: "Trabajo de plomería", value: 24000 },
+    { id: "3", label: "Trabajo de plomería", value: 24000 },
+    { id: "4", label: "Trabajo de plomería", value: 24000 },
+    { id: "5", label: "Trabajo de plomería", value: 24000 },
+    { id: "6", label: "Trabajo de plomería", value: 24000 },
+    { id: "7", label: "Trabajo de plomería", value: 24000 },
+    { id: "8", label: "Trabajo de plomería", value: 24000 },
+    { id: "9", label: "Trabajo de plomería", value: 24000 },
+    { id: "10", label: "Trabajo de plomería", value: 24000 },
+
     { id: "30", label: "Total", isTotal: true, value: 25000 },
   ];
 

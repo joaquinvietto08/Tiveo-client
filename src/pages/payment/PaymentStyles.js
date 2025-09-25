@@ -10,7 +10,6 @@ export const styles = StyleSheet.create({
     flexGrow: 1,
   },
   payment__backContainer: {
-    backgroundColor: colors.white,
     borderRadius: 100,
     width: 35,
     height: 35,
@@ -25,7 +24,7 @@ export const styles = StyleSheet.create({
   payment__header: {
     backgroundColor: colors.primary,
     flex: 1,
-    minHeight: 150,
+    minHeight: 200,
     justifyContent: "center",
     alignContent: "center",
     paddingHorizontal: 20,

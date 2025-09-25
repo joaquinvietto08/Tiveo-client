@@ -22,6 +22,7 @@ export const styles = StyleSheet.create({
   checkIconText: {
     paddingTop: 20,
     color: colors.primary,
+    textAlign: "center",
     fontFamily: "Inter-Bold",
     fontSize: 22,
   },
@@ -32,7 +33,7 @@ export const styles = StyleSheet.create({
     fontFamily: "Inter-Normal",
     fontSize: 14,
     textAlign: "center",
-    paddingBottom: 12
+    paddingBottom: 12,
   },
   checkButton: {
     backgroundColor: colors.primary,
@@ -45,5 +46,13 @@ export const styles = StyleSheet.create({
     color: colors.white,
     fontFamily: "Inter-Bold",
     fontSize: 16,
+  },
+  checkButtonBack: {
+    color: colors.black,
+    fontFamily: "Inter-Normal",
+    fontSize: 16,
+    textDecorationLine: "underline",
+    textAlign: "center",
+    paddingTop: 20
   },
 });

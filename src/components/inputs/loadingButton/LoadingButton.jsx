@@ -5,7 +5,13 @@ import { colors } from "../../../styles/globalStyles";
 import { useEffect, useState } from "react";
 import { Dimensions } from "react-native";
 
-const LoadingButton = ({ text, loading, onPress, option = "primary" }) => {
+const LoadingButton = ({
+  text,
+  loading,
+  onPress,
+  option = "primary",
+  paddingBottom = 60,
+}) => {
   const [progress, setProgress] = useState(0);
   const [showLoading, setShowLoading] = useState(false);
   const screenWidth = Dimensions.get("window").width;
@@ -64,7 +70,12 @@ const LoadingButton = ({ text, loading, onPress, option = "primary" }) => {
   return (
     <>
       <Modal transparent visible={showLoading} animationType="fade">
-        <View style={styles.inputs__loadingButton__overlay}>
+        <View
+          style={[
+            styles.inputs__loadingButton__overlay,
+            { paddingBottom },
+          ]}
+        >
           <View style={styles.inputs__loadingButton__progressWrapper}>
             <Progress.Bar {...progressBarConfigs[option]} />
             <Text style={styles.inputs__loadingButton__progressText}>
