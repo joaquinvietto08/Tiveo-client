@@ -68,4 +68,13 @@ export const styles = StyleSheet.create({
     backgroundColor: colors.black,
     borderBottomRightRadius: 8,
   },
+  activity__activityCard__paymentButton: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 12,
+    backgroundColor: colors.primary,
+    borderBottomRightRadius: 8,
+    borderBottomLeftRadius: 8,
+  },
 });

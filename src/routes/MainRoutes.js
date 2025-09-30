@@ -6,7 +6,7 @@ import Home from "../pages/home/Home";
 import Services from "../pages/services/Services";
 import Activity from "../pages/activity/Activity";
 import Profile from "../pages/profile/Profile";
-import ActivityDetail from "../pages/activity/ActivityDetail";
+import ActivityDetail from "../pages/activity/features/activityDetail/ActivityDetail";
 import { NearbyWorkersProvider } from "../context/NearbyWorkersContext";
 
 const Stack = createNativeStackNavigator();

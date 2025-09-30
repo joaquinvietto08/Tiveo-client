@@ -11,7 +11,7 @@ import { colors } from "../../../../styles/globalStyles";
 
 const MAX_SERVICES = 5;
 
-const ActivityCard = ({ data, onPress, onCancel, onMessages }) => {
+const ActivityCard = ({ data, onPress, onCancel, onMessages, onPayment }) => {
   const displayed = data.services?.slice(0, MAX_SERVICES);
   const extraCount = data.services?.length - displayed?.length;
 
@@ -76,26 +76,45 @@ const ActivityCard = ({ data, onPress, onCancel, onMessages }) => {
 
       {data.status !== "pending" &&
         data.status !== "cancelled" &&
-        data.status !== "finished" && (
-          <View style={styles.activity__activityCard__optionContainer}>
-            <Pressable
-              style={styles.activity__activityCard__cancelButton}
-              onPress={onCancel}
-            >
-              <Text style={{ color: "red", fontFamily: "Inter-Bold" }}>
-                Cancelar
-              </Text>
-            </Pressable>
-            <Pressable
-              style={styles.activity__activityCard__messagesButton}
-              onPress={onMessages}
-            >
-              <Text style={{ color: "white", fontFamily: "Inter-Bold" }}>
-                Mensajes
-              </Text>
-            </Pressable>
-          </View>
-        )}
+        (data.status === "done" ? (
+          <>
+            <View style={styles.activity__activityCard__optionContainer}>
+              <Pressable
+                style={styles.activity__activityCard__paymentButton}
+                onPress={onPayment}
+              >
+                <Text style={{ color: "black", fontFamily: "Inter-Bold" }}>
+                  {data.paymentStatus === "pending" ? (
+                    <Text>Realizar pago</Text>
+                  ) : (
+                    <Text>Modificar pago</Text>
+                  )}
+                </Text>
+              </Pressable>
+            </View>
+          </>
+        ) : (
+          <>
+            <View style={styles.activity__activityCard__optionContainer}>
+              <Pressable
+                style={styles.activity__activityCard__cancelButton}
+                onPress={onCancel}
+              >
+                <Text style={{ color: "red", fontFamily: "Inter-Bold" }}>
+                  Cancelar
+                </Text>
+              </Pressable>
+              <Pressable
+                style={styles.activity__activityCard__messagesButton}
+                onPress={onMessages}
+              >
+                <Text style={{ color: "white", fontFamily: "Inter-Bold" }}>
+                  Mensajes
+                </Text>
+              </Pressable>
+            </View>
+          </>
+        ))}
     </View>
   );
 };

@@ -28,7 +28,7 @@ export const buildRequestValues = (
   description,
   images,
   services,
-  scheduledDateTime,
+  scheduledDateTime: scheduledDateTime ?? "",
   moment,
   paymentStatus: "pending"
 });

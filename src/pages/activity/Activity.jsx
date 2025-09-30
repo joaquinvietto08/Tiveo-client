@@ -14,7 +14,18 @@ const Activity = ({ navigation }) => {
       data={item}
       onPress={() => navigation.navigate("ActivityDetail", { data: item })}
       onCancel={() => console.log("Cancelar", item.id)}
-      onMessages={() => navigation.navigate("Messages", {activityId: item.id, worker: item.worker })}
+      onMessages={() =>
+        navigation.navigate("Messages", {
+          activityId: item.id,
+          worker: item.worker,
+        })
+      }
+      onPayment={() =>
+        navigation.navigate("Payment", {
+          activityId: item.id,
+          worker: item.worker,
+        })
+      }
     />
   );
 
