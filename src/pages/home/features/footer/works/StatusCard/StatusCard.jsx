@@ -102,6 +102,9 @@ const StatusCard = ({
                 styles.home__bottomSheet__statusCard__detailsButton,
                 getStyleDetailsButton(status),
               ]}
+              onPress={() =>
+                navigation.navigate("ActivityDetail", { activityId })
+              }
             >
               <Text
                 style={[
@@ -140,6 +143,9 @@ const StatusCard = ({
                 styles.home__bottomSheet__statusCard__detailsButton,
                 getStyleDetailsButton(status),
               ]}
+              onPress={() =>
+                navigation.navigate("ActivityDetail", { activityId })
+              }
             >
               <Text
                 style={[

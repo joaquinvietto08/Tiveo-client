@@ -12,7 +12,9 @@ const Activity = ({ navigation }) => {
   const renderItem = ({ item }) => (
     <ActivityCard
       data={item}
-      onPress={() => navigation.navigate("ActivityDetail", { data: item })}
+      onPress={() =>
+        navigation.navigate("ActivityDetail", { activityId: item.id })
+      }
       onCancel={() => console.log("Cancelar", item.id)}
       onMessages={() =>
         navigation.navigate("Messages", {

@@ -11,14 +11,17 @@ import Warranty from "./components/warranty/Warranty";
 import Categories from "./components/categories/Categories";
 import Worker from "./components/worker/Worker";
 import Payment from "./components/payment/Payment";
-import { useRef, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import RatingBottomSheet from "./components/rating/ratingBottomSheet/RatingBottomSheet";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import Cancellation from "./components/cancellation/Cancellation";
+import { UserContext } from "../../../../context/UserContext";
 
 const ActivityDetail = ({ navigation, route }) => {
   const insets = useSafeAreaInsets();
-  const { data } = route.params;
+  const { activityId } = route.params;
+  const { activity } = useContext(UserContext);
+  const data = activity?.find((a) => a.id === activityId);
   const ratingSheetRef = useRef(null);
   const [isRatingOpen, setIsRatingOpen] = useState(false);
 
