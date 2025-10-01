@@ -1,0 +1,153 @@
+import { StyleSheet } from "react-native";
+import { colors } from "../../styles/globalStyles";
+
+export const styles = StyleSheet.create({
+  workerProfile__mainContainer: {
+    flex: 1,
+    backgroundColor: colors.background,
+  },
+  workerProfile__scrollContent: {
+    flexGrow: 1,
+    gap: 15,
+  },
+  workerProfile__topGradient: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    height: 100,
+    zIndex: 900,
+  },
+  workerProfile__backContainer: {
+    backgroundColor: colors.white,
+    borderRadius: 100,
+    width: 35,
+    height: 35,
+    justifyContent: "center",
+    alignItems: "center",
+    position: "absolute",
+    top: 40,
+    left: 15,
+    right: 0,
+    zIndex: 1000,
+  },
+  workerProfile__banner: {
+    width: "100%",
+    height: 170,
+  },
+  workerProfile__avatarContainer: {
+    alignItems: "center",
+    marginTop: -60,
+  },
+  workerProfile__avatar: {
+    width: 110,
+    height: 110,
+    borderRadius: 70,
+    borderWidth: 3,
+    borderColor: "#fff",
+  },
+  workerProfile__name: {
+    textAlign: "center",
+    fontSize: 18,
+    marginTop: 8,
+    fontFamily: "Inter-Bold",
+  },
+  workerProfile__ratingContainer: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 4,
+    borderRadius: 6,
+    alignSelf: "center",
+    paddingHorizontal: 6,
+  },
+  workerProfile__ratingText: {
+    marginLeft: 4,
+    fontSize: 14,
+    color: colors.black,
+    fontFamily: "Inter-Medium",
+  },
+  workerProfile__body: {
+    flex: 1,
+    padding: 15,
+    borderRadius: 12,
+    marginHorizontal: 20,
+    elevation: 1,
+    backgroundColor: colors.white,
+    marginTop: 20,
+  },
+  workerProfile__description: {
+    fontSize: 16,
+    fontFamily: "Inter-Regular",
+  },
+
+  workerProfile__licensedContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginTop: 12,
+    gap: 6,
+  },
+  workerProfile__licensedText: {
+    fontSize: 14,
+    color: colors.gray,
+    fontFamily: "Inter-Medium",
+  },
+  workerProfile__experienceSection: {
+    flexDirection: "row",
+    paddingHorizontal: 20,
+    justifyContent: "space-between",
+  },
+  workerProfile__row: {
+    alignItems: "center",
+    borderRadius: 12,
+    elevation: 1,
+    backgroundColor: colors.white,
+    width: "48%",
+    paddingHorizontal: 15,
+    paddingVertical: 10,
+  },
+  workerProfile__number: {
+    fontFamily: "Inter-Bold",
+    fontSize: 28,
+    color: colors.black,
+  },
+  workerProfile__label: {
+    fontFamily: "Inter-Medium",
+    fontSize: 12,
+    color: colors.gray,
+    flex: 1,
+    lineHeight: 18,
+    textAlign: "center",
+  },
+  workerProfile__guaranteeWrapper: {
+    borderRadius: 12,
+    elevation: 1,
+    backgroundColor: colors.white,
+    paddingHorizontal: 15,
+    paddingVertical: 20,
+    marginHorizontal: 20,
+    borderLeftWidth: 4,
+    borderLeftColor: colors.primary,
+    backgroundColor: "#fff4e2",
+  },
+  workerProfile__guaranteeRow: {
+    flexDirection: "row",
+    gap: 10,
+    alignItems: "flex-start",
+  },
+  workerProfile__guaranteeTitleContainer: {
+    gap: 5,
+    flex: 1,
+  },
+  workerProfile__guaranteeTitle: {
+    fontFamily: "Inter-Bold",
+    fontSize: 16,
+    color: colors.black,
+    flex: 1,
+  },
+  workerProfile__guaranteeDescription: {
+    fontSize: 14,
+    fontFamily: "Inter-Regular",
+    color: colors.gray,
+  },
+});

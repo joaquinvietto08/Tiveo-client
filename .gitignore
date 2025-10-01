@@ -33,3 +33,8 @@ yarn-error.*
 
 # typescript
 *.tsbuildinfo
+
+#others
+tareas.txt
+.idea/vcs.xml
+.idea/workspace.xml
