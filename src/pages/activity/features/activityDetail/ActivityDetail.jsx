@@ -25,6 +25,8 @@ const ActivityDetail = ({ navigation, route }) => {
   const ratingSheetRef = useRef(null);
   const [isRatingOpen, setIsRatingOpen] = useState(false);
 
+const helpMessage = `Consulta sobre trabajo realizado por ${data.worker.firstName} ${data.worker.lastName}.`;
+
   const handleOpenRating = () => {
     setIsRatingOpen(true);
     ratingSheetRef.current?.snapToIndex(0);
@@ -82,7 +84,10 @@ const ActivityDetail = ({ navigation, route }) => {
 
           <View style={styles.activity__activityDetail__helpContainer}>
             <MaterialIcons name="help" size={20} color={colors.black} />
-            <Text style={styles.activity__activityDetail__helpText}>Ayuda</Text>
+            <Text 
+            style={styles.activity__activityDetail__helpText}
+                      onPress={() => navigation.navigate("Support", {message: helpMessage, activityId: activityId})}
+            >Ayuda</Text>
           </View>
         </ScrollView>
         <RatingBottomSheet

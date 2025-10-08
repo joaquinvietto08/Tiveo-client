@@ -11,6 +11,10 @@ import WorkerRequest from "../pages/workerRequest/WorkerRequest";
 import AdvanceSearch from "../pages/advanceSearch/AdvanceSearch";
 import Messages from "../pages/messages/Messages";
 import Payment from "../pages/payment/Payment";
+import Profile from "../pages/profile/Profile";
+import Activity from "../pages/activity/Activity";
+import ActivityDetail from "../pages/activity/features/activityDetail/ActivityDetail";
+import Support from "../pages/support/Support";
 
 const Stack = createNativeStackNavigator();
 
@@ -29,10 +33,22 @@ const Root = () => {
               <Stack.Screen name="WorkerRequest" component={WorkerRequest} />
               <Stack.Screen name="AdvanceSearch" component={AdvanceSearch} />
               <Stack.Screen name="Messages" component={Messages} />
+              <Stack.Screen name="Profile" component={Profile} />
+              <Stack.Screen name="Support" component={Support} />
+              <Stack.Screen name="Activity" component={Activity} />
+              <Stack.Screen name="ActivityDetail" component={ActivityDetail} />
               <Stack.Screen name="Payment" component={Payment} />
             </>
           ) : (
-            <Stack.Screen name="Location" component={LocationRoutes} />
+            <>
+              <Stack.Screen name="Location" component={LocationRoutes} />
+              <Stack.Screen name="Messages" component={Messages} />
+              <Stack.Screen name="Profile" component={Profile} />
+              <Stack.Screen name="Support" component={Support} />
+              <Stack.Screen name="Activity" component={Activity} />
+              <Stack.Screen name="ActivityDetail" component={ActivityDetail} />
+              <Stack.Screen name="Payment" component={Payment} />
+            </>
           )
         ) : (
           <Stack.Screen name="Auth" component={AuthRoutes} />
