@@ -25,6 +25,7 @@ const Advance = ({ data, onRequestScrollToBottom, setBlockBack }) => {
           ...values,
           createdAt: firestore.FieldValue.serverTimestamp(),
           status: "requested",
+          type: "open",
         });
       requestId = docRef.id;
       ok = true;

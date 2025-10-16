@@ -6,7 +6,13 @@ import { useRequestValues } from "../../../utils/requestValues";
 import firestore from "@react-native-firebase/firestore";
 import LoadingButton from "../../../../../components/inputs/loadingButton/LoadingButton";
 
-const Default = ({ worker, data, onRequestScrollToBottom, onSuccess, setBlockBack }) => {
+const Default = ({
+  worker,
+  data,
+  onRequestScrollToBottom,
+  onSuccess,
+  setBlockBack,
+}) => {
   const values = useRequestValues(data, worker);
 
   const [loading, setLoading] = useState(false);
@@ -19,11 +25,12 @@ const Default = ({ worker, data, onRequestScrollToBottom, onSuccess, setBlockBac
     let ok = false;
     try {
       await firestore()
-        .collection("activity")
+        .collection("requests")
         .add({
           ...values,
           createdAt: firestore.FieldValue.serverTimestamp(),
-          status: "pending",
+          status: "requested",
+          type: "direct",
         });
       ok = true;
     } catch (error) {
