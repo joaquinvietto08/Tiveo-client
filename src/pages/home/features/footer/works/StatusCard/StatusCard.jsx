@@ -63,7 +63,7 @@ const StatusCard = ({
 
   const renderStatus = (status) => {
     switch (status) {
-      case "pending":
+      case "requested":
         return (
           <>
             <Text style={styles.home__bottomSheet__statusCard__statusText}>
@@ -90,7 +90,7 @@ const StatusCard = ({
                   getStyleMessagesButtonText(status),
                 ]}
               >
-                {payment === "pending" ? (
+                {payment === "requested" ? (
                   <Text>Realizar pago</Text>
                 ) : (
                   <Text>Modificar pago</Text>
@@ -212,7 +212,7 @@ const StatusCard = ({
         )}
       </View>
       <View style={styles.home__bottomSheet__statusCard__momentContainer}>
-        {status === "pending" ? (
+        {status === "requested" ? (
           <>
             {moment === "now" ? (
               <>
@@ -221,7 +221,7 @@ const StatusCard = ({
                 <Text
                   style={[
                     styles.home__bottomSheet__statusCard__momentText,
-                    status !== "pending" && { color: colors.white },
+                    status !== "requested" && { color: colors.white },
                   ]}
                 >
                   Ahora mismo
@@ -233,7 +233,7 @@ const StatusCard = ({
                 <Text
                   style={[
                     styles.home__bottomSheet__statusCard__momentText,
-                    status !== "pending" && { color: colors.white },
+                    status !== "requested" && { color: colors.white },
                   ]}
                 >
                   Programado {formatDate(scheduledDateTime)}{" "}

@@ -16,7 +16,7 @@ import Busy from "../../../../../assets/svgs/worker/busy.svg";
 import Licensed from "../../../../../assets/svgs/worker/licensed";
 import { useNavigation } from "@react-navigation/native";
 
-const Footer = ({ sheetRef, values, workers }) => {
+const Footer = ({ sheetRef, values, workers, requestId }) => {
   const snapPoints = [90, 700];
   const animationConfigs = { duration: 400 };
   const scrollRef = useRef(null);
@@ -86,8 +86,8 @@ const Footer = ({ sheetRef, values, workers }) => {
                   style={styles.advanceSearch__footer__detailIcon}
                 />
                 <Text style={styles.advanceSearch__footer__momentText}>
-                  Programado {formatDate(scheduledDateTime)}{" "}
-                  {formatTime(scheduledDateTime)} hs
+                  Programado {formatDate(values.scheduledDateTime)}{" "}
+                  {formatTime(values.scheduledDateTime)} hs
                 </Text>
               </>
             )}
@@ -123,6 +123,7 @@ const Footer = ({ sheetRef, values, workers }) => {
                     worker: w,
                     bottom: "advance",
                     values,
+                    requestId,
                   })
                 }
               >

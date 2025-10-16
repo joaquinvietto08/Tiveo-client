@@ -12,7 +12,7 @@ export const styles = StyleSheet.create({
     backgroundColor: colors.white,
     borderWidth: 1,
   },
-  home__bottomSheet__statusCard__card__pending: {
+  home__bottomSheet__statusCard__card__requested: {
     backgroundColor: colors.white,
     borderWidth: 1,
   },
@@ -43,7 +43,7 @@ export const styles = StyleSheet.create({
   home__bottomSheet__statusCard__title__done: {
     color: colors.black,
   },
-  home__bottomSheet__statusCard__title__pending: {
+  home__bottomSheet__statusCard__title__requested: {
     color: colors.black,
   },
   home__bottomSheet__statusCard__title__confirm: {
@@ -93,7 +93,7 @@ export const styles = StyleSheet.create({
   home__bottomSheet__statusCard__momentText__done: {
     color: colors.black,
   },
-  home__bottomSheet__statusCard__momentText__pending: {
+  home__bottomSheet__statusCard__momentText__requested: {
     color: colors.black,
   },
   home__bottomSheet__statusCard__momentText__confirm: {

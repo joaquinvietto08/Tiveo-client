@@ -7,7 +7,7 @@ import ActivityCard from "./components/activityCard/ActivityCard";
 
 const Activity = ({ navigation }) => {
   const insets = useSafeAreaInsets();
-  const { activity } = useContext(UserContext);
+  const { activities } = useContext(UserContext);
 
   const renderItem = ({ item }) => (
     <ActivityCard
@@ -51,7 +51,7 @@ const Activity = ({ navigation }) => {
           Actividad
         </Text>
         <FlatList
-          data={activity}
+          data={activities}
           keyExtractor={(item) => item.id}
           renderItem={renderItem}
           contentContainerStyle={{

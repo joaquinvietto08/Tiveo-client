@@ -1,4 +1,4 @@
-import { View, Text, Pressable } from "react-native";
+import { View, Text, Pressable, Alert } from "react-native";
 import { styles } from "./AdvanceStyles";
 import { getIcon } from "../../../../utils/getIcons";
 import {
@@ -8,56 +8,67 @@ import {
 } from "../../../../utils/formatHelpers";
 import Available from "../../../../../assets/svgs/worker/available";
 import Busy from "../../../../../assets/svgs/worker/busy";
-import { useNavigation } from "@react-navigation/native";
 import { colors } from "../../../../styles/globalStyles";
 import LoadingButton from "../../../../components/inputs/loadingButton/LoadingButton";
-import firestore from "@react-native-firebase/firestore";
 import { useState } from "react";
 
 const Advance = ({
   worker,
   values,
+  requestId,
   onRequestScrollToBottom,
   onSuccess,
   setBlockBack,
 }) => {
   const [loading, setLoading] = useState(false);
-  const status = worker.moment === "now" ? "going" : "confirm";
 
   const handleSaveActivity = async () => {
     onRequestScrollToBottom?.();
     setLoading(true);
     setBlockBack(true);
 
-    const activityPayload = {
-      ...values,
-      moment: worker.moment,
-      scheduledDateTime: worker.scheduledDateTime,
-      worker: {
-        uid: worker.uid,
-        firstName: worker.firstName,
-        lastName: worker.lastName,
-        photoURL: worker.photoURL,
-      },
-      createdAt: firestore.FieldValue.serverTimestamp(),
-      status,
-    };
-
     let ok = false;
+
     try {
-      await firestore().collection("activity").add(activityPayload);
-      ok = true;
+      // 🛰️ Llamada al endpoint de Cloud Function
+      const response = await fetch(
+        "https://createactivityfromrequest-fpeb5gaoea-uc.a.run.app",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            requestId, // ID de la solicitud existente
+            newStatus: "confirm",
+          }),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(`Error ${response.status}: ${response.statusText}`);
+      }
+
+      const result = await response.json();
+
+      if (result?.success) {
+        ok = true;
+      } else {
+        throw new Error(result?.message || "Error desconocido");
+      }
     } catch (error) {
-      console.error(error);
+      console.error("❌ Error al crear activity desde request:", error);
+      Alert.alert(
+        "Error",
+        "No se pudo confirmar la solicitud. Inténtalo nuevamente."
+      );
     } finally {
+      // ⏳ Simulación de carga visual
       setTimeout(() => {
         setLoading(false);
       }, 3000);
 
-      // segundo timeout para onSuccess y desbloquear
       if (ok) {
         setTimeout(() => {
-          onSuccess();
+          onSuccess(); // ✅ Avanza al siguiente paso del flujo
         }, 4100);
       } else {
         setBlockBack(false);
@@ -70,6 +81,7 @@ const Advance = ({
       <Text style={styles.workerProfile__advance__title}>
         Detalles de solicitud
       </Text>
+
       <View style={styles.workerProfile__advance__valuesContainer}>
         {values.services && (
           <View style={styles.workerProfile__advance__description}>
@@ -91,6 +103,7 @@ const Advance = ({
             </View>
           </View>
         )}
+
         <View style={styles.workerProfile__advance__statusRow}>
           <Text style={styles.workerProfile__advance__statusLabel}>
             Disponibilidad:
@@ -121,11 +134,12 @@ const Advance = ({
                   ? "Ahora mismo"
                   : `${formatDate(worker.scheduledDateTime)} • ${formatTime(
                       worker.scheduledDateTime
-                    )} hs`}{" "}
+                    )} hs`}
               </Text>
             </View>
           </View>
         </View>
+
         <View style={styles.workerProfile__advance__status}>
           <Text style={styles.workerProfile__advance__locationTitle}>
             Ubicación:
@@ -134,6 +148,7 @@ const Advance = ({
             {values.address.address}
           </Text>
         </View>
+
         {worker.message && (
           <View style={styles.workerProfile__advance__description}>
             <Text style={styles.workerProfile__advance__locationTitle}>
@@ -144,6 +159,7 @@ const Advance = ({
             </Text>
           </View>
         )}
+
         <View style={styles.workerProfile__advance__presupuesto}>
           <Text style={styles.workerProfile__advance__presupuestoTitle}>
             Presupuesto:
@@ -153,6 +169,7 @@ const Advance = ({
           </Text>
         </View>
       </View>
+
       <View style={styles.workerProfile__advance__BottomContainer}>
         <LoadingButton
           text="Confirmar solicitud"
@@ -160,7 +177,7 @@ const Advance = ({
           onPress={handleSaveActivity}
         />
         <Text style={styles.workerProfile__advance__infoText}>
-          Recordá que podes cancelar sin costo hasta{"\n"}15 minutos antes de
+          Recordá que podés cancelar sin costo hasta{"\n"}15 minutos antes de
           que llegue el trabajador
         </Text>
       </View>

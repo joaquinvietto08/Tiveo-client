@@ -9,7 +9,8 @@ import { BottomSheetScrollView } from "@gorhom/bottom-sheet";
 import { UserContext } from "../../../../context/UserContext";
 
 const Footer = ({ sheetRef, filteredWorkers }) => {
-  const { activity } = useContext(UserContext);
+  const { activities, directRequests } = useContext(UserContext);
+  const combined = [...(activities || []), ...(directRequests || [])];
   const workers = [...filteredWorkers];
   const [snapPoints, setSnapPoints] = useState(
     workers.length > 0 ? [140, 450] : [200, 200]
@@ -20,20 +21,20 @@ const Footer = ({ sheetRef, filteredWorkers }) => {
     duration: 400,
   };
 
-useEffect(() => {
-  if (initialRender) {
-    setInitialRender(false);
-    return;
-  }
+  useEffect(() => {
+    if (initialRender) {
+      setInitialRender(false);
+      return;
+    }
 
-  if (workers.length === 0 && activity.length === 0) {
-    setSnapPoints([200, 200]);
-  } else if (workers.length === 0 && activity.length > 0) {
-    setSnapPoints([140, 350]);
-  } else {
-    setSnapPoints([140, 450]);
-  }
-}, [workers.length, activity.length]);
+    if (workers.length === 0 && combined.length === 0) {
+      setSnapPoints([200, 200]);
+    } else if (workers.length === 0 && combined.length > 0) {
+      setSnapPoints([140, 350]);
+    } else {
+      setSnapPoints([140, 450]);
+    }
+  }, [workers.length, combined.length]);
 
   return (
     <BottomSheet
@@ -46,7 +47,7 @@ useEffect(() => {
         showsVerticalScrollIndicator={false}
         style={styles.home__footer__scrollView}
       >
-        {activity.length > 0 && <Works />}
+        {combined.length > 0 && <Works />}
         {workers.length > 0 ? (
           <>
             <Text style={styles.home__footer__subtitle}>

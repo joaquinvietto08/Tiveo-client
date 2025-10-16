@@ -5,6 +5,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { styles } from "./AdvanceSearchStyles";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import Map from "./features/map/Map";
+import firestore from "@react-native-firebase/firestore";
 import Footer from "./features/footer/Footer";
 import Feather from "@expo/vector-icons/Feather";
 import postulants from "../../components/data/postulantsData";
@@ -21,24 +22,34 @@ const AdvanceSearch = () => {
   const handleMapPress = () => {
     sheetRef.current?.snapToIndex(0);
   };
-  const handleGoHome = () => {
-    navigation.navigate("HomeIndex", { openSheet: true });
+
+  const handleGoHome = async () => {
+    try {
+      if (requestId) {
+        await firestore()
+          .collection("requests")
+          .doc(requestId)
+          .update({ status: "cancelled" });
+      }
+      navigation.navigate("HomeIndex", { openSheet: true });
+    } catch (error) {
+      console.error("❌ Error al cancelar la solicitud:", error);
+    }
   };
 
   useEffect(() => {
     if (!selectedWorkerId) return;
 
-    const w = postulants.find(
-      (p) => p.uid === selectedWorkerId
-    );
+    const w = postulants.find((p) => p.uid === selectedWorkerId);
 
     if (w) {
       navigation.navigate("WorkerProfile", {
         worker: w,
         bottom: "advance",
         values,
+        requestId,
       });
-      setSelectedWorkerId(null)
+      setSelectedWorkerId(null);
     }
   }, [selectedWorkerId]);
 
@@ -65,7 +76,7 @@ const AdvanceSearch = () => {
             paddingBottom: insets.bottom,
           }}
         ></View>
-        <Footer sheetRef={sheetRef} values={values} workers={postulants} />
+        <Footer sheetRef={sheetRef} values={values} workers={postulants} requestId={requestId} />
       </GestureHandlerRootView>
     </View>
   );

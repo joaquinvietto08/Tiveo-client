@@ -65,6 +65,7 @@ export const styles = StyleSheet.create({
     marginBottom: 12,
     elevation: 2,
     position: "relative",
+    marginHorizontal: 4
   },
   advanceSearch__footer__cardHeader: {
     flexDirection: "row",

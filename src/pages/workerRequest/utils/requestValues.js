@@ -29,8 +29,7 @@ export const buildRequestValues = (
   images,
   services,
   scheduledDateTime: scheduledDateTime ?? "",
-  moment,
-  paymentStatus: "pending"
+  moment
 });
 
 export const useRequestValues = (data, worker) => {

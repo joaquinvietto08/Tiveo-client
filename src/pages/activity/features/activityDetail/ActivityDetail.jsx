@@ -20,8 +20,8 @@ import { UserContext } from "../../../../context/UserContext";
 const ActivityDetail = ({ navigation, route }) => {
   const insets = useSafeAreaInsets();
   const { activityId } = route.params;
-  const { activity } = useContext(UserContext);
-  const data = activity?.find((a) => a.id === activityId);
+  const { activities } = useContext(UserContext);
+  const data = activities?.find((a) => a.id === activityId);
   const ratingSheetRef = useRef(null);
   const [isRatingOpen, setIsRatingOpen] = useState(false);
 
