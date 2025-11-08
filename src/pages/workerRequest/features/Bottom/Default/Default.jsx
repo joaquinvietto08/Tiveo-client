@@ -5,6 +5,7 @@ import { AntDesign } from "@expo/vector-icons";
 import { useRequestValues } from "../../../utils/requestValues";
 import firestore from "@react-native-firebase/firestore";
 import LoadingButton from "../../../../../components/inputs/loadingButton/LoadingButton";
+import { uploadRequestImages } from "../../../utils/uploadRequestImages";
 
 const Default = ({
   worker,
@@ -24,14 +25,19 @@ const Default = ({
 
     let ok = false;
     try {
-      await firestore()
-        .collection("requests")
-        .add({
-          ...values,
-          createdAt: firestore.FieldValue.serverTimestamp(),
-          status: "requested",
-          type: "direct",
-        });
+      const requestRef = firestore().collection("requests").doc();
+      const uploadedImages = await uploadRequestImages(values.images, {
+        requestId: requestRef.id,
+        userId: values?.client?.userId,
+      });
+
+      await requestRef.set({
+        ...values,
+        images: uploadedImages,
+        createdAt: firestore.FieldValue.serverTimestamp(),
+        status: "requested",
+        type: "direct",
+      });
       ok = true;
     } catch (error) {
       console.error(error);

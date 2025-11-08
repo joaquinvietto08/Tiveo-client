@@ -5,6 +5,7 @@ import { useRequestValues } from "../../../utils/requestValues";
 import firestore from "@react-native-firebase/firestore";
 import LoadingButton from "../../../../../components/inputs/loadingButton/LoadingButton";
 import { useNavigation } from "@react-navigation/native";
+import { uploadRequestImages } from "../../../utils/uploadRequestImages";
 
 const Advance = ({ data, onRequestScrollToBottom, setBlockBack }) => {
   const values = useRequestValues(data);
@@ -12,7 +13,7 @@ const Advance = ({ data, onRequestScrollToBottom, setBlockBack }) => {
 
   const [loading, setLoading] = useState(false);
 
-  const handleSaveRequest= async () => {
+  const handleSaveRequest = async () => {
     onRequestScrollToBottom?.();
     setLoading(true);
     setBlockBack(true);
@@ -21,16 +22,21 @@ const Advance = ({ data, onRequestScrollToBottom, setBlockBack }) => {
     let ok = false;
 
     try {
-      const docRef = await firestore()
-        .collection("requests")
-        .add({
-          ...values,
-          createdAt: firestore.FieldValue.serverTimestamp(),
-          status: "closed", // 👈 ahora el estado se guarda como "closed"
-          type: "open",
-        });
+      const requestRef = firestore().collection("requests").doc();
+      const uploadedImages = await uploadRequestImages(values.images, {
+        requestId: requestRef.id,
+        userId: values?.client?.userId,
+      });
 
-      requestId = docRef.id;
+      await requestRef.set({
+        ...values,
+        images: uploadedImages,
+        createdAt: firestore.FieldValue.serverTimestamp(),
+        status: "closed", // 👈 ahora el estado se guarda como "closed"
+        type: "open",
+      });
+
+      requestId = requestRef.id;
       ok = true;
     } catch (error) {
       console.error("❌ Error al guardar la request:", error);

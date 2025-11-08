@@ -8,7 +8,7 @@ export const buildRequestValues = (
   user,
   location
 ) => ({
-  user: {
+  client: {
     userId: user.uid,
     displayName: user.displayName,
   },

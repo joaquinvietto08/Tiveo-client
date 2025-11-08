@@ -8,7 +8,7 @@ export function UserProvider({ children }) {
   const [initializing, setInitializing] = useState(true);
   const [user, setUser] = useState(null);
   const [activities, setActivities] = useState([]);
-  const [openRequests, setOpenRequests] = useState([]);     // solicitudes para postularse
+  const [openRequests, setOpenRequests] = useState([]); // solicitudes para postularse
   const [directRequests, setDirectRequests] = useState([]); // solicitudes directas a trabajadores
 
   // 🔐 Escuchar cambios de sesión
@@ -39,6 +39,7 @@ export function UserProvider({ children }) {
             id: doc.id,
             ...data,
             createdAt: data.createdAt?.toDate(),
+            scheduledDateTime: data?.scheduledDateTime?.toDate?.() || null,
           };
         });
         setActivities(activitiesData);
