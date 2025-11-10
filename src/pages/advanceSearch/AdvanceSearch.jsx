@@ -5,9 +5,19 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { styles } from "./AdvanceSearchStyles";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import Map from "./features/map/Map";
-import firestore from "@react-native-firebase/firestore";
+import {
+  collection,
+  doc,
+  getFirestore,
+  onSnapshot,
+  query,
+  updateDoc,
+  where,
+} from "@react-native-firebase/firestore";
 import Footer from "./features/footer/Footer";
 import Feather from "@expo/vector-icons/Feather";
+
+const db = getFirestore();
 
 const AdvanceSearch = () => {
   const insets = useSafeAreaInsets();
@@ -26,10 +36,8 @@ const AdvanceSearch = () => {
   const handleGoHome = async () => {
     try {
       if (requestId) {
-        await firestore()
-          .collection("requests")
-          .doc(requestId)
-          .update({ status: "cancelled" });
+        const requestRef = doc(collection(db, "requests"), requestId);
+        await updateDoc(requestRef, { status: "cancelled" });
       }
       navigation.navigate("HomeIndex", { openSheet: true });
     } catch (error) {
@@ -60,78 +68,82 @@ const AdvanceSearch = () => {
       return Number.isFinite(num) ? num : null;
     };
 
-    const unsubscribe = firestore()
-      .collection("postulations")
-      .where("requestId", "==", requestId)
-      .onSnapshot(
-        (snapshot) => {
-          const nextPostulants = snapshot.docs
-            .map((doc) => {
-              const data = doc.data();
-              const workerData = data?.worker || {};
+    const postulationsRef = collection(db, "postulations");
+    const postulationsQuery = query(
+      postulationsRef,
+      where("requestId", "==", requestId)
+    );
 
-              const lat = getCoordinate(
-                workerData.lat,
-                workerData?.location?.lat,
-                workerData?.location?.latitude
-              );
-              const lng = getCoordinate(
-                workerData.lng,
-                workerData?.location?.lng,
-                workerData?.location?.longitude
-              );
+    const unsubscribe = onSnapshot(
+      postulationsQuery,
+      (snapshot) => {
+        const nextPostulants = snapshot.docs
+          .map((doc) => {
+            const data = doc.data();
+            const workerData = data?.worker || {};
 
-              if (lat === null || lng === null) return null;
+            const lat = getCoordinate(
+              workerData.lat,
+              workerData?.location?.lat,
+              workerData?.location?.latitude
+            );
+            const lng = getCoordinate(
+              workerData.lng,
+              workerData?.location?.lng,
+              workerData?.location?.longitude
+            );
 
-              const photoURL =
-                typeof workerData.photoURL === "string"
-                  ? { uri: workerData.photoURL }
-                  : workerData.photoURL || null;
+            if (lat === null || lng === null) return null;
 
-              const computedName =
-                workerData.workerName ||
-                workerData.name ||
-                [workerData.firstName, workerData.lastName]
-                  .filter(Boolean)
-                  .join(" ")
-                  .trim() ||
-                "Trabajador";
+            const photoURL =
+              typeof workerData.photoURL === "string"
+                ? { uri: workerData.photoURL }
+                : workerData.photoURL || null;
 
-              return {
-                ...workerData,
-                uid: workerData.uid || doc.id,
-                postulationId: doc.id,
-                requestId: data.requestId,
-                lat,
-                lng,
-                price: parsePrice(data.budget ?? data.price),
-                message: data.message || "",
-                offerAnotherTime: !!data.offerAnotherTime,
-                offerMoment: data.moment || workerData.moment || null,
-                offerScheduledDateTime:
-                  parseDate(data.date) ||
-                  parseDate(data.scheduledDateTime) ||
-                  parseDate(workerData.scheduledDateTime),
-                status: data.status || "postulated",
-                workerName: computedName,
-                photoURL,
-                starRating: Number(workerData.starRating) || 0,
-                amountRating: Number(workerData.amountRating) || 0,
-                completedJobs: Number(workerData.completedJobs) || 0,
-                services: Array.isArray(workerData.services)
-                  ? workerData.services
-                  : [],
-              };
-            })
-            .filter(Boolean);
+            const computedName =
+              workerData.workerName ||
+              workerData.name ||
+              [workerData.firstName, workerData.lastName]
+                .filter(Boolean)
+                .join(" ")
+                .trim() ||
+              "Trabajador";
 
-          setPostulants(nextPostulants);
-        },
-        (error) => {
-          console.error("Error escuchando postulaciones:", error);
-          setPostulants([]);
-        }
-      );
+            return {
+              ...workerData,
+              uid: workerData.uid || doc.id,
+              postulationId: doc.id,
+              requestId: data.requestId,
+              lat,
+              lng,
+              price: parsePrice(data.budget ?? data.price),
+              message: data.message || "",
+              offerAnotherTime: !!data.offerAnotherTime,
+              offerMoment: data.moment || workerData.moment || null,
+              offerScheduledDateTime:
+                parseDate(data.date) ||
+                parseDate(data.scheduledDateTime) ||
+                parseDate(workerData.scheduledDateTime),
+              status: data.status || "postulated",
+              workerName: computedName,
+              photoURL,
+              starRating: Number(workerData.starRating) || 0,
+              amountRating: Number(workerData.amountRating) || 0,
+              completedJobs: Number(workerData.completedJobs) || 0,
+              services: Array.isArray(workerData.services)
+                ? workerData.services
+                : [],
+            };
+          })
+          .filter(Boolean);
+
+        setPostulants(nextPostulants);
+      },
+      (error) => {
+        console.error("Error escuchando postulaciones:", error);
+        setPostulants([]);
+      }
+    );
 
     return () => unsubscribe();
   }, [requestId]);

@@ -7,9 +7,17 @@ import { LocationContext } from "../../../context/LocationContext";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { Host } from "react-native-portalize";
 import Form from "./features/form/Form";
-import firestore from "@react-native-firebase/firestore";
+import {
+  addDoc,
+  collection,
+  doc,
+  getDoc,
+  getFirestore,
+} from "@react-native-firebase/firestore";
 import * as geofire from "geofire-common";
 import { UserContext } from "../../../context/UserContext";
+
+const db = getFirestore();
 
 const SaveAddress = ({ navigation, route }) => {
   const { user } = useContext(UserContext);
@@ -49,15 +57,15 @@ const SaveAddress = ({ navigation, route }) => {
       };
 
       try {
-        const clientRef = firestore().collection("clients").doc(user.uid);
+        const clientRef = doc(collection(db, "clients"), user.uid);
         saveLocationContext(newAddressData);
-        const clientSnapshot = await clientRef.get();
+        const clientSnapshot = await getDoc(clientRef);
         if (!clientSnapshot.exists) {
           console.log("El cliente no existe en Firestore.");
           return;
         }
 
-        await clientRef.collection("addresses").add(newAddressData);
+        await addDoc(collection(clientRef, "addresses"), newAddressData);
         console.log(
           "Dirección guardada en la subcolección addresses del cliente."
         );

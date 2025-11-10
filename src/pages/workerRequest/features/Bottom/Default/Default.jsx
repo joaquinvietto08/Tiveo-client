@@ -3,9 +3,17 @@ import { Image, Text, View } from "react-native";
 import { styles } from "./DefaultStyles";
 import { AntDesign } from "@expo/vector-icons";
 import { useRequestValues } from "../../../utils/requestValues";
-import firestore from "@react-native-firebase/firestore";
+import {
+  collection,
+  doc,
+  getFirestore,
+  serverTimestamp,
+  setDoc,
+} from "@react-native-firebase/firestore";
 import LoadingButton from "../../../../../components/inputs/loadingButton/LoadingButton";
 import { uploadRequestImages } from "../../../utils/uploadRequestImages";
+
+const db = getFirestore();
 
 const Default = ({
   worker,
@@ -25,16 +33,16 @@ const Default = ({
 
     let ok = false;
     try {
-      const requestRef = firestore().collection("requests").doc();
+      const requestRef = doc(collection(db, "requests"));
       const uploadedImages = await uploadRequestImages(values.images, {
         requestId: requestRef.id,
         userId: values?.client?.userId,
       });
 
-      await requestRef.set({
+      await setDoc(requestRef, {
         ...values,
         images: uploadedImages,
-        createdAt: firestore.FieldValue.serverTimestamp(),
+        createdAt: serverTimestamp(),
         status: "requested",
         type: "direct",
       });

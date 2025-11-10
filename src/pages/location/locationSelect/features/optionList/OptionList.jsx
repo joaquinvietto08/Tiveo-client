@@ -2,10 +2,18 @@ import React, { useEffect, useState, useContext } from "react";
 import { FlatList, Pressable, Text, View } from "react-native";
 import { styles } from "./OptionListStyles";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
-import firestore from "@react-native-firebase/firestore";
+import {
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  getFirestore,
+} from "@react-native-firebase/firestore";
 import { LocationContext } from "../../../../../context/LocationContext";
 import { UserContext } from "../../../../../context/UserContext";
 import { colors } from "../../../../../styles/globalStyles";
+
+const db = getFirestore();
 
 const DefaultItem = ({ item, navigation }) => {
   let iconName;
@@ -84,14 +92,16 @@ const OptionList = ({ navigation, setShowLoading }) => {
   useEffect(() => {
     const fetchAddresses = async () => {
       try {
-        const clientRef = firestore().collection("clients").doc(user.uid);
-        const clientSnapshot = await clientRef.get();
+        const clientRef = doc(collection(db, "clients"), user.uid);
+        const clientSnapshot = await getDoc(clientRef);
 
         if (!clientSnapshot.exists) {
           console.log("El cliente no existe en Firestore.");
           return;
         }
-        const addressesSnapshot = await clientRef.collection("addresses").get();
+        const addressesSnapshot = await getDocs(
+          collection(clientRef, "addresses")
+        );
 
         const addressesList = addressesSnapshot.docs.map((doc) => ({
           key: doc.id,

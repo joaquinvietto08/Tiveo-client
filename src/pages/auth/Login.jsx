@@ -17,8 +17,16 @@ import { GestureHandlerRootView, FlatList } from "react-native-gesture-handler";
 import { signInWithGoogle } from "../../actions/api/google_auth";
 import { signInWithFacebook } from "../../actions/api/facebook_auth";
 import { countries } from "../../utils/countries";
-import firestore from "@react-native-firebase/firestore";
+import {
+  collection,
+  doc,
+  getDoc,
+  getFirestore,
+  setDoc,
+} from "@react-native-firebase/firestore";
 import { colors } from "../../styles/globalStyles";
+
+const db = getFirestore();
 
 const Login = () => {
   const insets = useSafeAreaInsets();
@@ -46,11 +54,11 @@ const Login = () => {
 
   const checkAndCreateClient = async (user) => {
     try {
-      const clientRef = firestore().collection("clients").doc(user.uid);
-      const clientSnapshot = await clientRef.get();
+      const clientRef = doc(collection(db, "clients"), user.uid);
+      const clientSnapshot = await getDoc(clientRef);
 
       if (!clientSnapshot.exists) {
-        await clientRef.set({
+        await setDoc(clientRef, {
           displayName: user.displayName,
           photoURL: user.photoURL,
         });

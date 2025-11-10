@@ -2,10 +2,17 @@ import React, { useContext, useEffect, useState } from "react";
 import { View, Text, Pressable, Keyboard } from "react-native";
 import { styles } from "./SupportStyles";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import firestore from "@react-native-firebase/firestore";
+import {
+  addDoc,
+  collection,
+  getFirestore,
+  serverTimestamp,
+} from "@react-native-firebase/firestore";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { UserContext } from "../../context/UserContext";
 import TextInputComponent from "../../components/inputs/textInput/TextInput";
+
+const db = getFirestore();
 
 const Support = () => {
   const insets = useSafeAreaInsets();
@@ -29,15 +36,13 @@ const Support = () => {
       setLoading(true);
       Keyboard.dismiss();
 
-      await firestore()
-        .collection("support")
-        .add({
-          message: message.trim(),
-          uid: user?.uid,
-          user: "client",
-          createdAt: firestore.FieldValue.serverTimestamp(),
-          activityId: route.params?.activityId ?? "",
-        });
+      await addDoc(collection(db, "support"), {
+        message: message.trim(),
+        uid: user?.uid,
+        user: "client",
+        createdAt: serverTimestamp(),
+        activityId: route.params?.activityId ?? "",
+      });
 
       setSent(true);
       setMessage("");

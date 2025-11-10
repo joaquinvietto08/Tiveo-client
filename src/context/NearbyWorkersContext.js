@@ -6,13 +6,23 @@ import React, {
   useState,
 } from "react";
 import * as geofire from "geofire-common";
-import firestore from "@react-native-firebase/firestore";
+import {
+  collection,
+  endAt,
+  getDocs,
+  getFirestore,
+  orderBy,
+  query,
+  startAt,
+} from "@react-native-firebase/firestore";
 import { LocationContext } from "./LocationContext";
 
 // Crear el contexto
 export const NearbyWorkersContext = createContext();
 
 // Proveedor del contexto
+const db = getFirestore();
+
 export const NearbyWorkersProvider = ({ children }) => {
   const { location } = useContext(LocationContext);
   const [nearbyWorkers, setNearbyWorkers] = useState([]);
@@ -32,14 +42,16 @@ export const NearbyWorkersProvider = ({ children }) => {
       const center = [latitude, longitude];
       const radiusInM = radiusInKm * 1000;
       const bounds = geofire.geohashQueryBounds(center, radiusInM);
-      const queries = bounds.map(([start, end]) =>
-        firestore()
-          .collection("workers")
-          .orderBy("geohash")
-          .startAt(start)
-          .endAt(end)
-          .get()
-      );
+      const workersRef = collection(db, "workers");
+      const queries = bounds.map(([start, end]) => {
+        const workersQuery = query(
+          workersRef,
+          orderBy("geohash"),
+          startAt(start),
+          endAt(end)
+        );
+        return getDocs(workersQuery);
+      });
 
       const snapshots = await Promise.all(queries);
       const nearby = [];

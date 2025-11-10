@@ -1,8 +1,16 @@
 import React, { useState, useEffect, createContext } from "react";
 import auth from "@react-native-firebase/auth";
-import firestore from "@react-native-firebase/firestore";
+import {
+  collection,
+  getFirestore,
+  onSnapshot,
+  query,
+  where,
+} from "@react-native-firebase/firestore";
 
 export const UserContext = createContext();
+
+const db = getFirestore();
 
 export function UserProvider({ children }) {
   const [initializing, setInitializing] = useState(true);
@@ -29,21 +37,23 @@ export function UserProvider({ children }) {
       return;
     }
 
-    const unsubscribe = firestore()
-      .collection("activities")
-      .where("user.userId", "==", user.uid)
-      .onSnapshot((snapshot) => {
-        const activitiesData = snapshot.docs.map((doc) => {
-          const data = doc.data();
-          return {
-            id: doc.id,
-            ...data,
-            createdAt: data.createdAt?.toDate(),
-            scheduledDateTime: data?.scheduledDateTime?.toDate?.() || null,
-          };
-        });
-        setActivities(activitiesData);
+    const activitiesQuery = query(
+      collection(db, "activities"),
+      where("user.userId", "==", user.uid)
+    );
+
+    const unsubscribe = onSnapshot(activitiesQuery, (snapshot) => {
+      const activitiesData = snapshot.docs.map((doc) => {
+        const data = doc.data();
+        return {
+          id: doc.id,
+          ...data,
+          createdAt: data.createdAt?.toDate(),
+          scheduledDateTime: data?.scheduledDateTime?.toDate?.() || null,
+        };
       });
+      setActivities(activitiesData);
+    });
 
     return () => unsubscribe();
   }, [user]);
@@ -57,17 +67,19 @@ export function UserProvider({ children }) {
     }
 
     // consultas paralelas
-    const openQuery = firestore()
-      .collection("requests")
-      .where("user.userId", "==", user.uid)
-      .where("type", "==", "open");
+    const openQuery = query(
+      collection(db, "requests"),
+      where("user.userId", "==", user.uid),
+      where("type", "==", "open")
+    );
 
-    const directQuery = firestore()
-      .collection("requests")
-      .where("user.userId", "==", user.uid)
-      .where("type", "==", "direct");
+    const directQuery = query(
+      collection(db, "requests"),
+      where("user.userId", "==", user.uid),
+      where("type", "==", "direct")
+    );
 
-    const unsubOpen = openQuery.onSnapshot((snapshot) => {
+    const unsubOpen = onSnapshot(openQuery, (snapshot) => {
       const data = snapshot.docs.map((doc) => ({
         id: doc.id,
         ...doc.data(),
@@ -76,7 +88,7 @@ export function UserProvider({ children }) {
       setOpenRequests(data);
     });
 
-    const unsubDirect = directQuery.onSnapshot((snapshot) => {
+    const unsubDirect = onSnapshot(directQuery, (snapshot) => {
       const data = snapshot.docs.map((doc) => ({
         id: doc.id,
         ...doc.data(),
