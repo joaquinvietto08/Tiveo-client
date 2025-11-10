@@ -1,4 +1,10 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import * as geofire from "geofire-common";
 import firestore from "@react-native-firebase/firestore";
 import { LocationContext } from "./LocationContext";
@@ -12,12 +18,11 @@ export const NearbyWorkersProvider = ({ children }) => {
   const [nearbyWorkers, setNearbyWorkers] = useState([]);
 
   const radiusInKm = 1;
+  const latitude = location?.geometry?.location?.lat;
+  const longitude = location?.geometry?.location?.lng;
 
   // Función para actualizar manualmente la lista de trabajadores cercanos
-  const fetchNearbyWorkers = async () => {
-    const latitude = location?.geometry?.location?.lat;
-    const longitude = location?.geometry?.location?.lng;
-
+  const fetchNearbyWorkers = useCallback(async () => {
     if (typeof latitude !== "number" || typeof longitude !== "number") {
       setNearbyWorkers([]);
       return;
@@ -101,11 +106,21 @@ export const NearbyWorkersProvider = ({ children }) => {
       console.error("Error fetching nearby workers:", error);
       setNearbyWorkers([]);
     }
-  };
+  }, [latitude, longitude, radiusInKm]);
 
   useEffect(() => {
+    if (
+      typeof location?.geometry?.location?.lat !== "number" ||
+      typeof location?.geometry?.location?.lng !== "number"
+    ) {
+      return;
+    }
+
     fetchNearbyWorkers();
-  }, [location, radiusInKm]);
+    const intervalId = setInterval(fetchNearbyWorkers, 20000);
+
+    return () => clearInterval(intervalId);
+  }, [fetchNearbyWorkers, latitude, longitude]);
 
   return (
     <NearbyWorkersContext.Provider

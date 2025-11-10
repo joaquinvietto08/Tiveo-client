@@ -1,4 +1,4 @@
-import React, { forwardRef } from "react";
+import React, { forwardRef, useCallback, useState } from "react";
 import { StyleSheet, Dimensions } from "react-native";
 import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 import { mapStyle } from "./features/mapStyle";
@@ -36,24 +36,48 @@ const MapComponent = forwardRef(
         ))}
 
         {workers?.map((worker, index) => (
-          <Marker
-            key={`worker-${index}`}
-            coordinate={{ latitude: worker.lat, longitude: worker.lng }}
-            anchor={{ x: 0.5, y: 0.5 }}
-            tracksViewChanges={false}
-            onPress={() => props.onSelectWorker(worker.uid)}
-          >
-            {workerType === "postulant" ? (
-              <PostulantMarker postulant={worker} />
-            ) : (
-              <WorkerMarker worker={worker} />
-            )}
-          </Marker>
+          <WorkerMapMarker
+            key={`worker-${worker?.uid || index}`}
+            worker={worker}
+            workerType={workerType}
+            onSelectWorker={props.onSelectWorker}
+          />
         ))}
       </MapView>
     );
   }
 );
+
+const WorkerMapMarker = ({ worker, workerType, onSelectWorker }) => {
+  const hasRemotePhoto =
+    typeof worker?.photoURL === "string" && worker.photoURL?.length > 0;
+  const [tracksChanges, setTracksChanges] = useState(hasRemotePhoto);
+
+  const handleImageLoaded = useCallback(() => {
+    if (tracksChanges) {
+      setTracksChanges(false);
+    }
+  }, [tracksChanges]);
+
+  const handlePress = useCallback(() => {
+    onSelectWorker?.(worker?.uid);
+  }, [onSelectWorker, worker?.uid]);
+
+  return (
+    <Marker
+      coordinate={{ latitude: worker.lat, longitude: worker.lng }}
+      anchor={{ x: 0.5, y: 0.5 }}
+      tracksViewChanges={tracksChanges}
+      onPress={handlePress}
+    >
+      {workerType === "postulant" ? (
+        <PostulantMarker postulant={worker} />
+      ) : (
+        <WorkerMarker worker={worker} onImageLoaded={handleImageLoaded} />
+      )}
+    </Marker>
+  );
+};
 
 const styles = StyleSheet.create({
   mapStyle: {

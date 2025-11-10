@@ -1,8 +1,9 @@
+import React, { useEffect } from "react";
 import { View, Image, StyleSheet, Text } from "react-native";
 import { getIcon } from "../../../../utils/getIcons";
 import { colors } from "../../../../styles/globalStyles";
 
-const WorkerMarker = ({ worker }) => {
+const WorkerMarker = ({ worker, onImageLoaded }) => {
   const services = worker?.services || [];
   const displayedServices = services.slice(0, 2);
   const extraServicesCount = services.length - displayedServices.length;
@@ -19,12 +20,20 @@ const WorkerMarker = ({ worker }) => {
     worker?.lastName?.[0]?.toUpperCase() ||
     "?";
 
+  useEffect(() => {
+    if (!imageSource) {
+      onImageLoaded?.();
+    }
+  }, [imageSource, onImageLoaded]);
+
   return (
     <View style={styles.map__markers__worker__markerContainer}>
       {imageSource ? (
         <Image
           source={imageSource}
           style={styles.map__markers__worker__workerImage}
+          onLoad={onImageLoaded}
+          onError={onImageLoaded}
         />
       ) : (
         <View
