@@ -32,7 +32,7 @@ const Advance = ({ data, onRequestScrollToBottom, setBlockBack }) => {
         ...values,
         images: uploadedImages,
         createdAt: firestore.FieldValue.serverTimestamp(),
-        status: "closed", // 👈 ahora el estado se guarda como "closed"
+        status: "requested",
         type: "open",
       });
 

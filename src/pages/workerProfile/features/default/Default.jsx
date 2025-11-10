@@ -13,7 +13,8 @@ import { colors } from "../../../../styles/globalStyles";
 const Default = ({ worker }) => {
   const navigation = useNavigation();
   const services = worker?.services || [];
-  const isAvailable = worker.status === "available";
+  const workerStatus = (worker?.status || "").toLowerCase();
+  const isAvailable = workerStatus === "available";
 
   return (
     <View style={styles.workerProfile__default__Bottom}>
@@ -22,13 +23,17 @@ const Default = ({ worker }) => {
           Servicios que ofrece
         </Text>
         <View style={styles.workerProfile__default__tagsWrapper}>
-          {services.map((serviceObj, index) => {
-            const IconComponent = getIcon(serviceObj.service);
+          {services.map((service, index) => {
+            const IconComponent = getIcon(service);
+            const translatedLabel = translateService(service);
             return (
-              <View key={index} style={styles.workerProfile__default__tag}>
-                <IconComponent height={24} width={24} />
+              <View
+                key={`${service}-${index}`}
+                style={styles.workerProfile__default__tag}
+              >
+                {IconComponent && <IconComponent height={24} width={24} />}
                 <Text style={styles.workerProfile__default__tagText}>
-                  {translateService(serviceObj.service)}
+                  {translatedLabel}
                 </Text>
               </View>
             );
@@ -44,12 +49,12 @@ const Default = ({ worker }) => {
           <View
             style={[
               styles.workerProfile__default__StatusSubContainer,
-              worker.status === "available"
+              isAvailable
                 ? styles.workerProfile__default__StatusAvailable
                 : styles.workerProfile__default__StatusBusy,
             ]}
           >
-            {worker.status === "available" ? (
+            {isAvailable ? (
               <Available height={20} width={20} fill={colors.green} />
             ) : (
               <Busy height={20} width={20} fill={colors.primary} />
@@ -58,12 +63,12 @@ const Default = ({ worker }) => {
               <Text
                 style={[
                   styles.workerProfile__default__StatusText,
-                  worker.status === "available"
+                  isAvailable
                     ? styles.workerProfile__default__StatusTextAvailable
                     : styles.workerProfile__default__StatusTextBusy,
                 ]}
               >
-                {translateAvailabilityRequest(worker.status)}
+                {translateAvailabilityRequest(isAvailable ? "available" : "busy")}
               </Text>
             </View>
           </View>

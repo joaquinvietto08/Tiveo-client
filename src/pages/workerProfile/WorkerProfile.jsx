@@ -52,7 +52,45 @@ const WorkerProfile = ({ navigation }) => {
 
   const [success, setSuccess] = useState(false);
 
-  console.log(requestId)
+  const bannerSource = worker?.bannerImage
+    ? worker.bannerImage
+    : null;
+  const avatarSource =
+    typeof worker?.photoURL === "string"
+      ? { uri: worker.photoURL }
+      : worker?.photoURL || null;
+
+  const displayName =
+    worker?.workerName ||
+    worker?.name ||
+    worker?.firstName ||
+    "Trabajador";
+  const workerInitial = displayName?.[0]?.toUpperCase() || "?";
+
+  const hasLicensed = worker?.services?.some?.(
+    (service) => typeof service === "object" && service.isLicensed
+  );
+
+  const joinedAtDate = (() => {
+    if (worker?.joinedAt?.toDate) return worker.joinedAt.toDate();
+    if (worker?.joinedAt?.seconds) {
+      return new Date(worker.joinedAt.seconds * 1000);
+    }
+    if (typeof worker?.joinedAt === "string") return new Date(worker.joinedAt);
+    if (worker?.joinedAt instanceof Date) return worker.joinedAt;
+    return null;
+  })();
+
+  const experienceNumber = joinedAtDate
+    ? getTimeExperience(joinedAtDate.toISOString(), "number")
+    : 0;
+  const experienceLabel = joinedAtDate
+    ? getTimeExperience(joinedAtDate.toISOString(), "label")
+    : "Experiencia en Tiveo";
+
+  const starRating = Number(worker?.starRating) || 0;
+  const amountRating = Number(worker?.amountRating) || 0;
+  const completedJobs = Number(worker?.completedJobs) || 0;
 
   const handleSuccess = () => {
     setSuccess(true);
@@ -85,26 +123,52 @@ const WorkerProfile = ({ navigation }) => {
             colors={["rgba(0,0,0,0.80)", "transparent"]}
             style={styles.workerProfile__topGradient}
           />
-          <Image
-            source={worker.bannerImage}
-            style={styles.workerProfile__banner}
-            resizeMode="cover"
-          />
-          <View style={styles.workerProfile__avatarContainer}>
+          {bannerSource ? (
             <Image
-              source={worker.photoURL}
-              style={styles.workerProfile__avatar}
+              source={bannerSource}
+              style={styles.workerProfile__banner}
               resizeMode="cover"
             />
+          ) : (
+            <View
+              style={[
+                styles.workerProfile__banner,
+                { backgroundColor: colors.lightGray },
+              ]}
+            />
+          )}
+          <View style={styles.workerProfile__avatarContainer}>
+            {avatarSource ? (
+              <Image
+                source={avatarSource}
+                style={styles.workerProfile__avatar}
+                resizeMode="cover"
+              />
+            ) : (
+              <View
+                style={[
+                  styles.workerProfile__avatar,
+                  {
+                    backgroundColor: colors.lightGray,
+                    justifyContent: "center",
+                    alignItems: "center",
+                  },
+                ]}
+              >
+                <Text
+                  style={{ fontSize: 32, fontFamily: "Inter-Bold", color: colors.black }}
+                >
+                  {workerInitial}
+                </Text>
+              </View>
+            )}
           </View>
-          <Text style={styles.workerProfile__name}>
-            {worker.firstName} {worker.lastName}
-          </Text>
+          <Text style={styles.workerProfile__name}>{displayName}</Text>
 
           <View style={styles.workerProfile__ratingContainer}>
             {Array.from({ length: 5 }).map((_, i) => {
               const idx = i + 1;
-              const filledStars = Math.floor(worker.starRating);
+              const filledStars = Math.floor(starRating);
               return (
                 <AntDesign
                   key={idx}
@@ -115,18 +179,18 @@ const WorkerProfile = ({ navigation }) => {
                 />
               );
             })}
+            <Text style={styles.workerProfile__ratingText}>{starRating}</Text>
             <Text style={styles.workerProfile__ratingText}>
-              {worker.starRating}
-            </Text>
-            <Text style={styles.workerProfile__ratingText}>
-              ({worker.amountRating})
+              ({amountRating})
             </Text>
           </View>
           <View style={styles.workerProfile__body}>
-            <Text style={styles.workerProfile__description}>
-              {worker.description}
-            </Text>
-            {worker.services.some((s) => s.isLicensed) && (
+            {worker?.description ? (
+              <Text style={styles.workerProfile__description}>
+                {worker.description}
+              </Text>
+            ) : null}
+            {hasLicensed && (
               <View style={styles.workerProfile__licensedContainer}>
                 <Licensed width={18} height={18} />
                 <Text style={styles.workerProfile__licensedText}>
@@ -140,18 +204,18 @@ const WorkerProfile = ({ navigation }) => {
           <View style={styles.workerProfile__row}>
             <View style={styles.workerProfile__leftFixed}>
               <Text style={styles.workerProfile__number}>
-                {getTimeExperience(worker.joinedAt, "number")}
+                {experienceNumber}
               </Text>
             </View>
             <Text style={styles.workerProfile__label}>
-              {getTimeExperience(worker.joinedAt, "label")}
+              {experienceLabel}
             </Text>
           </View>
 
           <View style={styles.workerProfile__row}>
             <View style={styles.workerProfile__leftFixed}>
               <Text style={styles.workerProfile__number}>
-                {worker.completedJobs}
+                {completedJobs}
               </Text>
             </View>
             <Text style={[styles.workerProfile__label]}>

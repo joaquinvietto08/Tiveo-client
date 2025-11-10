@@ -26,6 +26,16 @@ export const styles = StyleSheet.create({
     marginRight: 10,
     marginTop: 5,
   },
+  home__workerPreview__placeholder: {
+    backgroundColor: colors.lightGray,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  home__workerPreview__placeholderText: {
+    fontSize: 28,
+    fontFamily: "Inter-Bold",
+    color: colors.black,
+  },
   home__workerPreview__info: {
     flex: 1,
   },

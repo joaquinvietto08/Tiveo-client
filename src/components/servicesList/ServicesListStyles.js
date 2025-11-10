@@ -38,4 +38,18 @@ export const styles = StyleSheet.create({
     position: "absolute",
     fontFamily: "Inter-Light",
   },
+  servicesList__placeholder: {
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    backgroundColor: colors.lightGray,
+    alignItems: "center",
+    justifyContent: "center",
+    marginBottom: 10,
+  },
+  servicesList__placeholderText: {
+    fontSize: 14,
+    fontFamily: "Inter-SemiBold",
+    color: colors.black,
+  },
 });

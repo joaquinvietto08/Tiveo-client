@@ -57,18 +57,28 @@ const Default = ({
     }
   };
 
+  const imageSource =
+    typeof worker.photoURL === "string"
+      ? { uri: worker.photoURL }
+      : worker.photoURL;
+  const workerDisplayName =
+    worker.workerName ||
+    worker.name ||
+    worker.firstName ||
+    "Trabajador";
+
   return (
     <View style={styles.WR__defaultBottom__container}>
       <View style={styles.WR__defaultBottom__hr}></View>
       <View style={styles.WR__defaultBottom__worker}>
         <Image
-          source={worker.photoURL}
+          source={imageSource}
           style={styles.WR__defaultBottom__image}
           resizeMode="cover"
         />
         <View>
           <Text style={styles.WR__defaultBottom__name}>
-            {worker.firstName} {worker.lastName}
+            {workerDisplayName}
           </Text>
           <View style={styles.WR__defaultBottom__ratingContainer}>
             <AntDesign name="star" size={16} />

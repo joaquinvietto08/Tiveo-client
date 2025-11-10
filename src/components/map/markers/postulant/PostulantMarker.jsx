@@ -6,12 +6,36 @@ const PostulantMarker = ({ postulant }) => {
   const priceText =
     postulant.price != null ? formatPrice(postulant.price) : null;
 
+  const imageSource =
+    typeof postulant.photoURL === "string"
+      ? { uri: postulant.photoURL }
+      : postulant.photoURL || null;
+
+  const workerInitial =
+    postulant.workerName?.[0]?.toUpperCase() ||
+    postulant.name?.[0]?.toUpperCase() ||
+    postulant.firstName?.[0]?.toUpperCase() ||
+    "T";
+
   return (
     <View style={styles.map__markers__postulant__markerContainer}>
-      <Image
-        source={postulant.photoURL}
-        style={styles.map__markers__postulant__postulantImage}
-      />
+      {imageSource ? (
+        <Image
+          source={imageSource}
+          style={styles.map__markers__postulant__postulantImage}
+        />
+      ) : (
+        <View
+          style={[
+            styles.map__markers__postulant__postulantImage,
+            styles.map__markers__postulant__placeholder,
+          ]}
+        >
+          <Text style={styles.map__markers__postulant__placeholderText}>
+            {workerInitial}
+          </Text>
+        </View>
+      )}
       <View style={styles.map__markers__postulant__priceContainer}>
         {postulant.price != null ? (
           <Text style={styles.map__markers__postulant__priceText}>
@@ -36,6 +60,16 @@ const styles = StyleSheet.create({
     width: 46,
     height: 46,
     borderRadius: 50,
+  },
+  map__markers__postulant__placeholder: {
+    backgroundColor: colors.lightGray,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  map__markers__postulant__placeholderText: {
+    fontSize: 16,
+    fontFamily: "Inter-SemiBold",
+    color: colors.black,
   },
   map__markers__postulant__postulantContainer: {
     position: "absolute",

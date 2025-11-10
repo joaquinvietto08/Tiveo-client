@@ -32,13 +32,14 @@ const Home = ({ navigation }) => {
   const handleServiceFilter = (service) => {
     if (service.name === "Todos") {
       setFilteredWorkers(nearbyWorkers);
-    } else {
-      setFilteredWorkers(
-        nearbyWorkers.filter((worker) =>
-          worker.services.some((s) => s.service === service.name)
-        )
-      );
+      return;
     }
+
+    setFilteredWorkers(
+      nearbyWorkers.filter((worker) =>
+        worker?.services?.includes(service.name)
+      )
+    );
   };
 
    useEffect(() => {

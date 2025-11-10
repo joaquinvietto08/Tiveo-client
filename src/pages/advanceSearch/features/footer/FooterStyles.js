@@ -76,6 +76,16 @@ export const styles = StyleSheet.create({
     height: 50,
     borderRadius: 40,
   },
+  advanceSearch__footer__avatarPlaceholder: {
+    backgroundColor: colors.lightGray,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  advanceSearch__footer__avatarInitial: {
+    fontSize: 18,
+    fontFamily: "Inter-Bold",
+    color: colors.black,
+  },
   advanceSearch__footer__cardHeaderText: {
     flexDirection: "row",
     alignItems: "center",
