@@ -113,29 +113,45 @@ const Footer = ({ sheetRef, values, workers, requestId }) => {
               Aquí aparecerán los trabajadores que se postulen a tu solicitud
             </Text>
           ) : (
-            workers.map((w) => {
+            workers.map((postulation) => {
+              const worker = postulation.worker;
+              if (!worker) return null;
+
               const displayMoment =
-                w.offerAnotherTime && w.offerMoment
-                  ? w.offerMoment
+                postulation.offerAnotherTime && postulation.offerMoment
+                  ? postulation.offerMoment
                   : values.moment;
-              const displayDate =
-                w.offerAnotherTime && w.offerScheduledDateTime
-                  ? w.offerScheduledDateTime
+
+              const rawDate =
+                postulation.offerAnotherTime &&
+                postulation.offerScheduledDateTime
+                  ? postulation.offerScheduledDateTime
                   : values.scheduledDateTime;
+
+              const displayDate =
+                rawDate && typeof rawDate?.toDate === "function"
+                  ? rawDate.toDate()
+                  : rawDate;
+
               const isNow = displayMoment === "now";
+
               const photoSource =
-                typeof w.photoURL === "string"
-                  ? { uri: w.photoURL }
-                  : w.photoURL || null;
+                typeof worker.photoURL === "string"
+                  ? { uri: worker.photoURL }
+                  : null;
+
+              const workerName = worker.workerName;
+              const workerInitial = workerName?.[0] || "";
 
               return (
                 <Pressable
-                  key={w.uid}
+                  key={worker.uid}
                   style={styles.advanceSearch__footer__card}
                   android_ripple={{ color: "#E2E2E2", borderless: false }}
                   onPress={() =>
                     navigation.navigate("WorkerProfile", {
-                      worker: w,
+                      worker,
+                      postulation,
                       bottom: "advance",
                       values,
                       requestId,
@@ -156,13 +172,13 @@ const Footer = ({ sheetRef, values, workers, requestId }) => {
                         ]}
                       >
                         <Text style={styles.advanceSearch__footer__avatarInitial}>
-                          {(w.workerName || "T")[0]}
+                          {workerInitial}
                         </Text>
                       </View>
                     )}
                     <View style={styles.advanceSearch__footer__cardHeaderText}>
                       <Text style={styles.advanceSearch__footer__name}>
-                        {w.workerName || w.name || w.firstName || "Trabajador"}
+                        {workerName}
                       </Text>
                       <Licensed
                         width={16}
@@ -173,10 +189,10 @@ const Footer = ({ sheetRef, values, workers, requestId }) => {
                     <View style={styles.advanceSearch__footer__ratingContainer}>
                       <AntDesign name="star" size={12} color={colors.black} />
                       <Text style={styles.advanceSearch__footer__ratingValue}>
-                        {w.starRating.toFixed(1)}
+                        {Number(worker.starRating || 0).toFixed(1)}
                       </Text>
                       <Text style={styles.advanceSearch__footer__ratingCount}>
-                        ({w.amountRating})
+                        ({worker.amountRating || 0})
                       </Text>
                     </View>
                   </View>
@@ -187,7 +203,9 @@ const Footer = ({ sheetRef, values, workers, requestId }) => {
                         Presupuesto:
                       </Text>
                       <Text style={styles.advanceSearch__footer__infoValue}>
-                        {w.price != null ? formatPrice(w.price) : "A definir"}
+                        {postulation.price != null
+                          ? formatPrice(postulation.price)
+                          : "A definir"}
                       </Text>
                     </View>
                     <View style={styles.advanceSearch__footer__infoRowMoment}>
@@ -230,15 +248,15 @@ const Footer = ({ sheetRef, values, workers, requestId }) => {
                         </Text>
                       </View>
                     </View>
-                    {w.message && (
+                    {postulation.message ? (
                       <View
                         style={styles.advanceSearch__footer__messageContainer}
                       >
                         <Text style={styles.advanceSearch__footer__messageText}>
-                          {w.message}
+                          {postulation.message}
                         </Text>
                       </View>
-                    )}
+                    ) : null}
                   </View>
                 </Pressable>
               );

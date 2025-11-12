@@ -14,6 +14,7 @@ import { useState } from "react";
 
 const Advance = ({
   worker,
+  postulation,
   values,
   requestId,
   onRequestScrollToBottom,
@@ -21,6 +22,28 @@ const Advance = ({
   setBlockBack,
 }) => {
   const [loading, setLoading] = useState(false);
+
+  const priceValue =
+    postulation?.price != null
+      ? Number(postulation.price)
+      : postulation?.budget != null
+      ? Number(postulation.budget)
+      : null;
+
+  const displayMoment =
+    postulation?.offerAnotherTime && postulation?.offerMoment
+      ? postulation.offerMoment
+      : values?.moment;
+
+  const rawDisplayDate =
+    postulation?.offerAnotherTime && postulation?.offerScheduledDateTime
+      ? postulation.offerScheduledDateTime
+      : values?.scheduledDateTime;
+
+  const displayDate =
+    rawDisplayDate && typeof rawDisplayDate?.toDate === "function"
+      ? rawDisplayDate.toDate()
+      : rawDisplayDate;
 
   const handleSaveActivity = async () => {
     onRequestScrollToBottom?.();
@@ -76,6 +99,8 @@ const Advance = ({
     }
   };
 
+  const isNow = displayMoment === "now";
+
   return (
     <View style={styles.workerProfile__advance__bottom}>
       <Text style={styles.workerProfile__advance__title}>
@@ -111,12 +136,12 @@ const Advance = ({
           <View
             style={[
               styles.workerProfile__advance__statusSubContainer,
-              worker.moment === "now"
+              isNow
                 ? styles.workerProfile__advance__statusAvailable
                 : styles.workerProfile__advance__statusBusy,
             ]}
           >
-            {worker.moment === "now" ? (
+            {isNow ? (
               <Available height={20} width={20} fill={colors.green} />
             ) : (
               <Busy height={20} width={20} fill={colors.primary} />
@@ -125,16 +150,16 @@ const Advance = ({
               <Text
                 style={[
                   styles.workerProfile__advance__statusText,
-                  worker.moment === "now"
+                  isNow
                     ? styles.workerProfile__advance__statusTextAvailable
                     : styles.workerProfile__advance__statusTextBusy,
                 ]}
               >
-                {worker.moment === "now"
+                {isNow
                   ? "Ahora mismo"
-                  : `${formatDate(worker.scheduledDateTime)} • ${formatTime(
-                      worker.scheduledDateTime
-                    )} hs`}
+                  : displayDate
+                  ? `${formatDate(displayDate)} • ${formatTime(displayDate)} hs`
+                  : "A coordinar"}
               </Text>
             </View>
           </View>
@@ -149,13 +174,13 @@ const Advance = ({
           </Text>
         </View>
 
-        {worker.message && (
+        {postulation?.message && (
           <View style={styles.workerProfile__advance__description}>
             <Text style={styles.workerProfile__advance__locationTitle}>
               Aclaraciones:
             </Text>
             <Text style={styles.workerProfile__advance__locationLabel}>
-              {worker.message}
+              {postulation.message}
             </Text>
           </View>
         )}
@@ -165,7 +190,7 @@ const Advance = ({
             Presupuesto:
           </Text>
           <Text style={styles.workerProfile__advance__priceLabel}>
-            {worker.price != null ? formatPrice(worker.price) : "A definir"}
+            {priceValue != null ? formatPrice(priceValue) : "A definir"}
           </Text>
         </View>
       </View>

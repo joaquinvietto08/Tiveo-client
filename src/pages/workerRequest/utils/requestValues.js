@@ -21,8 +21,7 @@ export const buildRequestValues = (
   },
   worker: {
     workerId: worker?.uid || "",
-    firstName: worker?.firstName || "",
-    lastName: worker?.lastName || "",
+    workerName: worker?.workerName || "",
     profilePicture: worker?.photoURL || "",
   },
   description,

@@ -48,26 +48,6 @@ const AdvanceSearch = () => {
   useEffect(() => {
     if (!requestId) return;
 
-    const parseDate = (value) => {
-      if (!value) return null;
-      if (typeof value?.toDate === "function") return value.toDate();
-      const parsed = new Date(value);
-      return Number.isNaN(parsed.getTime()) ? null : parsed;
-    };
-
-    const getCoordinate = (...candidates) => {
-      for (const candidate of candidates) {
-        if (typeof candidate === "number") return candidate;
-      }
-      return null;
-    };
-
-    const parsePrice = (value) => {
-      if (value === null || value === undefined) return null;
-      const num = typeof value === "number" ? value : Number(value);
-      return Number.isFinite(num) ? num : null;
-    };
-
     const postulationsRef = collection(db, "postulations");
     const postulationsQuery = query(
       postulationsRef,
@@ -80,59 +60,10 @@ const AdvanceSearch = () => {
         const nextPostulants = snapshot.docs
           .map((doc) => {
             const data = doc.data();
-            const workerData = data?.worker || {};
-
-            const lat = getCoordinate(
-              workerData.lat,
-              workerData?.location?.lat,
-              workerData?.location?.latitude
-            );
-            const lng = getCoordinate(
-              workerData.lng,
-              workerData?.location?.lng,
-              workerData?.location?.longitude
-            );
-
-            if (lat === null || lng === null) return null;
-
-            const photoURL =
-              typeof workerData.photoURL === "string"
-                ? { uri: workerData.photoURL }
-                : workerData.photoURL || null;
-
-            const computedName =
-              workerData.workerName ||
-              workerData.name ||
-              [workerData.firstName, workerData.lastName]
-                .filter(Boolean)
-                .join(" ")
-                .trim() ||
-              "Trabajador";
-
+            if (!data?.worker?.uid) return null;
             return {
-              ...workerData,
-              uid: workerData.uid || doc.id,
               postulationId: doc.id,
-              requestId: data.requestId,
-              lat,
-              lng,
-              price: parsePrice(data.budget ?? data.price),
-              message: data.message || "",
-              offerAnotherTime: !!data.offerAnotherTime,
-              offerMoment: data.moment || workerData.moment || null,
-              offerScheduledDateTime:
-                parseDate(data.date) ||
-                parseDate(data.scheduledDateTime) ||
-                parseDate(workerData.scheduledDateTime),
-              status: data.status || "postulated",
-              workerName: computedName,
-              photoURL,
-              starRating: Number(workerData.starRating) || 0,
-              amountRating: Number(workerData.amountRating) || 0,
-              completedJobs: Number(workerData.completedJobs) || 0,
-              services: Array.isArray(workerData.services)
-                ? workerData.services
-                : [],
+              ...data,
             };
           })
           .filter(Boolean);
@@ -149,16 +80,22 @@ const AdvanceSearch = () => {
   }, [requestId]);
 
   const selectedPostulant = useMemo(
-    () => postulants.find((p) => p.uid === selectedWorkerId),
+    () =>
+      postulants.find(
+        (postulation) => postulation.worker?.uid === selectedWorkerId
+      ),
     [postulants, selectedWorkerId]
   );
 
   useEffect(() => {
-    if (!selectedPostulant) return;
+    if (!selectedPostulant?.worker) return;
 
+    console.log("desde Search:");
+    console.log(selectedPostulant);
     navigation.navigate("WorkerProfile", {
-      worker: selectedPostulant,
+      worker: selectedPostulant.worker,
       bottom: "advance",
+      postulation: selectedPostulant,
       values,
       requestId,
     });

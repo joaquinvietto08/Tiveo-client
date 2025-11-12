@@ -25,7 +25,13 @@ import { useEffect, useRef, useState } from "react";
 const WorkerProfile = ({ navigation }) => {
   const insets = useSafeAreaInsets();
   const route = useRoute();
-  const { worker, bottom = "default", values, requestId } = route.params;
+  const {
+    worker,
+    bottom = "default",
+    values,
+    requestId,
+    postulation,
+  } = route.params;
   const scrollRef = useRef(null);
 
   const scrollToBottom = () => {
@@ -241,6 +247,7 @@ const WorkerProfile = ({ navigation }) => {
         {bottom === "advance" && (
           <Advance
             worker={worker}
+            postulation={postulation}
             values={values}
             requestId={requestId}
             onRequestScrollToBottom={scrollToBottom}
