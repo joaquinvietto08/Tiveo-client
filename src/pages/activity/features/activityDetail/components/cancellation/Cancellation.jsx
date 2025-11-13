@@ -53,7 +53,7 @@ const Cancellation = ({ onCancel }) => {
                   styles.activityDetails__cancellation__cancel,
                 ]}
                 onPress={() => {
-                  if (onCancell) onCancell();
+                  onCancel?.();
                   setVisible(false);
                 }}
               >

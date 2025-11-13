@@ -1,23 +1,36 @@
-import React, { useContext } from "react";
+import React, { useContext, useCallback } from "react";
 import { View, FlatList, Text, ScrollView } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { UserContext } from "../../context/UserContext";
 import { styles } from "./ActivityStyles";
 import ActivityCard from "./components/activityCard/ActivityCard";
+import { doc, getFirestore, updateDoc } from "@react-native-firebase/firestore";
 
 const Activity = ({ navigation }) => {
   const insets = useSafeAreaInsets();
   const { activities } = useContext(UserContext);
   const hasActivities = Array.isArray(activities) && activities.length > 0;
+  const db = getFirestore();
 
-  console.log(activities);
+  const handleCancelActivity = useCallback(
+    async (activityId) => {
+      try {
+        const activityRef = doc(db, "activities", activityId);
+        await updateDoc(activityRef, { status: "cancelled" });
+      } catch (error) {
+        console.error("❌ Error al cancelar la actividad:", error);
+      }
+    },
+    [db]
+  );
+
   const renderItem = ({ item }) => (
     <ActivityCard
       data={item}
       onPress={() =>
         navigation.navigate("ActivityDetail", { activityId: item.id })
       }
-      onCancel={() => console.log("Cancelar", item.id)}
+      onCancel={() => handleCancelActivity(item.id)}
       onMessages={() =>
         navigation.navigate("Messages", {
           activityId: item.id,

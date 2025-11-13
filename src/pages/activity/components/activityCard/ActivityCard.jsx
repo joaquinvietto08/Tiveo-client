@@ -1,4 +1,5 @@
-import { Pressable, Text, View } from "react-native";
+import React, { useState } from "react";
+import { Modal, Pressable, Text, View } from "react-native";
 import { getIcon } from "../../../../utils/getIcons";
 import {
   formatDate,
@@ -14,6 +15,12 @@ const MAX_SERVICES = 5;
 const ActivityCard = ({ data, onPress, onCancel, onMessages, onPayment }) => {
   const displayed = data.services?.slice(0, MAX_SERVICES);
   const extraCount = data.services?.length - displayed?.length;
+  const [isCancelModalVisible, setIsCancelModalVisible] = useState(false);
+
+  const handleConfirmCancel = () => {
+    setIsCancelModalVisible(false);
+    onCancel?.();
+  };
 
   return (
     <View style={styles.activity__activityCard__card}>
@@ -98,7 +105,7 @@ const ActivityCard = ({ data, onPress, onCancel, onMessages, onPayment }) => {
             <View style={styles.activity__activityCard__optionContainer}>
               <Pressable
                 style={styles.activity__activityCard__cancelButton}
-                onPress={onCancel}
+                onPress={() => setIsCancelModalVisible(true)}
               >
                 <Text style={{ color: "red", fontFamily: "Inter-Bold" }}>
                   Cancelar
@@ -115,6 +122,50 @@ const ActivityCard = ({ data, onPress, onCancel, onMessages, onPayment }) => {
             </View>
           </>
         ))}
+      <Modal
+        transparent
+        animationType="fade"
+        visible={isCancelModalVisible}
+        onRequestClose={() => setIsCancelModalVisible(false)}
+      >
+        <View style={styles.activity__activityCard__modalOverlay}>
+          <View style={styles.activity__activityCard__modalContent}>
+            <Text style={styles.activity__activityCard__modalTitle}>
+              ¿Deseás cancelar el trabajo solicitado?
+            </Text>
+            <Text style={styles.activity__activityCard__modalText}>
+              Esta acción no se puede deshacer.
+            </Text>
+
+            <View style={styles.activity__activityCard__modalButtons}>
+              <Pressable
+                style={[
+                  styles.activity__activityCard__modalButton,
+                  styles.activity__activityCard__modalKeepButton,
+                ]}
+                onPress={() => setIsCancelModalVisible(false)}
+              >
+                <Text style={styles.activity__activityCard__modalButtonText}>
+                  Mantener solicitud
+                </Text>
+              </Pressable>
+              <Pressable
+                style={[
+                  styles.activity__activityCard__modalButton,
+                  styles.activity__activityCard__modalCancelButton,
+                ]}
+                onPress={handleConfirmCancel}
+              >
+                <Text
+                  style={styles.activity__activityCard__modalButtonCancelText}
+                >
+                  Cancelar trabajo
+                </Text>
+              </Pressable>
+            </View>
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 };

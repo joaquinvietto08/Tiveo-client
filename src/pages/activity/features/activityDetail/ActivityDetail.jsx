@@ -11,11 +11,12 @@ import Warranty from "./components/warranty/Warranty";
 import Categories from "./components/categories/Categories";
 import Worker from "./components/worker/Worker";
 import Payment from "./components/payment/Payment";
-import { useContext, useRef, useState } from "react";
+import { useContext, useRef, useState, useCallback } from "react";
 import RatingBottomSheet from "./components/rating/ratingBottomSheet/RatingBottomSheet";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import Cancellation from "./components/cancellation/Cancellation";
 import { UserContext } from "../../../../context/UserContext";
+import { doc, getFirestore, updateDoc } from "@react-native-firebase/firestore";
 
 const ActivityDetail = ({ navigation, route }) => {
   const insets = useSafeAreaInsets();
@@ -24,6 +25,7 @@ const ActivityDetail = ({ navigation, route }) => {
   const data = activities?.find((a) => a.id === activityId);
   const ratingSheetRef = useRef(null);
   const [isRatingOpen, setIsRatingOpen] = useState(false);
+  const db = getFirestore();
 
 const helpMessage = `Consulta sobre trabajo realizado por ${data.worker.firstName} ${data.worker.lastName}.`;
 
@@ -36,6 +38,15 @@ const helpMessage = `Consulta sobre trabajo realizado por ${data.worker.firstNam
     ratingSheetRef.current?.close();
     setIsRatingOpen(false);
   };
+
+  const handleCancelActivity = useCallback(async () => {
+    try {
+      const activityRef = doc(db, "activities", activityId);
+      await updateDoc(activityRef, { status: "cancelled" });
+    } catch (error) {
+      console.error("❌ Error al cancelar la actividad:", error);
+    }
+  }, [db, activityId]);
 
   return (
     <View
@@ -78,7 +89,7 @@ const helpMessage = `Consulta sobre trabajo realizado por ${data.worker.firstNam
             />
             <Warranty />
             {data.status !== "done" && data.status !== "cancelled" && (
-              <Cancellation />
+              <Cancellation onCancel={handleCancelActivity} />
             )}
           </View>
 
