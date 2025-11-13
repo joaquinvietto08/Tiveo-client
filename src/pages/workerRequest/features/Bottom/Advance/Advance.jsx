@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View } from "react-native";
+import { Alert, View } from "react-native";
 import { styles } from "./AdvanceStyles";
 import { useRequestValues } from "../../../utils/requestValues";
 import {
@@ -22,6 +22,17 @@ const Advance = ({ data, onRequestScrollToBottom, setBlockBack }) => {
   const [loading, setLoading] = useState(false);
 
   const handleSaveRequest = async () => {
+    const hasDescription = Boolean(values?.description?.trim());
+    const hasServices = Array.isArray(values?.services) && values.services.length > 0;
+
+    if (!hasDescription || !hasServices) {
+      Alert.alert(
+        "Datos incompletos",
+        "Necesitás agregar una descripción y al menos una categoría para enviar esta solicitud."
+      );
+      return;
+    }
+
     onRequestScrollToBottom?.();
     setLoading(true);
     setBlockBack(true);
