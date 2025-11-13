@@ -3,7 +3,7 @@ import { colors } from "../../../../styles/globalStyles";
 
 export const styles = StyleSheet.create({
   WR__categoriesSelect__category: {
-    paddingTop: 30,
+    paddingTop: 15,
   },
   WR__categoriesSelect__sectionTitle: {
     fontFamily: "Inter-SemiBold",

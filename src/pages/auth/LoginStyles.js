@@ -23,9 +23,9 @@ export const styles = StyleSheet.create({
   social_authContainer: {
     marginTop: 30,
     width: "100%",
-    height: 170,
+    gap: 15,
     justifyContent: "space-between",
-    marginBottom: 20,
+    marginBottom: 40,
   },
   social_authButton: {
     flexDirection: "row",

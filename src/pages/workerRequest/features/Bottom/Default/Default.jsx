@@ -26,7 +26,7 @@ const Default = ({
 
   const [loading, setLoading] = useState(false);
 
-  const handleSaveActivity = async () => {
+  const handleSendRequest = async () => {
     onRequestScrollToBottom?.();
     setLoading(true);
     setBlockBack(true);
@@ -102,7 +102,7 @@ const Default = ({
       <LoadingButton
         text="Enviar solicitud"
         loading={loading}
-        onPress={handleSaveActivity}
+        onPress={handleSendRequest}
       />
       <Text style={styles.WR__defaultBottom__infoText}>
         Recordá que podes cancelar sin costo hasta{"\n"}15 minutos antes de que

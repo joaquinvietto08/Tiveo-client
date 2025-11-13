@@ -13,7 +13,6 @@ import {
 } from "../../../../utils/formatHelpers";
 import Available from "../../../../../assets/svgs/worker/available.svg";
 import Busy from "../../../../../assets/svgs/worker/busy.svg";
-import Licensed from "../../../../../assets/svgs/worker/licensed";
 import { useNavigation } from "@react-navigation/native";
 
 const Footer = ({ sheetRef, values, workers, requestId }) => {
@@ -180,11 +179,6 @@ const Footer = ({ sheetRef, values, workers, requestId }) => {
                       <Text style={styles.advanceSearch__footer__name}>
                         {workerName}
                       </Text>
-                      <Licensed
-                        width={16}
-                        height={16}
-                        style={styles.advanceSearch__footer__verifiedIcon}
-                      />
                     </View>
                     <View style={styles.advanceSearch__footer__ratingContainer}>
                       <AntDesign name="star" size={12} color={colors.black} />

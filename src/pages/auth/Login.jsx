@@ -4,12 +4,10 @@ import {
   Text,
   StatusBar,
   Pressable,
-  TextInput,
   Keyboard,
 } from "react-native";
 import { styles } from "./LoginStyles";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import Icon from "react-native-vector-icons/MaterialIcons";
 import Facebook from "../../../assets/svgs/auth/facebook";
 import Google from "../../../assets/svgs/auth/google";
 import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
@@ -30,8 +28,6 @@ const db = getFirestore();
 
 const Login = () => {
   const insets = useSafeAreaInsets();
-  const [selectedCountry, setSelectedCountry] = useState(countries[0]);
-  const [phoneNumber, setPhoneNumber] = useState("");
   const sheetRef = useRef(null);
   const [isOpen, setIsOpen] = useState(false);
   const snapPoints = ["75%"];
@@ -126,45 +122,6 @@ const Login = () => {
                 Continuar con Facebook
               </Text>
             </Pressable>
-            <Pressable style={styles.social_authButton}>
-              <Icon name="email" size={24} color="#000" />
-              <Text style={styles.socialButtonText}>Continuar con correo</Text>
-            </Pressable>
-          </View>
-          <Text
-            style={{
-              color: "#8A8A8A",
-              fontSize: 16,
-              fontFamily: "Inter-Regular",
-            }}
-          >
-            O con tu celular
-          </Text>
-          <View style={styles.phone_authContainer}>
-            <Pressable
-              style={styles.selectCountry}
-              onPress={handleOpenBottomSheet}
-            >
-              <Text style={styles.flag}>{selectedCountry.flag}</Text>
-              <Icon name="keyboard-arrow-down" size={29} color="#000" />
-            </Pressable>
-            <View style={styles.phoneInputContainer}>
-              <Text style={styles.countryCodeText}>{selectedCountry.code}</Text>
-              <TextInput
-                style={styles.phoneInput}
-                keyboardType="numeric"
-                maxLength={15}
-                value={phoneNumber}
-                placeholder="Ej: 123456789"
-                placeholderTextColor="#8A8A8A"
-                selectionColor={colors.primary}
-                cursorColor="black"
-                onChangeText={(text) => {
-                  const numericText = text.replace(/[^0-9]/g, "");
-                  setPhoneNumber(numericText);
-                }}
-              />
-            </View>
           </View>
           <Pressable style={styles.confirmButton} color={colors.primary}>
             <Text

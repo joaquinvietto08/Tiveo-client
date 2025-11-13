@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect, useContext } from "react";
 import { View, ScrollView, Pressable, Text, BackHandler } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { styles } from "./WorkerRequestStyles";
@@ -15,12 +15,16 @@ import Default from "./features/Bottom/Default/Default";
 import Advance from "./features/Bottom/Advance/Advance";
 import { servicesData } from "../../utils/servicesData";
 import Confirm from "../../components/confirm/Confirm";
+import { LocationContext } from "../../context/LocationContext";
+import LocationDetails from "./features/LocationDetails/LocationDetails";
 
 const WorkerRequest = () => {
   const insets = useSafeAreaInsets();
   const navigation = useNavigation();
   const route = useRoute();
   const { bottom = "default", worker, initialSelectedServices = [] } = route.params;
+
+  const { location } = useContext(LocationContext);
 
   const [description, setDescription] = useState("");
   const [images, setImages] = useState([]);
@@ -86,6 +90,20 @@ const WorkerRequest = () => {
 
   const [blockBack, setBlockBack] = useState(false);
 
+  const [addressDetails, setAddressDetails] = useState({
+    floor: "",
+    instructions: "",
+    phone: "",
+  });
+
+  useEffect(() => {
+    setAddressDetails({
+      floor: location?.floor || "",
+      instructions: location?.notes || "",
+      phone: location?.phoneNumber || "",
+    });
+  }, [location]);
+
   useEffect(() => {
     if (blockBack) {
       const backHandlerSub = BackHandler.addEventListener(
@@ -102,6 +120,22 @@ const WorkerRequest = () => {
       };
     }
   }, [blockBack, navigation]);
+
+  const handleAddressDetailChange = (field, value) => {
+    setAddressDetails((prev) => ({
+      ...prev,
+      [field]: value,
+    }));
+  };
+
+  const requestData = [
+    description,
+    images,
+    selectedServices,
+    momentOption,
+    scheduledDateTime,
+    addressDetails,
+  ];
 
   return (
     <View
@@ -131,6 +165,11 @@ const WorkerRequest = () => {
             setDescription={setDescription}
             images={images}
           />
+          <LocationDetails
+            location={location}
+            addressDetails={addressDetails}
+            onChangeField={handleAddressDetailChange}
+          />
           <CategoriesSelect
             selectedServices={selectedServices}
             onOpenCategories={handleOpenCategories}
@@ -146,26 +185,14 @@ const WorkerRequest = () => {
           {bottom === "default" ? (
             <Default
               worker={worker}
-              data={[
-                description,
-                images,
-                selectedServices,
-                momentOption,
-                scheduledDateTime,
-              ]}
+              data={requestData}
               onRequestScrollToBottom={scrollToBottom}
               onSuccess={handleSuccess}
               setBlockBack={setBlockBack}
             />
           ) : (
             <Advance
-              data={[
-                description,
-                images,
-                selectedServices,
-                momentOption,
-                scheduledDateTime,
-              ]}
+              data={requestData}
               onRequestScrollToBottom={scrollToBottom}
               setBlockBack={setBlockBack}
             />
