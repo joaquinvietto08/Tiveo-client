@@ -51,7 +51,8 @@ export const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 15,
     borderTopWidth: 1,
-    borderTopColor: colors.lightGray
+    borderTopColor: colors.lightGray,
+    maxHeight: 150,
   },
   workerProfile__default__StatusRow: {
     flexDirection: "row",

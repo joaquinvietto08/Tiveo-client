@@ -3,7 +3,16 @@ import { Pressable, View } from "react-native";
 import MapComponent from "../../../../components/map/map/Map";
 import { styles } from "./MapStyles";
 import { LocationContext } from "../../../../context/LocationContext";
-import firestore from "@react-native-firebase/firestore";
+import {
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  getFirestore,
+  limit,
+  query,
+  where,
+} from "@react-native-firebase/firestore";
 
 const BASE32 = "0123456789bcdefghjkmnpqrstuvwxyz";
 
@@ -44,6 +53,8 @@ const decodeGeohash = (hash) => {
   };
 };
 
+const db = getFirestore();
+
 const Map = ({ onPress, postulants, onSelectWorker }) => {
   const mapRef = useRef(null);
   const { location } = useContext(LocationContext);
@@ -54,15 +65,16 @@ const Map = ({ onPress, postulants, onSelectWorker }) => {
     if (!uid) return null;
 
     try {
-      const workersCollection = firestore().collection("workers");
-      let workerDoc = await workersCollection.doc(uid).get();
+      const workersCollection = collection(db, "workers");
+      let workerDoc = await getDoc(doc(workersCollection, uid));
 
       if (!workerDoc.exists) {
-        const snapshot = await workersCollection
-          .where("uid", "==", uid)
-          .limit(1)
-          .get();
-
+        const workerQuery = query(
+          workersCollection,
+          where("uid", "==", uid),
+          limit(1)
+        );
+        const snapshot = await getDocs(workerQuery);
         workerDoc = snapshot.docs[0];
       }
 

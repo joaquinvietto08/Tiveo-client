@@ -89,6 +89,7 @@ export const styles = StyleSheet.create({
   /* **************** */
   home__bottomSheet__statusCard__momentText: {
     fontFamily: "Inter-Medium",
+    fontSize: 13
   },
   home__bottomSheet__statusCard__momentText__done: {
     color: colors.black,

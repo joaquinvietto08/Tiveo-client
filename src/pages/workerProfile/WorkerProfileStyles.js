@@ -10,14 +10,6 @@ export const styles = StyleSheet.create({
     flexGrow: 1,
     gap: 15,
   },
-  workerProfile__topGradient: {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    right: 0,
-    height: 100,
-    zIndex: 900,
-  },
   workerProfile__backContainer: {
     backgroundColor: colors.white,
     borderRadius: 100,
@@ -31,13 +23,9 @@ export const styles = StyleSheet.create({
     right: 0,
     zIndex: 1000,
   },
-  workerProfile__banner: {
-    width: "100%",
-    height: 170,
-  },
   workerProfile__avatarContainer: {
     alignItems: "center",
-    marginTop: -60,
+        paddingTop: 60
   },
   workerProfile__avatar: {
     width: 110,
@@ -81,17 +69,6 @@ export const styles = StyleSheet.create({
     fontFamily: "Inter-Regular",
   },
 
-  workerProfile__licensedContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginTop: 12,
-    gap: 6,
-  },
-  workerProfile__licensedText: {
-    fontSize: 14,
-    color: colors.gray,
-    fontFamily: "Inter-Medium",
-  },
   workerProfile__experienceSection: {
     flexDirection: "row",
     paddingHorizontal: 20,
