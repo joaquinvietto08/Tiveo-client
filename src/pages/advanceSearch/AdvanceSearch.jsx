@@ -1,5 +1,5 @@
-import React, { useRef, useState, useEffect, useMemo } from "react";
-import { View, StatusBar, Text, Pressable } from "react-native";
+import React, { useRef, useState, useEffect, useMemo, useCallback } from "react";
+import { View, StatusBar, Text, Pressable, BackHandler } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { styles } from "./AdvanceSearchStyles";
@@ -33,7 +33,7 @@ const AdvanceSearch = () => {
     sheetRef.current?.snapToIndex(0);
   };
 
-  const handleGoHome = async () => {
+  const handleGoHome = useCallback(async () => {
     try {
       if (requestId) {
         const requestRef = doc(collection(db, "requests"), requestId);
@@ -43,7 +43,16 @@ const AdvanceSearch = () => {
     } catch (error) {
       console.error("❌ Error al cancelar la solicitud:", error);
     }
-  };
+  }, [navigation, requestId]);
+
+  useEffect(() => {
+    const backSub = BackHandler.addEventListener("hardwareBackPress", () => {
+      handleGoHome();
+      return true;
+    });
+
+    return () => backSub.remove();
+  }, [handleGoHome]);
 
   useEffect(() => {
     if (!requestId) return;
