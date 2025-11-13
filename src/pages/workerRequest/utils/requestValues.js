@@ -16,7 +16,7 @@ export const buildRequestValues = (
   location
 ) => ({
   client: {
-    userId: user.uid,
+    clientId: user.uid,
     displayName: user.displayName,
   },
   address: {

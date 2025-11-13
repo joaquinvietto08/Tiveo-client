@@ -39,7 +39,7 @@ export function UserProvider({ children }) {
 
     const activitiesQuery = query(
       collection(db, "activities"),
-      where("user.userId", "==", user.uid)
+      where("client.clientId", "==", user.uid)
     );
 
     const unsubscribe = onSnapshot(activitiesQuery, (snapshot) => {
@@ -69,13 +69,13 @@ export function UserProvider({ children }) {
     // consultas paralelas
     const openQuery = query(
       collection(db, "requests"),
-      where("user.userId", "==", user.uid),
+      where("client.clientId", "==", user.uid),
       where("type", "==", "open")
     );
 
     const directQuery = query(
       collection(db, "requests"),
-      where("user.userId", "==", user.uid),
+      where("client.clientId", "==", user.uid),
       where("type", "==", "direct")
     );
 

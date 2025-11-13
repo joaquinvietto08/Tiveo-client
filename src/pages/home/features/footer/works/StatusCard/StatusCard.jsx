@@ -22,46 +22,29 @@ const StatusCard = ({
   name,
 }) => {
   const navigation = useNavigation();
+  const isRequested = status === "requested";
 
-  const getStyleCard = (status) => {
-    return styles[`home__bottomSheet__statusCard__card__${status}`] || {};
-  };
+  const cardVariantStyle = isRequested
+    ? styles.home__bottomSheet__statusCard__card__requested
+    : styles.home__bottomSheet__statusCard__card__default;
+  const textColor = isRequested ? colors.black : colors.white;
+  const detailsButtonStyle = [
+    styles.home__bottomSheet__statusCard__detailsButton,
+    isRequested
+      ? styles.home__bottomSheet__statusCard__detailsButton__requested
+      : styles.home__bottomSheet__statusCard__detailsButton__default,
+  ];
 
-  const getStyleTitle = (status) => {
-    return styles[`home__bottomSheet__statusCard__title__${status}`] || {};
-  };
+  const hasScheduledDate = Boolean(scheduledDateTime);
 
-  const getStyleMomentText = (status) => {
-    return styles[`home__bottomSheet__statusCard__momentText__${status}`] || {};
-  };
+  const getScheduledLabel = () =>
+    hasScheduledDate
+      ? `Programado ${formatDate(scheduledDateTime)} ${formatTime(
+          scheduledDateTime
+        )} hs`
+      : "Programado (a coordinar)";
 
-  const getStyleMessagesButton = (status) => {
-    return (
-      styles[`home__bottomSheet__statusCard__messagesButton__${status}`] || {}
-    );
-  };
-
-  const getStyleDetailsButton = (status) => {
-    return (
-      styles[`home__bottomSheet__statusCard__detailsButton__${status}`] || {}
-    );
-  };
-
-  const getStyleMessagesButtonText = (status) => {
-    return (
-      styles[`home__bottomSheet__statusCard__messagesButtonText__${status}`] ||
-      {}
-    );
-  };
-
-  const getStyleDetailsButtonText = (status) => {
-    return (
-      styles[`home__bottomSheet__statusCard__detailsButtonText__${status}`] ||
-      {}
-    );
-  };
-
-  const renderStatus = (status) => {
+  const renderStatus = () => {
     switch (status) {
       case "requested":
         return (
@@ -78,7 +61,6 @@ const StatusCard = ({
             <Pressable
               style={[
                 styles.home__bottomSheet__statusCard__messagesButton,
-                getStyleMessagesButton(status),
               ]}
               onPress={() =>
                 navigation.navigate("Payment", { activityId, worker })
@@ -87,7 +69,7 @@ const StatusCard = ({
               <Text
                 style={[
                   styles.home__bottomSheet__statusCard__messagesButtonText,
-                  getStyleMessagesButtonText(status),
+                  { color: textColor },
                 ]}
               >
                 {payment === "requested" ? (
@@ -98,10 +80,7 @@ const StatusCard = ({
               </Text>
             </Pressable>
             <Pressable
-              style={[
-                styles.home__bottomSheet__statusCard__detailsButton,
-                getStyleDetailsButton(status),
-              ]}
+              style={detailsButtonStyle}
               onPress={() =>
                 navigation.navigate("ActivityDetail", { activityId })
               }
@@ -109,7 +88,7 @@ const StatusCard = ({
               <Text
                 style={[
                   styles.home__bottomSheet__statusCard__detailsButtonText,
-                  getStyleDetailsButtonText(status),
+                  { color: textColor },
                 ]}
               >
                 Ver detalles
@@ -123,7 +102,6 @@ const StatusCard = ({
             <Pressable
               style={[
                 styles.home__bottomSheet__statusCard__messagesButton,
-                getStyleMessagesButton(status),
               ]}
               onPress={() =>
                 navigation.navigate("Messages", { activityId, worker })
@@ -132,17 +110,14 @@ const StatusCard = ({
               <Text
                 style={[
                   styles.home__bottomSheet__statusCard__messagesButtonText,
-                  getStyleMessagesButtonText(status),
+                  { color: textColor },
                 ]}
               >
                 Mensajes
               </Text>
             </Pressable>
             <Pressable
-              style={[
-                styles.home__bottomSheet__statusCard__detailsButton,
-                getStyleDetailsButton(status),
-              ]}
+              style={detailsButtonStyle}
               onPress={() =>
                 navigation.navigate("ActivityDetail", { activityId })
               }
@@ -150,7 +125,7 @@ const StatusCard = ({
               <Text
                 style={[
                   styles.home__bottomSheet__statusCard__detailsButtonText,
-                  getStyleDetailsButtonText(status),
+                  { color: textColor },
                 ]}
               >
                 Ver detalles
@@ -163,13 +138,16 @@ const StatusCard = ({
 
   return (
     <Pressable
-      style={[styles.home__bottomSheet__statusCard__card, getStyleCard(status)]}
+      style={[
+        styles.home__bottomSheet__statusCard__card,
+        cardVariantStyle,
+      ]}
     >
       <View style={styles.home__bottomSheet__statusCard__servicesContainer}>
         <Text
           style={[
             styles.home__bottomSheet__statusCard__servicesText,
-            getStyleTitle(status),
+            { color: textColor },
           ]}
         >
           {services.length > 0 ? "Trabajo de" : "Trabajo"}
@@ -185,11 +163,7 @@ const StatusCard = ({
                   key={serviceKey}
                   height={20}
                   width={20}
-                  fill={
-                    status === "working" || status === "going"
-                      ? colors.black
-                      : colors.primary
-                  }
+                  fill={colors.primary}
                 />
               );
             })}
@@ -197,12 +171,7 @@ const StatusCard = ({
               <Text
                 style={[
                   styles.home__bottomSheet__statusCard__extraText,
-                  {
-                    color:
-                      status === "working" || status === "going"
-                        ? colors.black
-                        : colors.primary,
-                  },
+                  { color: colors.primary },
                 ]}
               >
                 +{extraCount}
@@ -217,11 +186,10 @@ const StatusCard = ({
             {moment === "now" ? (
               <>
                 <Available height={22} width={22} fill={colors.primary} />
-
                 <Text
                   style={[
                     styles.home__bottomSheet__statusCard__momentText,
-                    status !== "requested" && { color: colors.white },
+                    { color: textColor },
                   ]}
                 >
                   Ahora mismo
@@ -233,38 +201,42 @@ const StatusCard = ({
                 <Text
                   style={[
                     styles.home__bottomSheet__statusCard__momentText,
-                    status !== "requested" && { color: colors.white },
+                    { color: textColor },
                   ]}
                 >
-                  Programado {formatDate(scheduledDateTime)}{" "}
-                  {formatTime(scheduledDateTime)} hs
+                  {getScheduledLabel()}
                 </Text>
               </>
             )}
           </>
         ) : status === "confirm" ? (
           <>
-            <Busy height={22} width={22} fill={colors.primary} />
+            {moment === "now" ? (
+              <Available height={22} width={22} fill={colors.primary} />
+            ) : (
+              <Busy height={22} width={22} fill={colors.primary} />
+            )}
             <Text
               style={[
                 styles.home__bottomSheet__statusCard__momentText,
-                getStyleMomentText(status),
+                { color: textColor },
               ]}
               numberOfLines={1}
+              ellipsizeMode="tail"
             >
-              Programado {formatDate(scheduledDateTime)}{" "}
-              {formatTime(scheduledDateTime)} hs
+              {moment === "now" ? "Ahora mismo" : getScheduledLabel()}
             </Text>
           </>
         ) : status === "going" ? (
           <>
-            <Available height={22} width={22} fill={colors.black} />
+            <Available height={22} width={22} fill={colors.primary} />
             <Text
               style={[
                 styles.home__bottomSheet__statusCard__momentText,
-                getStyleMomentText(status),
+                { color: textColor },
               ]}
               numberOfLines={1}
+              ellipsizeMode="tail"
             >
               En camino a {address}
             </Text>
@@ -274,7 +246,7 @@ const StatusCard = ({
             <Text
               style={[
                 styles.home__bottomSheet__statusCard__momentText,
-                getStyleMomentText(status),
+                { color: textColor },
               ]}
               numberOfLines={1}
             >
@@ -285,7 +257,7 @@ const StatusCard = ({
           <Text
             style={[
               styles.home__bottomSheet__statusCard__momentText,
-              getStyleMomentText(status),
+              { color: textColor },
             ]}
           >
             {name} está trabando...
@@ -293,7 +265,7 @@ const StatusCard = ({
         )}
       </View>
       <View style={styles.home__bottomSheet__statusCard__statusContainer}>
-        {renderStatus(status)}
+        {renderStatus()}
       </View>
     </Pressable>
   );

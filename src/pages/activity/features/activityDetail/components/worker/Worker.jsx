@@ -8,7 +8,6 @@ const Worker = ({  worker, createdAt, price, status, moment, paymentStatus }) =>
     "https://t3.ftcdn.net/jpg/02/43/12/34/360_F_243123463_zTooub557xEWABDLk0jJklDyLSGl2jrr.jpg";
 
   const hasPrice = price !== undefined && price !== null;
-  const fullName = `${worker.firstName} ${worker.lastName}`;
 
   const getSubtitle = () => {
     switch (status) {
@@ -43,7 +42,7 @@ const Worker = ({  worker, createdAt, price, status, moment, paymentStatus }) =>
         style={styles.activityDetails__worker__avatar}
       />
 
-      <Text style={styles.activityDetails__worker__name}>{fullName}</Text>
+      <Text style={styles.activityDetails__worker__name}>{worker.workerName}</Text>
 
       <Text style={styles.activityDetails__worker__date}>{formatDate(createdAt)} •{" "}{formatTime(createdAt)}</Text>
 

@@ -9,7 +9,6 @@ const MAX_SERVICES = 6;
 
 const Works = () => {
   const { activities, directRequests } = useContext(UserContext);
-
   // Orden de prioridad de estados
   const statusPriority = ["requested", "confirm", "going", "working", "done"];
 

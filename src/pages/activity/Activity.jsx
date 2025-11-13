@@ -8,7 +8,9 @@ import ActivityCard from "./components/activityCard/ActivityCard";
 const Activity = ({ navigation }) => {
   const insets = useSafeAreaInsets();
   const { activities } = useContext(UserContext);
+  const hasActivities = Array.isArray(activities) && activities.length > 0;
 
+  console.log(activities);
   const renderItem = ({ item }) => (
     <ActivityCard
       data={item}
@@ -50,17 +52,38 @@ const Activity = ({ navigation }) => {
         >
           Actividad
         </Text>
-        <FlatList
-          data={activities}
-          keyExtractor={(item) => item.id}
-          renderItem={renderItem}
-          contentContainerStyle={{
-            paddingHorizontal: 20,
-            paddingBottom: 80,
-            paddingTop: 20,
-          }}
-          scrollEnabled={false}
-        />
+        {hasActivities ? (
+          <FlatList
+            data={activities}
+            keyExtractor={(item) => item.id}
+            renderItem={renderItem}
+            contentContainerStyle={{
+              paddingHorizontal: 20,
+              paddingBottom: 80,
+              paddingTop: 20,
+            }}
+            scrollEnabled={false}
+          />
+        ) : (
+          <View
+            style={{
+              paddingHorizontal: 20,
+              paddingBottom: 80,
+              paddingTop: 40,
+            }}
+          >
+            <Text
+              style={{
+                fontFamily: "Inter-Medium",
+                fontSize: 16,
+                textAlign: "center",
+                color: "#8D8D8D",
+              }}
+            >
+              Todavía no tenés actividad.
+            </Text>
+          </View>
+        )}
       </ScrollView>
     </View>
   );

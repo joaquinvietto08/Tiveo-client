@@ -5,8 +5,13 @@ import Feather from "@expo/vector-icons/Feather";
 import { useNavigation } from "@react-navigation/native";
 import { colors } from "../../../../styles/globalStyles";
 
-const Header = ({worker}) => {
+const Header = ({ worker }) => {
   const navigation = useNavigation();
+
+  const imageSource =
+    typeof worker?.profilePicture === "string"
+      ? { uri: worker.profilePicture }
+      : worker?.profilePicture;
 
   return (
     <View style={styles.messages__header__container}>
@@ -18,11 +23,11 @@ const Header = ({worker}) => {
       </Pressable>
       <View style={styles.messages__header__workerContainer}>
         <Image
-          source={worker.profilePicture}
+          source={imageSource}
           style={styles.messages__header__workerImage}
         />
         <Text style={styles.messages__header__nameText} numberOfLines={2}>
-          {worker.firstName} {worker.lastName}
+          {worker.workerName}
         </Text>
       </View>
     </View>
