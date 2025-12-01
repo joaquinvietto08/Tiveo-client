@@ -16,6 +16,7 @@ const MapComponent = forwardRef(
         provider={PROVIDER_GOOGLE}
         style={styles.mapStyle}
         mapType="standard"
+        userInterfaceStyle="light"
         {...mapConfig}
         {...props}
       >

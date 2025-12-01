@@ -10,7 +10,7 @@ const MAX_SERVICES = 6;
 const Works = () => {
   const { activities, directRequests } = useContext(UserContext);
   // Orden de prioridad de estados
-  const statusPriority = ["requested", "confirm", "going", "working", "done"];
+  const statusPriority = ["requested", "confirm", "going", "on-progress", "done"];
 
   // 🧩 Combinamos ambas listas y las ordenamos por prioridad
   const mergedData = useMemo(() => {
@@ -38,7 +38,7 @@ const Works = () => {
     const displayed = services.slice(0, MAX_SERVICES);
     const extraCount = services.length - displayed.length;
     const addressText = address?.address?.split(",")[0] || "Sin dirección";
-    const name = worker?.firstName || "Sin nombre";
+    const name = worker?.workerName || "Sin nombre";
 
     return (
       <StatusCard

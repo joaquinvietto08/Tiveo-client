@@ -9,6 +9,8 @@ const Worker = ({  worker, createdAt, price, status, moment, paymentStatus }) =>
 
   const hasPrice = price !== undefined && price !== null;
 
+  console.log(paymentStatus)
+
   const getSubtitle = () => {
     switch (status) {
       case "pending":
@@ -19,6 +21,8 @@ const Worker = ({  worker, createdAt, price, status, moment, paymentStatus }) =>
         return "Trabajo realizado por";
       case "on-going":
         return "Trabajador en camino";
+      case "on-progress":
+        return "Trabajador siendo realizado por";
       case "confirm":
         return moment === "scheduled"
           ? "Trabajo programado"

@@ -35,6 +35,7 @@ const StatusCard = ({
       : styles.home__bottomSheet__statusCard__detailsButton__default,
   ];
 
+  console.log(payment)
   const hasScheduledDate = Boolean(scheduledDateTime);
 
   const getScheduledLabel = () =>
@@ -72,7 +73,7 @@ const StatusCard = ({
                   { color: textColor },
                 ]}
               >
-                {payment === "requested" ? (
+                {payment === "pending" ? (
                   <Text>Realizar pago</Text>
                 ) : (
                   <Text>Modificar pago</Text>
