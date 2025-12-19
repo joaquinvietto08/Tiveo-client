@@ -26,15 +26,16 @@ const Payment = ({ activityId, paymentStatus }) => {
 
   const isPendingStatus =
     paymentStatus === "pending" || paymentStatus === "pending-approve";
+  const isCreatedStatus = paymentStatus === "created";
 
   const isNoPayment =
-    !payment ||
-    isPendingStatus ||
-    payment?.status === "pending" ||
-    loading;
+    !payment || isPendingStatus || payment?.status === "pending" || loading;
 
   const getPendingLabel = () => {
     if (loading) return "Cargando pago...";
+    if (isCreatedStatus) {
+      return "Estamos preparando el pago.";
+    }
     if (isPendingStatus || !payment) {
       return "Aún no hay pago. Pedile al trabajador que genere el cobro.";
     }
@@ -50,20 +51,27 @@ const Payment = ({ activityId, paymentStatus }) => {
   const renderServices = () => {
     if (!payment?.services?.length) return null;
 
-    return payment.services.map((s, index) => (
-      <View key={index} style={styles.activityDetails__payment__row}>
-        <Text style={styles.activityDetails__payment__label}>
-          {s.category === "service_fee"
-            ? "Tarifa de servicio"
-            : `Trabajo de ${translateService(
-                s.category || "servicio"
-              ).toLowerCase()}`}
-        </Text>
-        <Text style={styles.activityDetails__payment__amount}>
-          ${Number(s.amount || 0).toLocaleString("es-AR")}
-        </Text>
-      </View>
-    ));
+    const hideServiceAmounts = payment.services.every(
+      (service) => Number(service.amount || 0) === 0
+    );
+
+    return payment.services.map((s, index) => {
+      const amount = Number(s.amount || 0);
+      return (
+        <View key={index} style={styles.activityDetails__payment__row}>
+          <Text style={styles.activityDetails__payment__label}>
+            {s.category === "service_fee"
+              ? "Tarifa de servicio"
+              : `Trabajo de ${translateService(
+                  s.category || "servicio"
+                ).toLowerCase()}`}
+          </Text>
+          <Text style={styles.activityDetails__payment__amount}>
+            {hideServiceAmounts ? "" : `$${amount.toLocaleString("es-AR")}`}
+          </Text>
+        </View>
+      );
+    });
   };
 
   return (

@@ -25,7 +25,8 @@ const Works = () => {
         if (item.status === "done") {
           return (
             item.paymentStatus === "pending" ||
-            item.paymentStatus === "pending-approve"
+            item.paymentStatus === "pending-approve" ||
+            item.paymentStatus === "created"
           );
         }
         return true;

@@ -1,4 +1,4 @@
-import React, { useContext, useCallback } from "react";
+import React, { useContext, useCallback, useMemo } from "react";
 import { View, FlatList, Text, ScrollView } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { UserContext } from "../../context/UserContext";
@@ -9,7 +9,22 @@ import { doc, getFirestore, updateDoc } from "@react-native-firebase/firestore";
 const Activity = ({ navigation }) => {
   const insets = useSafeAreaInsets();
   const { activities } = useContext(UserContext);
-  const hasActivities = Array.isArray(activities) && activities.length > 0;
+  const sortedActivities = useMemo(() => {
+    if (!Array.isArray(activities)) return [];
+
+    const getTime = (value) => {
+      if (!value) return 0;
+      if (typeof value.toDate === "function") return value.toDate().getTime();
+      const date = value instanceof Date ? value : new Date(value);
+      const time = date.getTime();
+      return Number.isNaN(time) ? 0 : time;
+    };
+
+    return [...activities].sort(
+      (a, b) => getTime(b?.startedAt) - getTime(a?.startedAt)
+    );
+  }, [activities]);
+  const hasActivities = sortedActivities.length > 0;
   const db = getFirestore();
 
   const handleCancelActivity = useCallback(
@@ -41,6 +56,7 @@ const Activity = ({ navigation }) => {
         navigation.navigate("Payment", {
           activityId: item.id,
           worker: item.worker,
+          paymentStatus: item.paymentStatus,
         })
       }
     />
@@ -67,7 +83,7 @@ const Activity = ({ navigation }) => {
         </Text>
         {hasActivities ? (
           <FlatList
-            data={activities}
+            data={sortedActivities}
             keyExtractor={(item) => item.id}
             renderItem={renderItem}
             contentContainerStyle={{

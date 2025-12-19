@@ -1,14 +1,16 @@
 import { View, Text } from "react-native";
 import { styles } from "./FooterStyles";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { TouchableOpacity } from "react-native";
 import { colors } from "../../../../styles/globalStyles";
 import { startCheckout } from "../../utils/firebasePayment";
 import LoadingButton from "../../../../components/inputs/loadingButton/LoadingButton";
+import { doc, getFirestore, updateDoc } from "@react-native-firebase/firestore";
 
 const Footer = ({
   payment,
   workerName,
+  activityId,
   onRequestScrollToBottom,
   setBlockBack,
   onSuccess,
@@ -17,6 +19,7 @@ const Footer = ({
   const [selectedMethod, setSelectedMethod] = useState("efectivo");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const db = useMemo(() => getFirestore(), []);
 
   const paymentMethods = [
     { id: "efectivo", label: "Efectivo", color: colors.green },
@@ -29,6 +32,24 @@ const Footer = ({
       setSelectedMethod(payment.method);
     }
   }, [payment?.method]);
+
+  const registerCashPayment = async () => {
+    if (!payment?.id) {
+      throw new Error("Pago no disponible");
+    }
+
+    const paymentRef = doc(db, "payments", payment.id);
+    await updateDoc(paymentRef, {
+      status: "paid",
+      method: selectedMethod,
+      paidAt: new Date(),
+    });
+
+    if (activityId) {
+      const activityRef = doc(db, "activities", activityId);
+      await updateDoc(activityRef, { paymentStatus: "paid" });
+    }
+  };
 
   const handlePay = async () => {
     if (!payment) {
@@ -58,10 +79,12 @@ const Footer = ({
 
     try {
       if (selectedMethod === "efectivo") {
+        await registerCashPayment();
+        setSuccesMessage("Pago en efectivo registrado");
         setLoading(false);
         setBlockBack(false);
         onSuccess();
-        setSuccesMessage("Entregale el dinero en efectivo al trabajador");
+        return;
       } else {
         await startCheckout({
           id: payment.paymentId || payment.id,
@@ -91,8 +114,11 @@ const Footer = ({
         });
       }
     } catch (error) {
+      console.error("❌ Error al procesar el pago:", error);
       setLoading(false);
       setBlockBack(false);
+      setError("Algo salio mal, intentalo nuevamente");
+      setTimeout(() => setError(null), 4000);
     }
   };
 
@@ -136,7 +162,7 @@ const Footer = ({
         </View>
       )}
       <LoadingButton
-        text="Pagar"
+        text="Realizar pago"
         loading={loading}
         onPress={handlePay}
         paddingBottom={20}

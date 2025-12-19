@@ -21,7 +21,7 @@ import { usePayment } from "../../hooks/usePayment";
 const Payment = ({ navigation, route }) => {
   const insets = useSafeAreaInsets();
   const scrollRef = useRef(null);
-  const { activityId, worker } = route.params ?? {};
+  const { activityId, worker, paymentStatus } = route.params ?? {};
   const { payment, loading: paymentLoading, error: paymentError } =
     usePayment(activityId);
 
@@ -72,6 +72,20 @@ const Payment = ({ navigation, route }) => {
     }
 
     if (!payment) {
+      if (paymentStatus === "created") {
+        return (
+          <View style={styles.payment__infoContainer}>
+            <ActivityIndicator size="small" color={colors.primary} />
+            <Text style={styles.payment__infoText}>
+              Estamos preparando el pago...
+            </Text>
+            {paymentError && (
+              <Text style={styles.payment__infoError}>{paymentError}</Text>
+            )}
+          </View>
+        );
+      }
+
       return (
         <View style={styles.payment__infoContainer}>
           <Text style={styles.payment__infoTitle}>Aún no se puede pagar</Text>
@@ -99,6 +113,7 @@ const Payment = ({ navigation, route }) => {
         <Footer
           payment={payment}
           workerName={workerName}
+          activityId={activityId}
           onRequestScrollToBottom={scrollToBottom}
           onSuccess={handleSuccess}
           setBlockBack={setBlockBack}
@@ -141,7 +156,6 @@ const Payment = ({ navigation, route }) => {
           text={
             "Podes ver los detalles del trabajo y pago realizado en tu historial actividad"
           }
-          buttonBack={"Cambiar metodo de pago"}
           setSuccess={setSuccess}
         />
       )}

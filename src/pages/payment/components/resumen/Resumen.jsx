@@ -5,6 +5,9 @@ import { formatPrice, translateService } from "../../../../utils/formatHelpers";
 const Resumen = ({ payment }) => {
   const services = payment?.services || [];
   const totalAmount = payment?.totalAmount ?? 0;
+  const hideServiceAmounts =
+    services.length > 0 &&
+    services.every((service) => Number(service.amount || 0) === 0);
 
   const items = [
     ...services.map((service, index) => ({
@@ -36,7 +39,11 @@ const Resumen = ({ payment }) => {
           item.isTotal && styles.payment__resumen__totalValue,
         ]}
       >
-        {formatPrice(item.value)}
+        {item.isTotal
+          ? formatPrice(item.value)
+          : hideServiceAmounts
+          ? ""
+          : formatPrice(item.value)}
       </Text>
     </View>
   );

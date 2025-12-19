@@ -14,8 +14,12 @@ const Worker = ({  worker, createdAt, price, status, moment, paymentStatus }) =>
       case "pending":
         return "Esperando confirmación";
       case "done":
-        if (paymentStatus === "pending") return "Realizar pago";
-        if (paymentStatus === "pending-approve") return "Modificar pago";
+        if (
+          paymentStatus === "pending" ||
+          paymentStatus === "pending-approve" ||
+          paymentStatus === "created"
+        )
+          return "Realizar pago";
         return "Trabajo realizado por";
       case "on-going":
         return "Trabajador en camino";

@@ -55,7 +55,7 @@ const StatusCard = ({
           </>
         );
       case "done":
-        if (payment === "pending" || payment === "pending-approve") {
+        if (payment === "pending" || payment === "created") {
           return (
             <View style={styles.home__bottomSheet__statusCard__confirmContainer}>
               <Pressable
@@ -63,7 +63,11 @@ const StatusCard = ({
                   styles.home__bottomSheet__statusCard__messagesButton,
                 ]}
                 onPress={() =>
-                  navigation.navigate("Payment", { activityId, worker })
+                  navigation.navigate("Payment", {
+                    activityId,
+                    worker,
+                    paymentStatus: payment,
+                  })
                 }
               >
                 <Text
@@ -72,7 +76,7 @@ const StatusCard = ({
                     { color: textColor },
                   ]}
                 >
-                  {payment === "pending" ? "Realizar pago" : "Modificar pago"}
+                  Realizar pago
                 </Text>
               </Pressable>
               <Pressable
