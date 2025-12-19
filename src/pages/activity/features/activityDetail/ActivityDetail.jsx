@@ -27,6 +27,21 @@ const ActivityDetail = ({ navigation, route }) => {
   const [isRatingOpen, setIsRatingOpen] = useState(false);
   const db = getFirestore();
 
+  const sendRatingWebhook = useCallback(
+    async (value) => {
+      try {
+        await fetch("https://rateactivity-fpeb5gaoea-uc.a.run.app", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ activityId, rating: value }),
+        });
+      } catch (error) {
+        console.warn("❌ Error enviando rating a webhook:", error);
+      }
+    },
+    [activityId]
+  );
+
 const helpMessage = `Consulta sobre trabajo realizado por ${data.worker.firstName} ${data.worker.lastName}.`;
 
   const handleOpenRating = () => {
@@ -47,6 +62,22 @@ const helpMessage = `Consulta sobre trabajo realizado por ${data.worker.firstNam
       console.error("❌ Error al cancelar la actividad:", error);
     }
   }, [db, activityId]);
+
+  const handleConfirmRating = useCallback(
+    async (value) => {
+      try {
+        const activityRef = doc(db, "activities", activityId);
+        await updateDoc(activityRef, {
+          rating: value,
+          updatedAt: new Date(),
+        });
+        await sendRatingWebhook(value);
+      } catch (error) {
+        console.error("❌ Error al guardar el rating:", error);
+      }
+    },
+    [db, activityId, sendRatingWebhook]
+  );
 
   return (
     <View
@@ -81,10 +112,14 @@ const helpMessage = `Consulta sobre trabajo realizado por ${data.worker.firstNam
             <Categories services={data.services} />
             <Location address={data.address.address} />
             <Description description={data.description} />
-            <Payment payment={data.paymentStatus} />
+            <Payment
+              activityId={activityId}
+              paymentStatus={data.paymentStatus}
+            />
             <Rating
               rating={data.rating}
               status={data.status}
+              paymentStatus={data.paymentStatus}
               onRate={handleOpenRating}
             />
             <Warranty />
@@ -107,7 +142,7 @@ const helpMessage = `Consulta sobre trabajo realizado por ${data.worker.firstNam
           isOpen={isRatingOpen}
           onClose={handleCloseRating}
           onConfirm={(value) => {
-            console.log("Rating confirmado:", value);
+            handleConfirmRating(value);
             handleCloseRating();
           }}
         />

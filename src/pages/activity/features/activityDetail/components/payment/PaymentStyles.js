@@ -36,6 +36,13 @@ export const styles = StyleSheet.create({
   activityDetails__payment__row: {
     flexDirection: "row",
     justifyContent: "space-between",
+    alignItems: "center",
+  },
+  activityDetails__payment__row__total: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingTop: 12
   },
   activityDetails__payment__label: {
     fontFamily: "Inter-Regular",
@@ -51,36 +58,11 @@ export const styles = StyleSheet.create({
     fontFamily: "Inter-Bold",
     fontSize: 16,
     color: colors.black,
-    paddingTop: 8,
   },
   activityDetails__payment__totalAmount: {
     fontFamily: "Inter-Bold",
     fontSize: 16,
     color: colors.black,
-  },
-  activityDetails__payment__methodContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-  },
-  activityDetails__payment__methodTitle: {
-    fontFamily: "Inter-Medium",
-    fontSize: 15,
-    color: colors.black,
-    marginTop: 10,
-    marginBottom: 6,
-  },
-  activityDetails__payment__methodChip: {
-    borderWidth: 1,
-    borderColor: colors.green,
-    borderRadius: 6,
-    paddingHorizontal: 10,
-    paddingVertical: 4,
-  },
-  activityDetails__payment__methodText: {
-    fontFamily: "Inter-Regular",
-    fontSize: 14,
-    color: colors.green,
   },
   activityDetails__payment__pendingMessage: {
     fontFamily: "Inter-Italic",

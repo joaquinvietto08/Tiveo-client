@@ -85,20 +85,21 @@ const ActivityCard = ({ data, onPress, onCancel, onMessages, onPayment }) => {
         data.status !== "cancelled" &&
         (data.status === "done" ? (
           <>
-            <View style={styles.activity__activityCard__optionContainer}>
-              <Pressable
-                style={styles.activity__activityCard__paymentButton}
-                onPress={onPayment}
-              >
-                <Text style={{ color: "black", fontFamily: "Inter-Bold" }}>
-                  {data.paymentStatus === "pending" ? (
-                    <Text>Realizar pago</Text>
-                  ) : (
-                    <Text>Modificar pago</Text>
-                  )}
-                </Text>
-              </Pressable>
-            </View>
+            {(data.paymentStatus === "pending" ||
+              data.paymentStatus === "pending-approve") && (
+              <View style={styles.activity__activityCard__optionContainer}>
+                <Pressable
+                  style={styles.activity__activityCard__paymentButton}
+                  onPress={onPayment}
+                >
+                  <Text style={{ color: "black", fontFamily: "Inter-Bold" }}>
+                    {data.paymentStatus === "pending"
+                      ? "Realizar pago"
+                      : "Modificar pago"}
+                  </Text>
+                </Pressable>
+              </View>
+            )}
           </>
         ) : (
           <>

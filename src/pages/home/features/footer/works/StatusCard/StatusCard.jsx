@@ -34,8 +34,6 @@ const StatusCard = ({
       ? styles.home__bottomSheet__statusCard__detailsButton__requested
       : styles.home__bottomSheet__statusCard__detailsButton__default,
   ];
-
-  console.log(payment)
   const hasScheduledDate = Boolean(scheduledDateTime);
 
   const getScheduledLabel = () =>
@@ -57,29 +55,46 @@ const StatusCard = ({
           </>
         );
       case "done":
+        if (payment === "pending" || payment === "pending-approve") {
+          return (
+            <View style={styles.home__bottomSheet__statusCard__confirmContainer}>
+              <Pressable
+                style={[
+                  styles.home__bottomSheet__statusCard__messagesButton,
+                ]}
+                onPress={() =>
+                  navigation.navigate("Payment", { activityId, worker })
+                }
+              >
+                <Text
+                  style={[
+                    styles.home__bottomSheet__statusCard__messagesButtonText,
+                    { color: textColor },
+                  ]}
+                >
+                  {payment === "pending" ? "Realizar pago" : "Modificar pago"}
+                </Text>
+              </Pressable>
+              <Pressable
+                style={detailsButtonStyle}
+                onPress={() =>
+                  navigation.navigate("ActivityDetail", { activityId })
+                }
+              >
+                <Text
+                  style={[
+                    styles.home__bottomSheet__statusCard__detailsButtonText,
+                    { color: textColor },
+                  ]}
+                >
+                  Ver detalles
+                </Text>
+              </Pressable>
+            </View>
+          );
+        }
         return (
           <View style={styles.home__bottomSheet__statusCard__confirmContainer}>
-            <Pressable
-              style={[
-                styles.home__bottomSheet__statusCard__messagesButton,
-              ]}
-              onPress={() =>
-                navigation.navigate("Payment", { activityId, worker })
-              }
-            >
-              <Text
-                style={[
-                  styles.home__bottomSheet__statusCard__messagesButtonText,
-                  { color: textColor },
-                ]}
-              >
-                {payment === "pending" ? (
-                  <Text>Realizar pago</Text>
-                ) : (
-                  <Text>Modificar pago</Text>
-                )}
-              </Text>
-            </Pressable>
             <Pressable
               style={detailsButtonStyle}
               onPress={() =>

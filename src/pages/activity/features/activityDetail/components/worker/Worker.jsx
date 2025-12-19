@@ -9,8 +9,6 @@ const Worker = ({  worker, createdAt, price, status, moment, paymentStatus }) =>
 
   const hasPrice = price !== undefined && price !== null;
 
-  console.log(paymentStatus)
-
   const getSubtitle = () => {
     switch (status) {
       case "pending":

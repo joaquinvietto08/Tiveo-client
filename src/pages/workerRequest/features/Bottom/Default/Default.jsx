@@ -38,7 +38,6 @@ const Default = ({
         requestId: requestRef.id,
         userId: values?.client?.userId,
       });
-
       await setDoc(requestRef, {
         ...values,
         images: uploadedImages,

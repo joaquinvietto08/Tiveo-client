@@ -50,4 +50,24 @@ export const styles = StyleSheet.create({
     fontFamily: "Inter-Normal",
     flex: 1,
   },
+  payment__infoContainer: {
+    paddingHorizontal: 20,
+    paddingVertical: 30,
+    gap: 8,
+  },
+  payment__infoTitle: {
+    fontFamily: "Inter-SemiBold",
+    fontSize: 18,
+    color: colors.black,
+  },
+  payment__infoText: {
+    fontFamily: "Inter-Normal",
+    fontSize: 15,
+    color: colors.black,
+  },
+  payment__infoError: {
+    fontFamily: "Inter-Normal",
+    fontSize: 14,
+    color: colors.primary,
+  },
 });

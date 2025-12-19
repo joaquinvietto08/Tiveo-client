@@ -1,21 +1,23 @@
 import { View, Text, FlatList } from "react-native";
 import { styles } from "./ResumenStyles";
-import { formatPrice } from "../../../../utils/formatHelpers";
+import { formatPrice, translateService } from "../../../../utils/formatHelpers";
 
-const Resumen = () => {
+const Resumen = ({ payment }) => {
+  const services = payment?.services || [];
+  const totalAmount = payment?.totalAmount ?? 0;
+
   const items = [
-    { id: "1", label: "Trabajo de plomería", value: 24000 },
-    { id: "2", label: "Trabajo de plomería", value: 24000 },
-    { id: "3", label: "Trabajo de plomería", value: 24000 },
-    { id: "4", label: "Trabajo de plomería", value: 24000 },
-    { id: "5", label: "Trabajo de plomería", value: 24000 },
-    { id: "6", label: "Trabajo de plomería", value: 24000 },
-    { id: "7", label: "Trabajo de plomería", value: 24000 },
-    { id: "8", label: "Trabajo de plomería", value: 24000 },
-    { id: "9", label: "Trabajo de plomería", value: 24000 },
-    { id: "10", label: "Trabajo de plomería", value: 24000 },
-
-    { id: "30", label: "Total", isTotal: true, value: 25000 },
+    ...services.map((service, index) => ({
+      id: `${service.category || "service"}-${index}`,
+      label:
+        service.category === "service_fee"
+          ? "Tarifa de servicio"
+          : `Trabajo de ${translateService(
+              service.category || "servicio"
+            ).toLowerCase()}`,
+      value: service.amount ?? 0,
+    })),
+    { id: "total", label: "Total", isTotal: true, value: totalAmount },
   ];
 
   const renderItem = ({ item }) => (
