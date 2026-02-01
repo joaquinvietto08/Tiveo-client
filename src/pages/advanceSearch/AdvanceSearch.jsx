@@ -8,6 +8,7 @@ import Map from "./features/map/Map";
 import {
   collection,
   doc,
+  getDoc,
   getFirestore,
   onSnapshot,
   query,
@@ -28,6 +29,7 @@ const AdvanceSearch = () => {
 
   const [selectedWorkerId, setSelectedWorkerId] = useState(null);
   const [postulants, setPostulants] = useState([]);
+  const workerCacheRef = useRef({});
 
   const handleMapPress = () => {
     sheetRef.current?.snapToIndex(0);
@@ -57,6 +59,7 @@ const AdvanceSearch = () => {
   useEffect(() => {
     if (!requestId) return;
 
+    let isActive = true;
     const postulationsRef = collection(db, "postulations");
     const postulationsQuery = query(
       postulationsRef,
@@ -66,18 +69,95 @@ const AdvanceSearch = () => {
     const unsubscribe = onSnapshot(
       postulationsQuery,
       (snapshot) => {
-        const nextPostulants = snapshot.docs
-          .map((doc) => {
-            const data = doc.data();
+        const basePostulants = snapshot.docs
+          .map((postulationDoc) => {
+            const data = postulationDoc.data();
             if (!data?.worker?.uid) return null;
             return {
-              postulationId: doc.id,
+              postulationId: postulationDoc.id,
               ...data,
             };
           })
           .filter(Boolean);
 
-        setPostulants(nextPostulants);
+        const enrichPostulations = async () => {
+          const enhanced = await Promise.all(
+            basePostulants.map(async (postulation) => {
+              const worker = postulation.worker;
+              if (!worker?.uid) return null;
+
+              try {
+                if (!workerCacheRef.current[worker.uid]) {
+                  const workerDoc = await getDoc(
+                    doc(collection(db, "workers"), worker.uid)
+                  );
+                  workerCacheRef.current[worker.uid] = workerDoc.exists
+                    ? workerDoc.data()
+                    : {};
+                }
+
+                const workerData = workerCacheRef.current[worker.uid] || {};
+
+                const parsedLat =
+                  typeof worker.lat === "number"
+                    ? worker.lat
+                    : typeof workerData.lat === "number"
+                    ? workerData.lat
+                    : Number(workerData.lat);
+                const parsedLng =
+                  typeof worker.lng === "number"
+                    ? worker.lng
+                    : typeof workerData.lng === "number"
+                    ? workerData.lng
+                    : Number(workerData.lng);
+
+                const mergedWorker = {
+                  ...workerData,
+                  ...worker,
+                  photoURL:
+                    worker.photoURL ||
+                    workerData.photoURL ||
+                    workerData.photo ||
+                    "",
+                  geohash: worker.geohash || workerData.geohash,
+                  lat: Number.isFinite(parsedLat) ? parsedLat : undefined,
+                  lng: Number.isFinite(parsedLng) ? parsedLng : undefined,
+                  starRating:
+                    worker.starRating ??
+                    workerData.starRating ??
+                    workerData.rating ??
+                    workerData.averageRating ??
+                    0,
+                  amountRating:
+                    worker.amountRating ??
+                    workerData.amountRating ??
+                    workerData.ratingCount ??
+                    workerData.totalRatings ??
+                    0,
+                  completedJobs:
+                    worker.completedJobs ??
+                    workerData.completedJobs ??
+                    workerData.completed ??
+                    0,
+                };
+
+                return { ...postulation, worker: mergedWorker };
+              } catch (error) {
+                console.error(
+                  "❌ Error al obtener datos del trabajador:",
+                  error
+                );
+                return postulation;
+              }
+            })
+          );
+
+          if (isActive) {
+            setPostulants(enhanced.filter(Boolean));
+          }
+        };
+
+        enrichPostulations();
       },
       (error) => {
         console.error("Error escuchando postulaciones:", error);
@@ -85,7 +165,10 @@ const AdvanceSearch = () => {
       }
     );
 
-    return () => unsubscribe();
+    return () => {
+      isActive = false;
+      unsubscribe();
+    };
   }, [requestId]);
 
   const selectedPostulant = useMemo(

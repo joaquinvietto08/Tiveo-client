@@ -42,7 +42,7 @@ const ActivityDetail = ({ navigation, route }) => {
     [activityId]
   );
 
-const helpMessage = `Consulta sobre trabajo realizado por ${data.worker.firstName} ${data.worker.lastName}.`;
+const helpMessage = `Consulta sobre trabajo realizado por ${data.worker.workerName}.`;
 
   const handleOpenRating = () => {
     setIsRatingOpen(true);

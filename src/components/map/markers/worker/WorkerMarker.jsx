@@ -1,17 +1,25 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { View, Image, StyleSheet, Text } from "react-native";
 import { getIcon } from "../../../../utils/getIcons";
 import { colors } from "../../../../styles/globalStyles";
 
 const WorkerMarker = ({ worker, onImageLoaded }) => {
+  const [hasImageError, setHasImageError] = useState(false);
   const services = worker?.services || [];
   const displayedServices = services.slice(0, 2);
   const extraServicesCount = services.length - displayedServices.length;
 
-  const imageSource =
-    typeof worker?.photoURL === "string"
-      ? { uri: worker.photoURL }
-      : worker?.photoURL || null;
+  const imageSource = useMemo(() => {
+    if (hasImageError) return null;
+
+    if (typeof worker?.photoURL === "string") {
+      const trimmedUrl = worker.photoURL.trim();
+      if (!trimmedUrl) return null;
+      return { uri: trimmedUrl };
+    }
+
+    return worker?.photoURL || null;
+  }, [hasImageError, worker?.photoURL]);
 
   const workerInitial =
     worker?.firstName?.[0]?.toUpperCase() ||
@@ -26,6 +34,15 @@ const WorkerMarker = ({ worker, onImageLoaded }) => {
     }
   }, [imageSource, onImageLoaded]);
 
+  useEffect(() => {
+    setHasImageError(false);
+  }, [worker?.photoURL]);
+
+  const handleImageError = () => {
+    setHasImageError(true);
+    onImageLoaded?.();
+  };
+
   return (
     <View style={styles.map__markers__worker__markerContainer}>
       {imageSource ? (
@@ -33,7 +50,7 @@ const WorkerMarker = ({ worker, onImageLoaded }) => {
           source={imageSource}
           style={styles.map__markers__worker__workerImage}
           onLoad={onImageLoaded}
-          onError={onImageLoaded}
+          onError={handleImageError}
         />
       ) : (
         <View

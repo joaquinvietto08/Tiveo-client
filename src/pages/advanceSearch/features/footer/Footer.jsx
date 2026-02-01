@@ -2,7 +2,7 @@ import React, { useRef } from "react";
 import { View, Text, Pressable, Image } from "react-native";
 import BottomSheet from "../../../../components/bottomSheet/BottomSheet";
 import { BottomSheetScrollView } from "@gorhom/bottom-sheet";
-import { AntDesign, FontAwesome6, MaterialIcons } from "@expo/vector-icons";
+import { AntDesign, FontAwesome6 } from "@expo/vector-icons";
 import { styles } from "./FooterStyles";
 import { getIcon } from "../../../../utils/getIcons";
 import { colors } from "../../../../styles/globalStyles";
@@ -116,15 +116,20 @@ const Footer = ({ sheetRef, values, workers, requestId }) => {
               const worker = postulation.worker;
               if (!worker) return null;
 
-              const displayMoment =
-                postulation.offerAnotherTime && postulation.offerMoment
-                  ? postulation.offerMoment
-                  : values.moment;
+              const hasAlternateOffer = !!postulation.offerAnotherTime;
+
+              const displayMoment = hasAlternateOffer
+                ? postulation.offerMoment || "scheduled"
+                : values.moment;
 
               const rawDate =
-                postulation.offerAnotherTime &&
-                postulation.offerScheduledDateTime
-                  ? postulation.offerScheduledDateTime
+                hasAlternateOffer &&
+                (postulation.offerScheduledDateTime ||
+                  postulation.scheduledDateTime ||
+                  postulation.date)
+                  ? postulation.offerScheduledDateTime ||
+                    postulation.scheduledDateTime ||
+                    postulation.date
                   : values.scheduledDateTime;
 
               const displayDate =
@@ -132,15 +137,36 @@ const Footer = ({ sheetRef, values, workers, requestId }) => {
                   ? rawDate.toDate()
                   : rawDate;
 
-              const isNow = displayMoment === "now";
+              const isNow = displayMoment === "now" && !hasAlternateOffer;
 
               const photoSource =
                 typeof worker.photoURL === "string"
                   ? { uri: worker.photoURL }
                   : null;
 
-              const workerName = worker.workerName;
+              const workerName =
+                worker.workerName || worker.name || worker.firstName || "";
               const workerInitial = workerName?.[0] || "";
+
+              const ratingValue = Number(
+                worker.starRating ??
+                  worker.rating ??
+                  worker.averageRating ??
+                  0
+              );
+              const ratingCount = Number(
+                worker.amountRating ??
+                  worker.ratingCount ??
+                  worker.totalRatings ??
+                  0
+              );
+
+              const priceValue =
+                postulation.price != null
+                  ? postulation.price
+                  : postulation.budget != null
+                  ? postulation.budget
+                  : null;
 
               return (
                 <Pressable
@@ -181,12 +207,18 @@ const Footer = ({ sheetRef, values, workers, requestId }) => {
                       </Text>
                     </View>
                     <View style={styles.advanceSearch__footer__ratingContainer}>
-                      <AntDesign name="star" size={12} color={colors.black} />
+                      <AntDesign
+                        name="star"
+                        size={12}
+                        color={
+                          ratingValue > 0 ? colors.primary : colors.lightGray
+                        }
+                      />
                       <Text style={styles.advanceSearch__footer__ratingValue}>
-                        {Number(worker.starRating || 0).toFixed(1)}
+                        {ratingValue.toFixed(1)}
                       </Text>
                       <Text style={styles.advanceSearch__footer__ratingCount}>
-                        ({worker.amountRating || 0})
+                        ({ratingCount || 0})
                       </Text>
                     </View>
                   </View>
@@ -197,9 +229,7 @@ const Footer = ({ sheetRef, values, workers, requestId }) => {
                         Presupuesto:
                       </Text>
                       <Text style={styles.advanceSearch__footer__infoValue}>
-                        {postulation.price != null
-                          ? formatPrice(postulation.price)
-                          : "A definir"}
+                        {priceValue != null ? formatPrice(priceValue) : "A definir"}
                       </Text>
                     </View>
                     <View style={styles.advanceSearch__footer__infoRowMoment}>

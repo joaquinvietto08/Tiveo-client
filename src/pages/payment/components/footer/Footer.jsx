@@ -5,7 +5,12 @@ import { TouchableOpacity } from "react-native";
 import { colors } from "../../../../styles/globalStyles";
 import { startCheckout } from "../../utils/firebasePayment";
 import LoadingButton from "../../../../components/inputs/loadingButton/LoadingButton";
-import { doc, getFirestore, updateDoc } from "@react-native-firebase/firestore";
+import {
+  doc,
+  getFirestore,
+  increment,
+  updateDoc,
+} from "@react-native-firebase/firestore";
 
 const Footer = ({
   payment,
@@ -48,6 +53,23 @@ const Footer = ({
     if (activityId) {
       const activityRef = doc(db, "activities", activityId);
       await updateDoc(activityRef, { paymentStatus: "paid" });
+    }
+
+    const workerId =
+      payment?.workerId ||
+      payment?.worker?.workerId ||
+      payment?.worker?.uid ||
+      payment?.worker?.id;
+
+    if (workerId) {
+      const workerRef = doc(db, "workers", workerId);
+      try {
+        await updateDoc(workerRef, { completedJobs: increment(1) });
+      } catch (err) {
+        console.error("❌ Error al actualizar completedJobs del worker:", err);
+      }
+    } else {
+      console.warn("⚠️ No se encontró workerId para actualizar completedJobs");
     }
   };
 

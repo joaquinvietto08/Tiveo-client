@@ -20,8 +20,15 @@ const Activity = ({ navigation }) => {
       return Number.isNaN(time) ? 0 : time;
     };
 
+    const getActivityTime = (activity) =>
+      getTime(
+        activity?.scheduledDateTime ??
+          activity?.startedAt ??
+          activity?.createdAt
+      );
+
     return [...activities].sort(
-      (a, b) => getTime(b?.startedAt) - getTime(a?.startedAt)
+      (a, b) => getActivityTime(b) - getActivityTime(a)
     );
   }, [activities]);
   const hasActivities = sortedActivities.length > 0;
