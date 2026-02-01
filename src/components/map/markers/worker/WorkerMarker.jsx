@@ -47,10 +47,12 @@ const WorkerMarker = ({ worker, onImageLoaded }) => {
     <View style={styles.map__markers__worker__markerContainer}>
       {imageSource ? (
         <Image
+          key={`${worker?.id ?? "w"}-${worker?.photoURL ?? ""}`}
           source={imageSource}
-          style={styles.map__markers__worker__workerImage}
+          style={[styles.map__markers__worker__workerImage, styles.map__markers__worker__imageLoaded]}
           onLoad={onImageLoaded}
           onError={handleImageError}
+          resizeMode="cover"
         />
       ) : (
         <View
@@ -68,7 +70,7 @@ const WorkerMarker = ({ worker, onImageLoaded }) => {
         {extraServicesCount > 0 && (
           <View style={styles.map__markers__worker__serviceIcon}>
             <Text style={styles.map__markers__worker__serviceText}>
-              +{extraServicesCount}
+              +{Math.min(extraServicesCount, 9)}
             </Text>
           </View>
         )}
@@ -96,6 +98,10 @@ const styles = StyleSheet.create({
     width: 46,
     height: 46,
     borderRadius: 50,
+  },
+  map__markers__worker__imageLoaded: {
+    opacity: 1,
+    backgroundColor: "transparent",
   },
   map__markers__worker__servicesContainer: {
     position: "absolute",

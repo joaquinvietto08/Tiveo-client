@@ -18,9 +18,16 @@ const ServicesList = ({ services, selected = [], onToggle }) => {
         .filter(Boolean)
     : [];
 
+  const isSingleItem = normalizedServices.length === 1;
+
   return (
     <View style={styles.servicesList__mainContainer}>
-      <View style={styles.servicesList__container}>
+      <View
+        style={[
+          styles.servicesList__container,
+          isSingleItem && styles.servicesList__containerSingle,
+        ]}
+      >
         {normalizedServices.map(({ key, label, index }) => {
           const Icon = getIcon(label);
           const isSelected = Array.isArray(selected) && selected.includes(key);
@@ -34,6 +41,7 @@ const ServicesList = ({ services, selected = [], onToggle }) => {
               key={`${key}-${index}`}
               style={[
                 styles.servicesList__buttonView,
+                isSingleItem && styles.servicesList__buttonViewSingle,
                 isSelected && styles.servicesList__buttonViewSelected,
               ]}
             >

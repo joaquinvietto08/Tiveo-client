@@ -92,7 +92,7 @@ const MomentBottomSheet = forwardRef(
 
           <Text style={styles.momentBottomSheet__infoText}>
             Podés coordinar con un trabajador con{"\n"}
-            hasta 15 días de anticipación. Más información
+            hasta 15 días de anticipación.
           </Text>
           <Pressable
             style={styles.momentBottomSheet__confirmButton}

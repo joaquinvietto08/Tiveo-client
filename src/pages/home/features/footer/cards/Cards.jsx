@@ -13,6 +13,8 @@ import { useNavigation } from "@react-navigation/native";
 const CardButton = ({ worker }) => {
   const navigation = useNavigation();
   const services = worker?.services || [];
+  const displayedServices = services.slice(0, 3);
+  const extraServicesCount = Math.min(Math.max(0, services.length - 3), 9);
   const displayName =
     worker?.workerName || worker?.name || worker?.firstName || "Trabajador";
   const photoUri = worker?.photo || worker?.photoURL;
@@ -52,9 +54,9 @@ const CardButton = ({ worker }) => {
             {worker?.description}
           </Text>
 
-          {services.length > 0 && (
+          {(displayedServices.length > 0 || extraServicesCount > 0) && (
             <View style={styles.home__bottomSheet__card__chipsWrapper}>
-              {services.map((service) => {
+              {displayedServices.map((service) => {
                 const IconComponent = getIcon(service);
                 const label = translateService(service);
 
@@ -72,6 +74,13 @@ const CardButton = ({ worker }) => {
                   </View>
                 );
               })}
+              {extraServicesCount > 0 && (
+                <View style={styles.home__bottomSheet__card__chip}>
+                  <Text style={styles.home__bottomSheet__card__chipText}>
+                    +{extraServicesCount}
+                  </Text>
+                </View>
+              )}
             </View>
           )}
         </View>

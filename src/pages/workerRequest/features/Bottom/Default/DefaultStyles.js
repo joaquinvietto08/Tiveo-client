@@ -4,7 +4,7 @@ import { colors } from "../../../../../styles/globalStyles";
 export const styles = StyleSheet.create({
   WR__defaultBottom__container: {
     marginTop: "auto",
-    paddingBottom: 20,
+    paddingBottom: 60,
   },
   WR__defaultBottom__hr: {
     height: 1,

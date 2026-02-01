@@ -13,7 +13,7 @@ const Footer = ({ sheetRef, filteredWorkers }) => {
   const combined = [...(activities || []), ...(directRequests || [])];
   const workers = [...filteredWorkers];
   const [snapPoints, setSnapPoints] = useState(
-    workers.length > 0 ? [140, 450] : [200, 200]
+    workers.length > 0 ? [140, 450] : [140, 350]
   );
   const [initialRender, setInitialRender] = useState(true);
 
@@ -28,7 +28,7 @@ const Footer = ({ sheetRef, filteredWorkers }) => {
     }
 
     if (workers.length === 0 && combined.length === 0) {
-      setSnapPoints([200, 200]);
+      setSnapPoints([140, 350]);
     } else if (workers.length === 0 && combined.length > 0) {
       setSnapPoints([140, 350]);
     } else {

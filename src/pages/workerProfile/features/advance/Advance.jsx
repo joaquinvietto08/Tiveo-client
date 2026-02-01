@@ -248,10 +248,6 @@ const Advance = ({
           loading={loading}
           onPress={handleSaveActivity}
         />
-        <Text style={styles.workerProfile__advance__infoText}>
-          Recordá que el presupuesto solo es estimativo{"\n"}y no representa el
-          monto real final del trabajo.
-        </Text>
       </View>
     </View>
   );
