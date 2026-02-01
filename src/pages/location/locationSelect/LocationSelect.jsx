@@ -43,7 +43,7 @@ const LocationSelect = ({ navigation }) => {
         </View>
 
         <View style={styles.locationSelect__container}>
-          <Text style={styles.locationSelect__title}>Elije tu ubicación</Text>
+          <Text style={styles.locationSelect__title}>Elige tu ubicación</Text>
           <Text style={styles.locationSelect__subtitle}>
             Necesitamos tu ubicación para mostrarte los trabajadores disponibles
             en tu zona

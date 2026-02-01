@@ -31,7 +31,7 @@ const ActivityCard = ({ data, onPress, onCancel, onMessages, onPayment }) => {
       >
         {/* Header */}
         <View style={styles.activity__activityCard__cardHeader}>
-          <View style={styles.activity__activityCard__cardIconsContianer}>
+          <View style={styles.activity__activityCard__cardIconsContainer}>
             <Text style={styles.activity__activityCard__cardTitle}>
               {data.services?.length > 0 ? "Trabajo de" : "Trabajo"}
             </Text>
@@ -131,7 +131,7 @@ const ActivityCard = ({ data, onPress, onCancel, onMessages, onPayment }) => {
         <View style={styles.activity__activityCard__modalOverlay}>
           <View style={styles.activity__activityCard__modalContent}>
             <Text style={styles.activity__activityCard__modalTitle}>
-              ¿Deseás cancelar el trabajo solicitado?
+              ¿Deseas cancelar el trabajo solicitado?
             </Text>
             <Text style={styles.activity__activityCard__modalText}>
               Esta acción no se puede deshacer.

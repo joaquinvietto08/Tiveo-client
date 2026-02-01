@@ -127,7 +127,7 @@ const Footer = ({
             setLoading(false);
             setBlockBack(false);
             setTimeout(() => {
-              setError("Algo salio mal, intentalo nuevamente");
+              setError("Algo salió mal, inténtalo nuevamente");
             }, 1100);
             setTimeout(() => {
               setError(null);
@@ -139,7 +139,7 @@ const Footer = ({
       console.error("❌ Error al procesar el pago:", error);
       setLoading(false);
       setBlockBack(false);
-      setError("Algo salio mal, intentalo nuevamente");
+      setError("Algo salió mal, inténtalo nuevamente");
       setTimeout(() => setError(null), 4000);
     }
   };

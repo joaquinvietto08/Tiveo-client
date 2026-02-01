@@ -1,20 +1,16 @@
-import React, { useState, useRef } from "react";
+import React from "react";
 import {
   View,
   Text,
   StatusBar,
   Pressable,
-  Keyboard,
 } from "react-native";
 import { styles } from "./LoginStyles";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Facebook from "../../../assets/svgs/auth/facebook";
 import Google from "../../../assets/svgs/auth/google";
-import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
-import { GestureHandlerRootView, FlatList } from "react-native-gesture-handler";
 import { signInWithGoogle } from "../../actions/api/google_auth";
 import { signInWithFacebook } from "../../actions/api/facebook_auth";
-import { countries } from "../../utils/countries";
 import {
   collection,
   doc,
@@ -28,25 +24,6 @@ const db = getFirestore();
 
 const Login = () => {
   const insets = useSafeAreaInsets();
-  const sheetRef = useRef(null);
-  const [isOpen, setIsOpen] = useState(false);
-  const snapPoints = ["75%"];
-
-  const selectCountry = (country) => {
-    setSelectedCountry(country);
-    handleCloseBottomSheet();
-  };
-
-  const handleOpenBottomSheet = () => {
-    Keyboard.dismiss();
-    setIsOpen(true);
-    sheetRef.current?.snapToIndex(0);
-  };
-
-  const handleCloseBottomSheet = () => {
-    setIsOpen(false);
-    sheetRef.current?.close();
-  };
 
   const checkAndCreateClient = async (user) => {
     try {
@@ -102,7 +79,6 @@ const Login = () => {
         backgroundColor={colors.primary}
         barStyle="light-content"
       />
-      <GestureHandlerRootView style={{ flex: 1 }}>
         <View style={styles.container}>
           <Text style={styles.title}>Ingresa a tu cuenta</Text>
           <View style={styles.social_authContainer}>
@@ -123,54 +99,7 @@ const Login = () => {
               </Text>
             </Pressable>
           </View>
-          <Pressable style={styles.confirmButton} color={colors.primary}>
-            <Text
-              style={{
-                fontSize: 16,
-                fontFamily: "Inter-Medium",
-                color: "#fff",
-              }}
-            >
-              Continuar
-            </Text>
-          </Pressable>
         </View>
-
-        {isOpen && (
-          <Pressable style={styles.overlay} onPress={handleCloseBottomSheet} />
-        )}
-
-        <BottomSheet
-          ref={sheetRef}
-          snapPoints={snapPoints}
-          index={-1}
-          enablePanDownToClose={true}
-          onClose={handleCloseBottomSheet}
-        >
-          <BottomSheetView style={styles.contentContainer}>
-            <FlatList
-              data={countries}
-              keyExtractor={(item) => item.code}
-              showsVerticalScrollIndicator={false}
-              renderItem={({ item }) => (
-                <Pressable
-                  style={styles.countryItem}
-                  onPress={() => selectCountry(item)}
-                >
-                  <View style={{ flexDirection: "row", alignItems: "center" }}>
-                    <Text style={{ ...styles.flag, marginRight: 10 }}>
-                      {item.flag}
-                    </Text>
-                    <Text style={styles.countryName}>{item.name}</Text>
-                  </View>
-                  <Text style={styles.countryCode}>{item.code}</Text>
-                </Pressable>
-              )}
-              ItemSeparatorComponent={() => <View style={styles.separator} />}
-            />
-          </BottomSheetView>
-        </BottomSheet>
-      </GestureHandlerRootView>
     </View>
   );
 };

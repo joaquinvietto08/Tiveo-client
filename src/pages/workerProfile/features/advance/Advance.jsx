@@ -162,7 +162,7 @@ const Advance = ({
         {values.services && (
           <View style={styles.workerProfile__advance__description}>
             <Text style={styles.workerProfile__advance__locationTitle}>
-              Categoria/s:
+              Categoría/s:
             </Text>
             <View style={styles.workerProfile__advance__servicesContainer}>
               {values.services.map((serviceKey) => {

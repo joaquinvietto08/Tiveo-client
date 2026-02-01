@@ -24,7 +24,7 @@ const Worker = ({  worker, createdAt, price, status, moment, paymentStatus }) =>
       case "on-going":
         return "Trabajador en camino";
       case "on-progress":
-        return "Trabajador siendo realizado por";
+        return "Trabajo siendo realizado por";
       case "confirm":
         return moment === "scheduled"
           ? "Trabajo programado"

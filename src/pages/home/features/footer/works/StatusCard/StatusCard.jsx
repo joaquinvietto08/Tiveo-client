@@ -270,7 +270,7 @@ const StatusCard = ({
               ]}
               numberOfLines={1}
             >
-              {name} completo su trabajo
+              {name} completó su trabajo
             </Text>
           </>
         ) : (
@@ -280,7 +280,7 @@ const StatusCard = ({
               { color: textColor },
             ]}
           >
-            {name} está trabando...
+            {name} está trabajando...
           </Text>
         )}
       </View>

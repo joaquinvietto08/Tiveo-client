@@ -19,7 +19,7 @@ export const styles = StyleSheet.create({
     gap: 6,
     justifyContent: "space-between",
   },
-  activity__activityCard__cardIconsContianer: {
+  activity__activityCard__cardIconsContainer: {
     flexDirection: "row",
     alignItems: "center",
   },

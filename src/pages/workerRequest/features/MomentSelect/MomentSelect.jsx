@@ -16,7 +16,7 @@ const MomentSelect = ({
   return (
     <View style={styles.WR__momentSelect__moment}>
       <Text style={styles.WR__momentSelect__sectionTitle}>
-        Indica en que momento lo preferís
+        Indica en qué momento lo preferís
       </Text>
       <View style={styles.WR__momentSelect__momentOptions}>
         <Pressable

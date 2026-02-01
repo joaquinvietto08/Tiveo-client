@@ -47,7 +47,7 @@ const MomentBottomSheet = forwardRef(
         </Pressable>
         <View style={styles.momentBottomSheet__content}>
           <Text style={styles.momentBottomSheet__title}>
-            Elije fecha y hora{"\n"}que prefieras
+            Elige fecha y hora{"\n"}que prefieras
           </Text>
           <View style={styles.momentBottomSheet__momentContainer}>
             <Pressable
@@ -91,8 +91,8 @@ const MomentBottomSheet = forwardRef(
           )}
 
           <Text style={styles.momentBottomSheet__infoText}>
-            Podes coordinar con un trabajador con{"\n"}
-            hasta 15 días de anticipación. Mas información
+            Podés coordinar con un trabajador con{"\n"}
+            hasta 15 días de anticipación. Más información
           </Text>
           <Pressable
             style={styles.momentBottomSheet__confirmButton}

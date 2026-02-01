@@ -106,8 +106,8 @@ const Payment = ({ navigation, route }) => {
         <View style={styles.payment__warrantyContainer}>
           <Warranty width={40} height={40} fill={colors.primary} />
           <Text style={styles.payment__warrantyText}>
-            Pagando el trabajo por la app contas con la proteccion de la
-            garantia.
+            Pagando el trabajo por la app contás con la protección de la
+            garantía.
           </Text>
         </View>
         <Footer
@@ -154,7 +154,7 @@ const Payment = ({ navigation, route }) => {
         <Confirm
           title={successMessage}
           text={
-            "Podes ver los detalles del trabajo y pago realizado en tu historial actividad"
+            "Podés ver los detalles del trabajo y pago realizado en tu historial de actividad"
           }
           setSuccess={setSuccess}
         />

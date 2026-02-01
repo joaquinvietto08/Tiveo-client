@@ -104,7 +104,7 @@ const Default = ({
         onPress={handleSendRequest}
       />
       <Text style={styles.WR__defaultBottom__infoText}>
-        Recordá que podes cancelar sin costo hasta{"\n"}15 minutos antes de que
+        Recordá que podés cancelar sin costo hasta{"\n"}15 minutos antes de que
         llegue el trabajador
       </Text>
     </View>
