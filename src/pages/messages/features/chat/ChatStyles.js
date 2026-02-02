@@ -28,6 +28,19 @@ export const styles = StyleSheet.create({
     backgroundColor: colors.primary,
   },
 
+  messages__chat__item__system: {
+    alignSelf: "center",
+    backgroundColor: "#F0F0F0",
+    borderWidth: 1,
+    borderColor: "#E0E0E0",
+    maxWidth: "90%",
+  },
+
+  messages__chat__text__system: {
+    color: "#555",
+    fontStyle: "italic",
+  },
+
   messages__chat__text: {
     color: colors.black,
     fontFamily: "Inter-Regular",

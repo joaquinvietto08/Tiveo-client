@@ -34,11 +34,20 @@ export const styles = StyleSheet.create({
     borderWidth: 3,
     borderColor: "#fff",
   },
+  workerProfile__nameContainer: {
+    flexDirection: "column",
+    alignItems: "center",
+  },
   workerProfile__name: {
     textAlign: "center",
     fontSize: 18,
     marginTop: 8,
     fontFamily: "Inter-Bold",
+  },
+  workerProfile__workerName: {
+    fontSize: 12,
+    fontFamily: "Inter-Regular",
+    color: colors.gray,
   },
   workerProfile__ratingContainer: {
     flexDirection: "row",

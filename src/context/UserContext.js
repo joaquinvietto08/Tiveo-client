@@ -79,22 +79,22 @@ export function UserProvider({ children }) {
       where("type", "==", "direct")
     );
 
-    const unsubOpen = onSnapshot(openQuery, (snapshot) => {
-      const data = snapshot.docs.map((doc) => ({
+    const mapRequest = (doc) => {
+      const data = doc.data();
+      return {
         id: doc.id,
-        ...doc.data(),
-        createdAt: doc.data().createdAt?.toDate(),
-      }));
-      setOpenRequests(data);
+        ...data,
+        createdAt: data.createdAt?.toDate?.(),
+        scheduledDateTime: data.scheduledDateTime?.toDate?.() ?? null,
+      };
+    };
+
+    const unsubOpen = onSnapshot(openQuery, (snapshot) => {
+      setOpenRequests(snapshot.docs.map(mapRequest));
     });
 
     const unsubDirect = onSnapshot(directQuery, (snapshot) => {
-      const data = snapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-        createdAt: doc.data().createdAt?.toDate(),
-      }));
-      setDirectRequests(data);
+      setDirectRequests(snapshot.docs.map(mapRequest));
     });
 
     return () => {

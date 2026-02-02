@@ -162,9 +162,9 @@ const Footer = ({ sheetRef, values, workers, requestId }) => {
               );
 
               const priceValue =
-                postulation.price != null
+                postulation.price != null && postulation.price !== ""
                   ? postulation.price
-                  : postulation.budget != null
+                  : postulation.budget != null && postulation.budget !== ""
                   ? postulation.budget
                   : null;
 
@@ -229,7 +229,7 @@ const Footer = ({ sheetRef, values, workers, requestId }) => {
                         Presupuesto:
                       </Text>
                       <Text style={styles.advanceSearch__footer__infoValue}>
-                        {priceValue != null ? formatPrice(priceValue) : "A definir"}
+                        {priceValue != null && priceValue !== "" ? formatPrice(priceValue) : "A definir"}
                       </Text>
                     </View>
                     <View style={styles.advanceSearch__footer__infoRowMoment}>

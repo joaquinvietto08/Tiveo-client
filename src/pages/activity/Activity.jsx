@@ -8,10 +8,10 @@ import { doc, getFirestore, updateDoc } from "@react-native-firebase/firestore";
 
 const Activity = ({ navigation }) => {
   const insets = useSafeAreaInsets();
-  const { activities } = useContext(UserContext);
-  const sortedActivities = useMemo(() => {
-    if (!Array.isArray(activities)) return [];
-
+  const { activities, openRequests, directRequests } = useContext(UserContext);
+  
+  // Combinar activities y requests
+  const sortedItems = useMemo(() => {
     const getTime = (value) => {
       if (!value) return 0;
       if (typeof value.toDate === "function") return value.toDate().getTime();
@@ -20,18 +20,42 @@ const Activity = ({ navigation }) => {
       return Number.isNaN(time) ? 0 : time;
     };
 
-    const getActivityTime = (activity) =>
-      getTime(
-        activity?.scheduledDateTime ??
-          activity?.startedAt ??
-          activity?.createdAt
-      );
+    const getRequestTime = (item) =>
+      getTime(item?.scheduledDateTime ?? item?.createdAt);
 
-    return [...activities].sort(
+    const getActivityTime = (item) => getTime(item?.createdAt);
+
+    // Marcar activities y requests para diferenciarlas
+    const activitiesWithType = Array.isArray(activities) 
+      ? activities.map(a => ({ ...a, _isRequest: false }))
+      : [];
+    
+    const openRequestsWithType = Array.isArray(openRequests)
+      ? openRequests
+          .filter((r) => r.status === "requested")
+          .map((r) => ({ ...r, _isRequest: true }))
+      : [];
+
+    const directRequestsWithType = Array.isArray(directRequests)
+      ? directRequests
+          .filter((r) => r.status === "requested")
+          .map((r) => ({ ...r, _isRequest: true }))
+      : [];
+
+    // Requests: más nuevos primero (scheduledDateTime o createdAt)
+    // Activities: más nuevos según createdAt
+    const sortedRequests = [...openRequestsWithType, ...directRequestsWithType].sort(
+      (a, b) => getRequestTime(b) - getRequestTime(a)
+    );
+    const sortedActivities = [...activitiesWithType].sort(
       (a, b) => getActivityTime(b) - getActivityTime(a)
     );
-  }, [activities]);
-  const hasActivities = sortedActivities.length > 0;
+
+    // Siempre mostrar requests arriba
+    return [...sortedRequests, ...sortedActivities];
+  }, [activities, openRequests, directRequests]);
+  
+  const hasItems = sortedItems.length > 0;
   const db = getFirestore();
 
   const handleCancelActivity = useCallback(
@@ -46,13 +70,30 @@ const Activity = ({ navigation }) => {
     [db]
   );
 
+  const handleCancelRequest = useCallback(
+    async (requestId) => {
+      try {
+        const requestRef = doc(db, "requests", requestId);
+        await updateDoc(requestRef, { status: "cancelled" });
+      } catch (error) {
+        console.error("❌ Error al cancelar la solicitud:", error);
+      }
+    },
+    [db]
+  );
+
   const renderItem = ({ item }) => (
     <ActivityCard
       data={item}
+      isRequest={item._isRequest}
       onPress={() =>
         navigation.navigate("ActivityDetail", { activityId: item.id })
       }
-      onCancel={() => handleCancelActivity(item.id)}
+      onCancel={() => 
+        item._isRequest 
+          ? handleCancelRequest(item.id)
+          : handleCancelActivity(item.id)
+      }
       onMessages={() =>
         navigation.navigate("Messages", {
           activityId: item.id,
@@ -88,10 +129,10 @@ const Activity = ({ navigation }) => {
         >
           Actividad
         </Text>
-        {hasActivities ? (
+        {hasItems ? (
           <FlatList
-            data={sortedActivities}
-            keyExtractor={(item) => item.id}
+            data={sortedItems}
+            keyExtractor={(item) => `${item._isRequest ? 'req' : 'act'}-${item.id}`}
             renderItem={renderItem}
             contentContainerStyle={{
               paddingHorizontal: 20,

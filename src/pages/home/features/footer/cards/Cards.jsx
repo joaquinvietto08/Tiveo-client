@@ -15,8 +15,6 @@ const CardButton = ({ worker }) => {
   const services = worker?.services || [];
   const displayedServices = services.slice(0, 3);
   const extraServicesCount = Math.min(Math.max(0, services.length - 3), 9);
-  const displayName =
-    worker?.workerName || worker?.name || worker?.firstName || "Trabajador";
   const photoUri = worker?.photo || worker?.photoURL;
 
   return (
@@ -36,7 +34,10 @@ const CardButton = ({ worker }) => {
             ) : null}
             <View style={styles.home__bottomSheet__card__profileInfo}>
               <Text style={styles.home__bottomSheet__card__infoTitle}>
-                {displayName}
+                {worker.firstName} {worker.lastName}
+              </Text>
+              <Text style={styles.home__bottomSheet__card__infoWorkerName}>
+                {worker.workerName}
               </Text>
               <View style={styles.home__bottomSheet__card__infoContainer}>
                 <AntDesign name="star" size={12} color={colors.yellow} />

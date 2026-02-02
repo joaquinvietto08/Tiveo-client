@@ -74,7 +74,11 @@ export const styles = StyleSheet.create({
   home__bottomSheet__card__infoTitle: {
     fontSize: 14,
     fontFamily: "Inter-Bold",
-    paddingHorizontal: 4,
+  },
+  home__bottomSheet__card__infoWorkerName: {
+    fontSize: 12,
+    fontFamily: "Inter-Regular",
+    color: colors.gray,
   },
   home__bottomSheet__card__description: {
     fontSize: 13,

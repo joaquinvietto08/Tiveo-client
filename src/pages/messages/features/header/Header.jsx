@@ -9,9 +9,11 @@ const Header = ({ worker }) => {
   const navigation = useNavigation();
 
   const imageSource =
-    typeof worker?.profilePicture === "string"
-      ? { uri: worker.profilePicture }
-      : worker?.profilePicture;
+    typeof worker?.photoURL === "string"
+      ? { uri: worker.photoURL }
+      : typeof worker?.profilePicture === "string"
+        ? { uri: worker.profilePicture }
+        : worker?.profilePicture;
 
   return (
     <View style={styles.messages__header__container}>
@@ -19,7 +21,7 @@ const Header = ({ worker }) => {
         onPress={() => navigation.goBack()}
         style={styles.messages__header__button}
       >
-        <Feather name="arrow-left" size={24} color={colors.black}/>
+        <Feather name="arrow-left" size={24} color={colors.black} />
       </Pressable>
       <View style={styles.messages__header__workerContainer}>
         <Image
@@ -27,7 +29,7 @@ const Header = ({ worker }) => {
           style={styles.messages__header__workerImage}
         />
         <Text style={styles.messages__header__nameText} numberOfLines={2}>
-          {worker.workerName}
+          {worker.firstName} {worker.lastName}
         </Text>
       </View>
     </View>

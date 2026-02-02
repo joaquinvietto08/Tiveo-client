@@ -42,11 +42,19 @@ export const styles = StyleSheet.create({
   home__workerPreview__header: {
     flexDirection: "row",
     justifyContent: "space-between",
-    alignItems: "center",
+    alignItems: "start",
+  },
+  home__workerPreview__nameContainer: {
+    flexDirection: "column",
   },
   home__workerPreview__name: {
     fontSize: 16,
     fontFamily: "Inter-Bold",
+  },
+  home__workerPreview__workerName: {
+    fontSize: 12,
+    fontFamily: "Inter-Regular",
+    color: colors.gray,
   },
   home__workerPreview__ratingContainer: {
     flexDirection: "row",

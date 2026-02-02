@@ -14,12 +14,7 @@ const WorkerPreview = ({ worker, onClose }) => {
     typeof worker.photoURL === "string"
       ? { uri: worker.photoURL }
       : worker.photoURL || null;
-  const displayName =
-    worker.workerName ||
-    worker.name ||
-    worker.firstName ||
-    "Trabajador";
-  const workerInitial = displayName?.[0]?.toUpperCase() || "?";
+  "Trabajador";
 
   return (
     <View style={styles.home__workerPreview__mainContainer}>
@@ -48,9 +43,15 @@ const WorkerPreview = ({ worker, onClose }) => {
 
         <View style={styles.home__workerPreview__info}>
           <View style={styles.home__workerPreview__header}>
-            <Text style={styles.home__workerPreview__name}>
-              {displayName}
-            </Text>
+            <View style={styles.home__workerPreview__nameContainer}>
+              <Text style={styles.home__workerPreview__name}>
+                {worker.firstName} {worker.lastName}
+              </Text>
+              <Text style={styles.home__workerPreview__workerName}>
+                {worker.workerName}
+              </Text>
+            </View>
+
             <Pressable onPress={onClose}>
               <AntDesign name="close" size={20} color="gray" />
             </Pressable>

@@ -29,6 +29,8 @@ export const buildRequestValues = (
   worker: {
     workerId: worker?.uid || "",
     workerName: worker?.workerName || "",
+    workerFirstName: worker?.name || "",
+    workerLastName: worker?.lastName || "",
     profilePicture: worker?.photoURL || "",
   },
   description,

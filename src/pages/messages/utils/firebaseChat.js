@@ -54,6 +54,28 @@ export async function sendTextMessage({
   return msgRef.id;
 }
 
+/** Mensaje de uso de garantía: formato distinto al mensaje del cliente (sender "system"). */
+export async function sendWarrantyClaimMessage({
+  activityId,
+  clientId,
+  workerId,
+}) {
+  if (!activityId) throw new Error("activityId requerido");
+  if (!clientId) throw new Error("clientId requerido");
+
+  const convoRef = await ensureConversation(activityId, clientId, workerId);
+  const msgRef = doc(collection(convoRef, "messages"));
+
+  await setDoc(msgRef, {
+    type: "warranty_claim",
+    text: "Se ha hecho uso de la garantía de este trabajo. Por favor, coordinen la fecha y hora de la visita mediante este chat.",
+    sender: "system",
+    createdAt: serverTimestamp(),
+  });
+
+  return msgRef.id;
+}
+
 /* ***************************************************************************** */
 
 export async function sendImageMessage({ activityId, uri, clientId, workerId }) {

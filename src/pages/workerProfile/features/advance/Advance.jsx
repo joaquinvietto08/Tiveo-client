@@ -31,9 +31,9 @@ const Advance = ({
   const [loading, setLoading] = useState(false);
 
   const priceValue =
-    postulation?.price != null
+    postulation?.price != null && postulation?.price !== ""
       ? Number(postulation.price)
-      : postulation?.budget != null
+      : postulation?.budget != null && postulation?.budget !== ""
         ? Number(postulation.budget)
         : null;
 
@@ -101,7 +101,7 @@ const Advance = ({
         });
       }
 
-      // 🛰️ Llamada al endpoint de Cloud Function
+      // 🛰️ Llamada al endpoint de Cloud Function (worker = trabajador seleccionado en la postulación)
       const response = await fetch(
         "https://createactivityfromrequest-fpeb5gaoea-uc.a.run.app",
         {
@@ -237,7 +237,7 @@ const Advance = ({
             Presupuesto:
           </Text>
           <Text style={styles.workerProfile__advance__priceLabel}>
-            {priceValue != null ? formatPrice(priceValue) : "A definir"}
+            {priceValue != null && priceValue !== "" ? formatPrice(priceValue) : "A definir"}
           </Text>
         </View>
       </View>

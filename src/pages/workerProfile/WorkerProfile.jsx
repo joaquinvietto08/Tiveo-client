@@ -61,10 +61,6 @@ const WorkerProfile = ({ navigation }) => {
       ? { uri: worker.photoURL }
       : worker?.photoURL || null;
 
-  const displayName =
-    worker?.workerName || worker?.name || worker?.firstName || "Trabajador";
-  const workerInitial = displayName?.[0]?.toUpperCase() || "?";
-
   const joinedAtDate = (() => {
     if (worker?.joinedAt?.toDate) return worker.joinedAt.toDate();
     if (worker?.joinedAt?.seconds) {
@@ -140,7 +136,10 @@ const WorkerProfile = ({ navigation }) => {
               </View>
             )}
           </View>
-          <Text style={styles.workerProfile__name}>{displayName}</Text>
+          <View style={styles.workerProfile__nameContainer}>
+            <Text style={styles.workerProfile__name}>{worker.firstName} {worker.lastName}</Text>
+            <Text style={styles.workerProfile__workerName}>{worker.workerName}</Text>
+          </View>
 
           <View style={styles.workerProfile__ratingContainer}>
             {Array.from({ length: 5 }).map((_, i) => {
@@ -218,7 +217,7 @@ const WorkerProfile = ({ navigation }) => {
       {success && (
         <Confirm
           title="Trabajo confirmado"
-          text={"Podés ver el estado de la solicitud en el inicio."}
+          text={"Podés ver el estado de la solicitud en tu actividad."}
         />
       )}
     </View>

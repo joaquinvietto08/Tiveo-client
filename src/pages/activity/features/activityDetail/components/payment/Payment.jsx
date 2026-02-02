@@ -37,7 +37,7 @@ const Payment = ({ activityId, paymentStatus }) => {
       return "Estamos preparando el pago.";
     }
     if (isPendingStatus || !payment) {
-      return "Aún no hay pago. Pídele al trabajador que genere el cobro.";
+      return "Aún no hay pago. Pídele al trabajador que genere el cobro al finalizar su trabajo.";
     }
     return null;
   };

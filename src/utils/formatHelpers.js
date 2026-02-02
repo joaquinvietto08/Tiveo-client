@@ -48,13 +48,22 @@ export const formatPrice = (price) => {
   return `$ ${price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}`;
 };
 
-export const formatDate = (dateTimeString) => {
-  const date = new Date(dateTimeString);
+const toDate = (value) => {
+  if (!value) return null;
+  if (typeof value?.toDate === "function") return value.toDate();
+  const date = value instanceof Date ? value : new Date(value);
+  return Number.isNaN(date.getTime()) ? null : date;
+};
+
+export const formatDate = (dateTimeValue) => {
+  const date = toDate(dateTimeValue);
+  if (!date) return "—";
   return date.toLocaleDateString("es-AR", { month: "long", day: "numeric" });
 };
 
-export const formatTime = (dateTimeString) => {
-  const date = new Date(dateTimeString);
+export const formatTime = (dateTimeValue) => {
+  const date = toDate(dateTimeValue);
+  if (!date) return "—";
   return date.toLocaleTimeString("es-AR", {
     hour: "2-digit",
     minute: "2-digit",

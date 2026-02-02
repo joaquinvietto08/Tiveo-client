@@ -17,12 +17,16 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import Cancellation from "./components/cancellation/Cancellation";
 import { UserContext } from "../../../../context/UserContext";
 import { doc, getFirestore, updateDoc } from "@react-native-firebase/firestore";
+import { sendWarrantyClaimMessage } from "../../../messages/utils/firebaseChat";
+import { isWarrantyClaimable } from "./components/warranty/Warranty";
+import { usePayment } from "../../../../hooks/usePayment";
 
 const ActivityDetail = ({ navigation, route }) => {
   const insets = useSafeAreaInsets();
   const { activityId } = route.params;
-  const { activities } = useContext(UserContext);
+  const { activities, user } = useContext(UserContext);
   const data = activities?.find((a) => a.id === activityId);
+  const { payment } = usePayment(activityId);
   const ratingSheetRef = useRef(null);
   const [isRatingOpen, setIsRatingOpen] = useState(false);
   const db = getFirestore();
@@ -42,7 +46,7 @@ const ActivityDetail = ({ navigation, route }) => {
     [activityId]
   );
 
-const helpMessage = `Consulta sobre trabajo realizado por ${data.worker.workerName}.`;
+const helpMessage = `Consulta sobre trabajo realizado por ${data.worker.firstName} ${data.worker.lastName}.`;
 
   const handleOpenRating = () => {
     setIsRatingOpen(true);
@@ -79,6 +83,28 @@ const helpMessage = `Consulta sobre trabajo realizado por ${data.worker.workerNa
     [db, activityId, sendRatingWebhook]
   );
 
+  const handleWarrantyPress = useCallback(async () => {
+    if (!data || !isWarrantyClaimable(data.warranty)) return;
+    const workerId = data.worker?.uid ?? data.worker?.id;
+    const clientId = user?.uid;
+    if (!clientId || !workerId) return;
+    try {
+      const activityRef = doc(db, "activities", activityId);
+      await updateDoc(activityRef, { warranty: "claimed" });
+      await sendWarrantyClaimMessage({
+        activityId,
+        clientId,
+        workerId,
+      });
+      navigation.navigate("Messages", {
+        activityId,
+        worker: data.worker,
+      });
+    } catch (error) {
+      console.error("❌ Error al usar garantía:", error);
+    }
+  }, [data, activityId, user?.uid, db, navigation]);
+
   return (
     <View
       style={{
@@ -105,9 +131,11 @@ const helpMessage = `Consulta sobre trabajo realizado por ${data.worker.workerNa
               worker={data.worker}
               createdAt={data.createdAt}
               price={data.price}
+              budget={data.budget}
               status={data.status}
               moment={data.moment}
               paymentStatus={data.paymentStatus}
+              totalAmount={payment?.totalAmount}
             />
             <Categories services={data.services} />
             <Location address={data.address.address} />
@@ -122,7 +150,10 @@ const helpMessage = `Consulta sobre trabajo realizado por ${data.worker.workerNa
               paymentStatus={data.paymentStatus}
               onRate={handleOpenRating}
             />
-            <Warranty />
+            <Warranty
+              warranty={data.warranty}
+              onPress={handleWarrantyPress}
+            />
             {data.status !== "done" && data.status !== "cancelled" && (
               <Cancellation onCancel={handleCancelActivity} />
             )}

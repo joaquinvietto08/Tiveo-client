@@ -52,7 +52,7 @@ const Works = () => {
     const displayed = services.slice(0, MAX_SERVICES);
     const extraCount = services.length - displayed.length;
     const addressText = address?.address?.split(",")[0] || "Sin dirección";
-    const name = worker?.workerName || "Sin nombre";
+    const name = worker?.firstName || "Sin nombre";
 
     return (
       <StatusCard

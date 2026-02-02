@@ -12,7 +12,7 @@ import { colors } from "../../../../styles/globalStyles";
 
 const MAX_SERVICES = 5;
 
-const ActivityCard = ({ data, onPress, onCancel, onMessages, onPayment }) => {
+const ActivityCard = ({ data, onPress, onCancel, onMessages, onPayment, isRequest = false }) => {
   const displayed = data.services?.slice(0, MAX_SERVICES);
   const extraCount = data.services?.length - displayed?.length;
   const [isCancelModalVisible, setIsCancelModalVisible] = useState(false);
@@ -22,18 +22,26 @@ const ActivityCard = ({ data, onPress, onCancel, onMessages, onPayment }) => {
     onCancel?.();
   };
 
+  const handlePress = () => {
+    if (!isRequest) {
+      onPress?.();
+    }
+  };
+
   return (
     <View style={styles.activity__activityCard__card}>
       <Pressable
-        android_ripple={{ color: colors.white }}
-        onPress={onPress}
+        android_ripple={isRequest ? null : { color: colors.white }}
+        onPress={handlePress}
         style={{ padding: 15 }}
       >
         {/* Header */}
         <View style={styles.activity__activityCard__cardHeader}>
           <View style={styles.activity__activityCard__cardIconsContainer}>
             <Text style={styles.activity__activityCard__cardTitle}>
-              {data.services?.length > 0 ? "Trabajo de" : "Trabajo"}
+              {isRequest 
+                ? (data.services?.length > 0 ? "Solicitud de" : "Solicitud")
+                : (data.services?.length > 0 ? "Trabajo de" : "Trabajo")}
             </Text>
             {data.services?.length > 0 && (
               <>
@@ -59,7 +67,9 @@ const ActivityCard = ({ data, onPress, onCancel, onMessages, onPayment }) => {
             )}
           </View>
           {data.moment === "scheduled" &&
-            (data.status === "confirm" || data.status === "pending") && (
+            (data.status === "confirm" ||
+              data.status === "pending" ||
+              data.status === "requested") && (
               <Busy height={22} width={22} fill={colors.black} />
             )}
         </View>
@@ -75,15 +85,51 @@ const ActivityCard = ({ data, onPress, onCancel, onMessages, onPayment }) => {
             {formatDate(data.scheduledDateTime ?? data.createdAt)} •{" "}
             {formatTime(data.scheduledDateTime ?? data.createdAt)} hs
           </Text>
-          <Text style={styles.activity__activityCard__cardStatus}>
-            {translateStatus(data.status, data.moment)}
+          <Text 
+            style={[
+              styles.activity__activityCard__cardStatus,
+              data.warranty === "claimed" && { color: "#FF6B35" }
+            ]}
+          >
+            {isRequest 
+              ? (data.status === "cancelled" ? "Cancelada" : "Esperando respuesta")
+              : data.warranty === "claimed"
+                ? "Garantía reclamada"
+                : translateStatus(data.status, data.moment)}
           </Text>
         </View>
       </Pressable>
 
-      {data.status !== "pending" &&
+      {/* Requests: solo mostrar botón cancelar */}
+      {isRequest && data.status !== "cancelled" && (
+        <View style={styles.activity__activityCard__optionContainer}>
+          <Pressable
+            style={[styles.activity__activityCard__cancelButton, { flex: 1 }]}
+            onPress={() => setIsCancelModalVisible(true)}
+          >
+            <Text style={{ color: "red", fontFamily: "Inter-Bold" }}>
+              Cancelar solicitud
+            </Text>
+          </Pressable>
+        </View>
+      )}
+
+      {/* Activities: lógica normal */}
+      {!isRequest &&
+        data.status !== "pending" &&
         data.status !== "cancelled" &&
-        (data.status === "done" ? (
+        (data.warranty === "claimed" ? (
+          <View style={styles.activity__activityCard__optionContainer}>
+            <Pressable
+              style={styles.activity__activityCard__messagesButton}
+              onPress={onMessages}
+            >
+              <Text style={{ color: "white", fontFamily: "Inter-Bold" }}>
+                Mensajes
+              </Text>
+            </Pressable>
+          </View>
+        ) : data.status === "done" ? (
           <>
             {(data.paymentStatus === "pending" ||
               data.paymentStatus === "pending-approve" ||
@@ -131,7 +177,9 @@ const ActivityCard = ({ data, onPress, onCancel, onMessages, onPayment }) => {
         <View style={styles.activity__activityCard__modalOverlay}>
           <View style={styles.activity__activityCard__modalContent}>
             <Text style={styles.activity__activityCard__modalTitle}>
-              ¿Deseas cancelar el trabajo solicitado?
+              {isRequest 
+                ? "¿Deseas cancelar esta solicitud?"
+                : "¿Deseas cancelar el trabajo solicitado?"}
             </Text>
             <Text style={styles.activity__activityCard__modalText}>
               Esta acción no se puede deshacer.
@@ -159,7 +207,7 @@ const ActivityCard = ({ data, onPress, onCancel, onMessages, onPayment }) => {
                 <Text
                   style={styles.activity__activityCard__modalButtonCancelText}
                 >
-                  Cancelar trabajo
+                  {isRequest ? "Cancelar solicitud" : "Cancelar trabajo"}
                 </Text>
               </Pressable>
             </View>

@@ -3,8 +3,13 @@ import { formatPrice } from "../../../../utils/formatHelpers";
 import { colors } from "../../../../styles/globalStyles";
 
 const PostulantMarker = ({ postulant }) => {
-  const priceText =
-    postulant.price != null ? formatPrice(postulant.price) : null;
+  const priceValue =
+    postulant.price != null && postulant.price !== ""
+      ? postulant.price
+      : postulant.budget != null && postulant.budget !== ""
+      ? postulant.budget
+      : null;
+  const priceText = priceValue != null ? formatPrice(priceValue) : null;
 
   const imageSource =
     typeof postulant.photoURL === "string"
@@ -37,15 +42,9 @@ const PostulantMarker = ({ postulant }) => {
         </View>
       )}
       <View style={styles.map__markers__postulant__priceContainer}>
-        {postulant.price != null ? (
-          <Text style={styles.map__markers__postulant__priceText}>
-            {priceText}
-          </Text>
-        ) : (
-          <Text style={styles.map__markers__postulant__priceText}>
-            {"$ A definir"}
-          </Text>
-        )}
+        <Text style={styles.map__markers__postulant__priceText}>
+          {priceText ?? "A definir"}
+        </Text>
       </View>
     </View>
   );
