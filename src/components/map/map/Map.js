@@ -1,4 +1,4 @@
-import React, { forwardRef, useCallback, useState } from "react";
+import React, { forwardRef, useCallback, useEffect, useRef, useState } from "react";
 import { StyleSheet, Dimensions } from "react-native";
 import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 import { mapStyle } from "./features/mapStyle";
@@ -53,12 +53,19 @@ const WorkerMapMarker = ({ worker, workerType, onSelectWorker }) => {
   const hasRemotePhoto =
     typeof worker?.photoURL === "string" && worker.photoURL?.length > 0;
   const [tracksChanges, setTracksChanges] = useState(hasRemotePhoto);
+  const timeoutRef = useRef(null);
 
   const handleImageLoaded = useCallback(() => {
-    if (tracksChanges) {
-      setTracksChanges(false);
-    }
-  }, [tracksChanges]);
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    // Delay para que la imagen termine de pintarse antes de congelar (evita difuso)
+    timeoutRef.current = setTimeout(() => setTracksChanges(false), 150);
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    };
+  }, []);
 
   const handlePress = useCallback(() => {
     onSelectWorker?.(worker?.uid);

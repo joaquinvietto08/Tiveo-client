@@ -47,14 +47,13 @@ const AdvanceSearch = () => {
     }
   }, [navigation, requestId]);
 
+  // Bloquear el back del celular: solo se sale con el botón "Cancelar búsqueda"
   useEffect(() => {
     const backSub = BackHandler.addEventListener("hardwareBackPress", () => {
-      handleGoHome();
-      return true;
+      return true; // consume el evento, no navega
     });
-
     return () => backSub.remove();
-  }, [handleGoHome]);
+  }, []);
 
   useEffect(() => {
     if (!requestId) return;

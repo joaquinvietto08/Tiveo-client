@@ -1,5 +1,5 @@
 import React, { useState, useEffect, createContext } from "react";
-import auth from "@react-native-firebase/auth";
+import { getAuth, onAuthStateChanged as onAuthStateChangedListener } from "@react-native-firebase/auth";
 import {
   collection,
   getFirestore,
@@ -20,13 +20,13 @@ export function UserProvider({ children }) {
   const [directRequests, setDirectRequests] = useState([]); // solicitudes directas a trabajadores
 
   // 🔐 Escuchar cambios de sesión
-  function onAuthStateChanged(u) {
+  function handleAuthStateChanged(u) {
     setUser(u);
     if (initializing) setInitializing(false);
   }
 
   useEffect(() => {
-    const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
+    const subscriber = onAuthStateChangedListener(getAuth(), handleAuthStateChanged);
     return () => subscriber();
   }, []);
 
