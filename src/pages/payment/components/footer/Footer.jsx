@@ -1,16 +1,10 @@
 import { View, Text } from "react-native";
 import { styles } from "./FooterStyles";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { TouchableOpacity } from "react-native";
 import { colors } from "../../../../styles/globalStyles";
-import { startCheckout } from "../../utils/firebasePayment";
+import { startCheckout, confirmPayment } from "../../utils/firebasePayment";
 import LoadingButton from "../../../../components/inputs/loadingButton/LoadingButton";
-import {
-  doc,
-  getFirestore,
-  increment,
-  updateDoc,
-} from "@react-native-firebase/firestore";
 
 const Footer = ({
   payment,
@@ -24,7 +18,6 @@ const Footer = ({
   const [selectedMethod, setSelectedMethod] = useState("efectivo");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const db = useMemo(() => getFirestore(), []);
 
   const paymentMethods = [
     { id: "efectivo", label: "Efectivo", color: colors.green },
@@ -37,41 +30,6 @@ const Footer = ({
       setSelectedMethod(payment.method);
     }
   }, [payment?.method]);
-
-  const registerCashPayment = async () => {
-    if (!payment?.id) {
-      throw new Error("Pago no disponible");
-    }
-
-    const paymentRef = doc(db, "payments", payment.id);
-    await updateDoc(paymentRef, {
-      status: "paid",
-      method: selectedMethod,
-      paidAt: new Date(),
-    });
-
-    if (activityId) {
-      const activityRef = doc(db, "activities", activityId);
-      await updateDoc(activityRef, { paymentStatus: "paid" });
-    }
-
-    const workerId =
-      payment?.workerId ||
-      payment?.worker?.workerId ||
-      payment?.worker?.uid ||
-      payment?.worker?.id;
-
-    if (workerId) {
-      const workerRef = doc(db, "workers", workerId);
-      try {
-        await updateDoc(workerRef, { completedJobs: increment(1) });
-      } catch (err) {
-        console.error("❌ Error al actualizar completedJobs del worker:", err);
-      }
-    } else {
-      console.warn("⚠️ No se encontró workerId para actualizar completedJobs");
-    }
-  };
 
   const handlePay = async () => {
     if (!payment) {
@@ -101,7 +59,17 @@ const Footer = ({
 
     try {
       if (selectedMethod === "efectivo") {
-        await registerCashPayment();
+        const workerId =
+          payment?.workerId ||
+          payment?.worker?.workerId ||
+          payment?.worker?.uid ||
+          payment?.worker?.id;
+        await confirmPayment({
+          paymentId: payment.id,
+          activityId: activityId || null,
+          workerId: workerId || null,
+          method: "efectivo",
+        });
         setSuccesMessage("Pago en efectivo registrado");
         setLoading(false);
         setBlockBack(false);

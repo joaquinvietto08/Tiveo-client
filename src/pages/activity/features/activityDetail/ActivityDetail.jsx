@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, Pressable } from "react-native";
+import { View, Text, ScrollView, Pressable, Modal } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { styles } from "./ActivityDetailsStyles";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
@@ -15,6 +15,7 @@ import { useContext, useRef, useState, useCallback } from "react";
 import RatingBottomSheet from "./components/rating/ratingBottomSheet/RatingBottomSheet";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import Cancellation from "./components/cancellation/Cancellation";
+import { styles as cancellationStyles } from "./components/cancellation/CancellationStyles";
 import { UserContext } from "../../../../context/UserContext";
 import { doc, getFirestore, updateDoc } from "@react-native-firebase/firestore";
 import { sendWarrantyClaimMessage } from "../../../messages/utils/firebaseChat";
@@ -29,6 +30,7 @@ const ActivityDetail = ({ navigation, route }) => {
   const { payment } = usePayment(activityId);
   const ratingSheetRef = useRef(null);
   const [isRatingOpen, setIsRatingOpen] = useState(false);
+  const [warrantyConfirmVisible, setWarrantyConfirmVisible] = useState(false);
   const db = getFirestore();
 
   const sendRatingWebhook = useCallback(
@@ -88,6 +90,7 @@ const helpMessage = `Consulta sobre trabajo realizado por ${data.worker.firstNam
     const workerId = data.worker?.uid ?? data.worker?.id;
     const clientId = user?.uid;
     if (!clientId || !workerId) return;
+    setWarrantyConfirmVisible(false);
     try {
       const activityRef = doc(db, "activities", activityId);
       await updateDoc(activityRef, { warranty: "claimed" });
@@ -104,6 +107,10 @@ const helpMessage = `Consulta sobre trabajo realizado por ${data.worker.firstNam
       console.error("❌ Error al usar garantía:", error);
     }
   }, [data, activityId, user?.uid, db, navigation]);
+
+  const handleWarrantyOpenConfirm = useCallback(() => {
+    if (data && isWarrantyClaimable(data.warranty)) setWarrantyConfirmVisible(true);
+  }, [data]);
 
   return (
     <View
@@ -152,7 +159,7 @@ const helpMessage = `Consulta sobre trabajo realizado por ${data.worker.firstNam
             />
             <Warranty
               warranty={data.warranty}
-              onPress={handleWarrantyPress}
+              onPress={handleWarrantyOpenConfirm}
             />
             {data.status !== "done" && data.status !== "cancelled" && (
               <Cancellation onCancel={handleCancelActivity} />
@@ -177,6 +184,58 @@ const helpMessage = `Consulta sobre trabajo realizado por ${data.worker.firstNam
             handleCloseRating();
           }}
         />
+
+        <Modal
+          transparent
+          animationType="fade"
+          visible={warrantyConfirmVisible}
+          onRequestClose={() => setWarrantyConfirmVisible(false)}
+        >
+          <View style={cancellationStyles.activityDetails__cancellation__overlay}>
+            <View style={cancellationStyles.activityDetails__cancellation__popup}>
+              <Text style={cancellationStyles.activityDetails__cancellation__popupTitle}>
+                ¿Deseas reclamar la garantía?
+              </Text>
+              <Text style={cancellationStyles.activityDetails__cancellation__popupText}>
+                Se enviará un mensaje al trabajador para coordinar la visita.
+              </Text>
+              <View style={cancellationStyles.activityDetails__cancellation__popupButtons}>
+                <Pressable
+                  style={[
+                    cancellationStyles.activityDetails__cancellation__popupButton,
+                    { backgroundColor: colors.lightGray },
+                  ]}
+                  onPress={() => setWarrantyConfirmVisible(false)}
+                >
+                  <Text
+                    style={[
+                      cancellationStyles.activityDetails__cancellation__popupButtonText,
+                      { color: colors.black },
+                    ]}
+                  >
+                    No
+                  </Text>
+                </Pressable>
+                <Pressable
+                  style={[
+                    cancellationStyles.activityDetails__cancellation__popupButton,
+                    { backgroundColor: colors.primary },
+                  ]}
+                  onPress={() => handleWarrantyPress()}
+                >
+                  <Text
+                    style={[
+                      cancellationStyles.activityDetails__cancellation__popupButtonText,
+                      { color: colors.black },
+                    ]}
+                  >
+                    Sí, reclamar
+                  </Text>
+                </Pressable>
+              </View>
+            </View>
+          </View>
+        </Modal>
       </GestureHandlerRootView>
     </View>
   );

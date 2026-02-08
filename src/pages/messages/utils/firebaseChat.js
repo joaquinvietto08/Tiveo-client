@@ -1,4 +1,3 @@
-import { getApp } from "@react-native-firebase/app";
 import {
   collection,
   deleteDoc,
@@ -12,12 +11,7 @@ import {
   setDoc,
   updateDoc,
 } from "@react-native-firebase/firestore";
-import {
-  getStorage,
-  ref,
-  putFile,
-  getDownloadURL,
-} from "@react-native-firebase/storage/lib/modular";
+import storage from "@react-native-firebase/storage";
 
 const db = getFirestore();
 const conversationsCol = collection(db, "conversations");
@@ -100,12 +94,11 @@ export async function sendImageMessage({ activityId, uri, clientId, workerId }) 
     createdAt: serverTimestamp(),
   });
 
-  const storage = getStorage(getApp());
-  const storageRef = ref(storage, `messages/${activityId}/${msgRef.id}.jpg`);
+  const storageRef = storage().ref(`messages/${activityId}/${msgRef.id}.jpg`);
 
   let snapshot;
   try {
-    snapshot = await putFile(storageRef, uri);
+    snapshot = await storageRef.putFile(uri);
   } catch (e) {
     console.warn("❌ Error real en putFile:", {
       code: e?.code,
@@ -115,7 +108,7 @@ export async function sendImageMessage({ activityId, uri, clientId, workerId }) 
   }
 
   try {
-    const url = await getDownloadURL(ref(storage, snapshot.metadata.fullPath));
+    const url = await storage().ref(snapshot.metadata.fullPath).getDownloadURL();
     await updateDoc(msgRef, { imageUrl: url });
     return msgRef.id;
   } catch (e) {

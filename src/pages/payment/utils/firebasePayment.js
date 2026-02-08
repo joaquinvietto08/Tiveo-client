@@ -4,6 +4,36 @@ import { colors } from "../../../styles/globalStyles";
 
 const DEFAULT_REDIRECT_URL = "tiveo://payment/success";
 
+/** Cloud Function confirmPayment (efectivo: payment + activity + warranty + worker) */
+const CONFIRM_PAYMENT_URL =
+  "https://us-central1-tiveo-5f6c4.cloudfunctions.net/confirmPayment";
+
+/**
+ * Marca el pago como cobrado (efectivo). Misma lógica que el webhook de MP: actualiza payment, activity, warranty 15 días y worker.
+ */
+export const confirmPayment = async ({
+  paymentId,
+  activityId,
+  workerId,
+  method = "efectivo",
+}) => {
+  const res = await fetch(CONFIRM_PAYMENT_URL, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      paymentId,
+      activityId: activityId || null,
+      workerId: workerId || null,
+      method,
+    }),
+  });
+  if (!res.ok) {
+    const text = await res.text();
+    throw new Error(text || `confirmPayment ${res.status}`);
+  }
+  return res.json();
+};
+
 export const startCheckout = async ({
   id,
   title,
