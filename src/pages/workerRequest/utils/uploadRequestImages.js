@@ -1,4 +1,10 @@
-import storage from "@react-native-firebase/storage";
+import { getApp } from "@react-native-firebase/app";
+import {
+  getStorage,
+  ref,
+  putFile,
+  getDownloadURL,
+} from "@react-native-firebase/storage/lib/modular";
 import { Platform } from "react-native";
 
 const normalizePath = (uri = "") =>
@@ -18,6 +24,7 @@ export const uploadRequestImages = async (
     return [];
   }
 
+  const storage = getStorage(getApp());
   const baseId = requestId || userId || "request";
 
   const uploadedUrls = await Promise.all(
@@ -26,9 +33,9 @@ export const uploadRequestImages = async (
       const fileName = `${baseId}_${Date.now()}_${index}${
         extension ? `.${extension}` : ""
       }`;
-      const reference = storage().ref(`requests/${fileName}`);
-      await reference.putFile(normalizePath(uri));
-      return reference.getDownloadURL();
+      const reference = ref(storage, `requests/${fileName}`);
+      await putFile(reference, normalizePath(uri));
+      return getDownloadURL(reference);
     })
   );
 
