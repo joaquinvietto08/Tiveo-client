@@ -1,25 +1,25 @@
 export const translateService = (service) => {
   const serviceMap = {
     electricity: "Electricidad",
-    plumbing: "Plomeria",
+    plumbing: "Plomería",
     gas: "Gas",
-    gardening: "Jardineria",
-    locksmith: "Cerrajeria",
+    gardening: "Jardinería",
+    locksmith: "Cerrajería",
     painting: "Pintura",
-    construction: "Construccion",
+    construction: "Construcción",
     pool: "Pileta",
-    carpentry: "Carpinteria",
+    carpentry: "Carpintería",
     glass: "Vidrios",
     pets: "Mascotas",
     security: "Seguridad",
-    ironwork: "Herreria",
-    technology: "Tecnologia",
+    ironwork: "Herrería",
+    technology: "Tecnología",
     beauty: "Belleza",
-    vehicles: "Vehiculos",
+    vehicles: "Vehículos",
     freight: "Fletes",
     events: "Eventos",
-    photography: "Fotografia",
-    music: "Musica",
+    photography: "Fotografía",
+    music: "Música",
   };
 
   return serviceMap[service] || service;
@@ -48,13 +48,22 @@ export const formatPrice = (price) => {
   return `$ ${price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}`;
 };
 
-export const formatDate = (dateTimeString) => {
-  const date = new Date(dateTimeString);
+const toDate = (value) => {
+  if (!value) return null;
+  if (typeof value?.toDate === "function") return value.toDate();
+  const date = value instanceof Date ? value : new Date(value);
+  return Number.isNaN(date.getTime()) ? null : date;
+};
+
+export const formatDate = (dateTimeValue) => {
+  const date = toDate(dateTimeValue);
+  if (!date) return "—";
   return date.toLocaleDateString("es-AR", { month: "long", day: "numeric" });
 };
 
-export const formatTime = (dateTimeString) => {
-  const date = new Date(dateTimeString);
+export const formatTime = (dateTimeValue) => {
+  const date = toDate(dateTimeValue);
+  if (!date) return "—";
   return date.toLocaleTimeString("es-AR", {
     hour: "2-digit",
     minute: "2-digit",
@@ -72,7 +81,7 @@ export const translateStatus = (status, moment) => {
     }
   }
   const statusMap = {
-    pending: "Pendiente",
+    requested: "Solicitado",
     going: "En camino",
     cancelled: "Cancelado",
     done: "Finalizado",

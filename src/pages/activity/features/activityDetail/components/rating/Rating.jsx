@@ -4,12 +4,13 @@ import { styles } from "./RatingStyles";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { colors } from "../../../../../../styles/globalStyles";
 
-const Rating = ({ rating, status, onRate }) => {
+const Rating = ({ rating, status, paymentStatus, onRate }) => {
   const isDone = status === "done";
+  const isPaid = paymentStatus === "paid";
   const hasRating = rating !== undefined && rating !== null;
 
   const getText = () => {
-    if (!isDone) {
+    if (!isDone || !isPaid) {
       return "Aún no es posible calificar el trabajo";
     }
     if (isDone && !hasRating) {

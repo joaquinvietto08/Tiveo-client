@@ -65,6 +65,7 @@ export const styles = StyleSheet.create({
     marginBottom: 12,
     elevation: 2,
     position: "relative",
+    marginHorizontal: 4
   },
   advanceSearch__footer__cardHeader: {
     flexDirection: "row",
@@ -74,6 +75,16 @@ export const styles = StyleSheet.create({
     width: 50,
     height: 50,
     borderRadius: 40,
+  },
+  advanceSearch__footer__avatarPlaceholder: {
+    backgroundColor: colors.lightGray,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  advanceSearch__footer__avatarInitial: {
+    fontSize: 18,
+    fontFamily: "Inter-Bold",
+    color: colors.black,
   },
   advanceSearch__footer__cardHeaderText: {
     flexDirection: "row",

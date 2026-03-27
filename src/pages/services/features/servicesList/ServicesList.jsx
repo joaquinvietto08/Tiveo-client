@@ -16,7 +16,9 @@ const ServiceButton = ({ item, onPress }) => {
         onPress={() => onPress(item.name)}
       >
         <IconComponent style={styles.services__servicesList__icon} />
-        <Text style={styles.services__servicesList__name}>{item.name}</Text>
+        <Text style={styles.services__servicesList__name}>
+          {translateService(item.name)}
+        </Text>
       </Pressable>
     </View>
   );

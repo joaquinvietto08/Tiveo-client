@@ -8,22 +8,12 @@ export const styles = StyleSheet.create({
     height: 130,
     padding: 15,
   },
-  home__bottomSheet__statusCard__card__done: {
-    backgroundColor: colors.white,
-    borderWidth: 1,
-  },
-  home__bottomSheet__statusCard__card__pending: {
-    backgroundColor: colors.white,
-    borderWidth: 1,
-  },
-  home__bottomSheet__statusCard__card__confirm: {
+  home__bottomSheet__statusCard__card__default: {
     backgroundColor: colors.black,
   },
-  home__bottomSheet__statusCard__card__going: {
-    backgroundColor: colors.primary,
-  },
-  home__bottomSheet__statusCard__card__working: {
-    backgroundColor: colors.primary,
+  home__bottomSheet__statusCard__card__requested: {
+    backgroundColor: colors.white,
+    borderWidth: 1,
   },
 
   /* ********************* */
@@ -39,21 +29,6 @@ export const styles = StyleSheet.create({
   home__bottomSheet__statusCard__servicesText: {
     fontFamily: "Inter-SemiBold",
     fontSize: 18,
-  },
-  home__bottomSheet__statusCard__title__done: {
-    color: colors.black,
-  },
-  home__bottomSheet__statusCard__title__pending: {
-    color: colors.black,
-  },
-  home__bottomSheet__statusCard__title__confirm: {
-    color: colors.white,
-  },
-  home__bottomSheet__statusCard__title__going: {
-    color: colors.white,
-  },
-  home__bottomSheet__statusCard__title__working: {
-    color: colors.white,
   },
 
   /* ********************* */
@@ -89,24 +64,11 @@ export const styles = StyleSheet.create({
   /* **************** */
   home__bottomSheet__statusCard__momentText: {
     fontFamily: "Inter-Medium",
-  },
-  home__bottomSheet__statusCard__momentText__done: {
-    color: colors.black,
-  },
-  home__bottomSheet__statusCard__momentText__pending: {
-    color: colors.black,
-  },
-  home__bottomSheet__statusCard__momentText__confirm: {
-    color: colors.white,
-  },
-  home__bottomSheet__statusCard__momentText__going: {
-    color: colors.white,
-  },
-  home__bottomSheet__statusCard__momentText__working: {
-    color: colors.white,
+    fontSize: 13,
+    flexShrink: 1,
   },
 
-  /* going/working */
+  /* buttons container */
   home__bottomSheet__statusCard__confirmContainer: {
     flexDirection: "row",
     height: 40,
@@ -121,18 +83,7 @@ export const styles = StyleSheet.create({
     width: "48%",
     justifyContent: "center",
     alignItems: "center",
-  },
-  home__bottomSheet__statusCard__messagesButton__done: {
     backgroundColor: colors.primary,
-  },
-  home__bottomSheet__statusCard__messagesButton__confirm: {
-    backgroundColor: colors.white,
-  },
-  home__bottomSheet__statusCard__messagesButton__going: {
-    backgroundColor: colors.black,
-  },
-  home__bottomSheet__statusCard__messagesButton__working: {
-    backgroundColor: colors.black,
   },
 
   /* **************** */
@@ -145,34 +96,22 @@ export const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  home__bottomSheet__statusCard__detailsButton__done: {
+  home__bottomSheet__statusCard__detailsButton__requested: {
     borderColor: colors.black,
   },
-  home__bottomSheet__statusCard__detailsButton__confirm: {
+  home__bottomSheet__statusCard__detailsButton__default: {
     borderColor: colors.white,
-  },
-  home__bottomSheet__statusCard__detailsButton__going: {
-    borderColor: colors.black,
-  },
-  home__bottomSheet__statusCard__detailsButton__working: {
-    borderColor: colors.black,
   },
 
   /* **************** */
   home__bottomSheet__statusCard__messagesButtonText: {
     fontFamily: "Inter-SemiBold",
   },
-  home__bottomSheet__statusCard__messagesButtonText__done: {
+  home__bottomSheet__statusCard__messagesButtonText__requested: {
     color: colors.black,
   },
-  home__bottomSheet__statusCard__messagesButtonText__confirm: {
+  home__bottomSheet__statusCard__messagesButtonText__default: {
     color: colors.black,
-  },
-  home__bottomSheet__statusCard__messagesButtonText__going: {
-    color: colors.white,
-  },
-  home__bottomSheet__statusCard__messagesButtonText__working: {
-    color: colors.white,
   },
 
   /* **************** */
@@ -180,17 +119,4 @@ export const styles = StyleSheet.create({
   home__bottomSheet__statusCard__detailsButtonText: {
     fontFamily: "Inter-SemiBold",
   },
-  home__bottomSheet__statusCard__detailsButtonText__done: {
-    color: colors.black,
-  },
-  home__bottomSheet__statusCard__detailsButtonText__confirm: {
-    color: colors.white,
-  },
-  home__bottomSheet__statusCard__detailsButtonText__going: {
-    color: colors.black,
-  },
-  home__bottomSheet__statusCard__detailsButtonText__working: {
-    color: colors.black,
-  },
-  /* ************* */
 });

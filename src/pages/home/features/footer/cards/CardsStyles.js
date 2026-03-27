@@ -14,41 +14,52 @@ export const styles = StyleSheet.create({
     fontSize: 17,
     fontFamily: "Inter-Bold",
   },
-  home__bottomSheet__card__more: {
-    fontSize: 14,
-    color: colors.primary,
-    fontFamily: "Inter-Regular",
-  },
   home__bottomSheet__card__container: {
     paddingHorizontal: 20,
     gap: 15,
+    paddingBottom: 4
   },
   home__bottomSheet__card__cardContainer: {
-    borderRadius: 10,
+    borderRadius: 12,
     width: 260,
-    height: 220,
     backgroundColor: "#FFFFFF",
+    elevation: 1,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
   },
   home__bottomSheet__card__button: {
-    width: 260,
-    height: 220,
-    position: "relative",
-  },
-  home__bottomSheet__card__headerContainer: {
     width: "100%",
-    justifyContent: "center",
-    alignItems: "center",
+    padding: 12,
+    position: "relative",
+    borderRadius: 12,
+    overflow: "hidden",
+    backgroundColor: colors.white,
+    height: "auto"
   },
-  home__bottomSheet__card__headerPhoto: {
-    width: 260,
-    height: 110,
-    borderTopRightRadius: 10,
-    borderTopLeftRadius: 10,
+  home__bottomSheet__card__content: {
+    gap: 8,
+  },
+  home__bottomSheet__card__profile: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 12,
+    paddingHorizontal: 4,
+  },
+  home__bottomSheet__card__avatar: {
+    width: 48,
+    height: 48,
+    borderRadius: 24,
+    backgroundColor: colors.lightGray,
+  },
+  home__bottomSheet__card__profileInfo: {
+    flex: 1,
   },
   home__bottomSheet__card__infoContainer: {
     flexDirection: "row",
     alignItems: "center",
-    paddingLeft: 8,
+    marginTop: 4,
   },
   home__bottomSheet__card__infoRating: {
     fontSize: 12,
@@ -63,15 +74,45 @@ export const styles = StyleSheet.create({
   home__bottomSheet__card__infoTitle: {
     fontSize: 14,
     fontFamily: "Inter-Bold",
+  },
+  home__bottomSheet__card__infoWorkerName: {
+    fontSize: 12,
+    fontFamily: "Inter-Regular",
+    color: colors.gray,
+  },
+  home__bottomSheet__card__description: {
+    fontSize: 13,
+    fontFamily: "Inter-Regular",
+    color: colors.gray,
+    paddingHorizontal: 4,
+  },
+  home__bottomSheet__card__chipsWrapper: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    gap: 8,
+    paddingHorizontal: 4,
+  },
+  home__bottomSheet__card__chip: {
+    flexDirection: "row",
+    alignItems: "center",
     paddingHorizontal: 8,
-    paddingTop: 6,
+    paddingVertical: 6,
+    borderRadius: 30,
+    borderWidth: 1,
+    borderColor: colors.black,
+    gap: 6,
+  },
+  home__bottomSheet__card__chipText: {
+    fontSize: 12,
+    fontFamily: "Inter-Medium",
+    color: colors.black,
   },
   home__bottomSheet__card__statusContainer: {
-    alignItems: "flex-end",
+    alignItems: "center",
     justifyContent: "flex-end",
-    flex: 1,
-    paddingBottom: 8,
     flexDirection: "row",
+    marginTop: 12,
+    paddingHorizontal: 4,
   },
   home__bottomSheet__card__availableView: {
     justifyContent: "center",
@@ -80,7 +121,7 @@ export const styles = StyleSheet.create({
     height: 28,
     paddingHorizontal: 8,
     backgroundColor: "#D1F5E1",
-    marginRight: 8,
+    marginLeft: 8,
   },
   home__bottomSheet__card__availableText: {
     fontSize: 13,
@@ -94,7 +135,7 @@ export const styles = StyleSheet.create({
     height: 28,
     paddingHorizontal: 8,
     backgroundColor: "rgba(255, 157, 0, 0.14)",
-    marginRight: 8,
+    marginLeft: 8,
   },
   home__bottomSheet__card__busyText: {
     fontSize: 13,

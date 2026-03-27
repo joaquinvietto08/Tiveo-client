@@ -10,6 +10,12 @@ const WorkerPreview = ({ worker, onClose }) => {
 
   if (!worker) return null;
 
+  const imageSource =
+    typeof worker.photoURL === "string"
+      ? { uri: worker.photoURL }
+      : worker.photoURL || null;
+  "Trabajador";
+
   return (
     <View style={styles.home__workerPreview__mainContainer}>
       <Pressable
@@ -17,16 +23,35 @@ const WorkerPreview = ({ worker, onClose }) => {
         onPress={() => navigation.navigate("WorkerProfile", { worker })}
         android_ripple={{ color: "#E2E2E2", borderless: false }}
       >
-        <Image
-          source={worker.photoURL}
-          style={styles.home__workerPreview__image}
-        />
+        {imageSource ? (
+          <Image
+            source={imageSource}
+            style={styles.home__workerPreview__image}
+          />
+        ) : (
+          <View
+            style={[
+              styles.home__workerPreview__image,
+              styles.home__workerPreview__placeholder,
+            ]}
+          >
+            <Text style={styles.home__workerPreview__placeholderText}>
+              {workerInitial}
+            </Text>
+          </View>
+        )}
 
         <View style={styles.home__workerPreview__info}>
           <View style={styles.home__workerPreview__header}>
-            <Text style={styles.home__workerPreview__name}>
-              {worker.firstName} {worker.lastName}
-            </Text>
+            <View style={styles.home__workerPreview__nameContainer}>
+              <Text style={styles.home__workerPreview__name}>
+                {worker.firstName} {worker.lastName}
+              </Text>
+              <Text style={styles.home__workerPreview__workerName}>
+                {worker.workerName}
+              </Text>
+            </View>
+
             <Pressable onPress={onClose}>
               <AntDesign name="close" size={20} color="gray" />
             </Pressable>

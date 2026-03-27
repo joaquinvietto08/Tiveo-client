@@ -2,7 +2,7 @@ import React, { useRef } from "react";
 import { View, Text, Pressable, Image } from "react-native";
 import BottomSheet from "../../../../components/bottomSheet/BottomSheet";
 import { BottomSheetScrollView } from "@gorhom/bottom-sheet";
-import { AntDesign, FontAwesome6, MaterialIcons } from "@expo/vector-icons";
+import { AntDesign, FontAwesome6 } from "@expo/vector-icons";
 import { styles } from "./FooterStyles";
 import { getIcon } from "../../../../utils/getIcons";
 import { colors } from "../../../../styles/globalStyles";
@@ -13,10 +13,9 @@ import {
 } from "../../../../utils/formatHelpers";
 import Available from "../../../../../assets/svgs/worker/available.svg";
 import Busy from "../../../../../assets/svgs/worker/busy.svg";
-import Licensed from "../../../../../assets/svgs/worker/licensed";
 import { useNavigation } from "@react-navigation/native";
 
-const Footer = ({ sheetRef, values, workers }) => {
+const Footer = ({ sheetRef, values, workers, requestId }) => {
   const snapPoints = [90, 700];
   const animationConfigs = { duration: 400 };
   const scrollRef = useRef(null);
@@ -86,8 +85,8 @@ const Footer = ({ sheetRef, values, workers }) => {
                   style={styles.advanceSearch__footer__detailIcon}
                 />
                 <Text style={styles.advanceSearch__footer__momentText}>
-                  Programado {formatDate(scheduledDateTime)}{" "}
-                  {formatTime(scheduledDateTime)} hs
+                  Programado {formatDate(values.scheduledDateTime)}{" "}
+                  {formatTime(values.scheduledDateTime)} hs
                 </Text>
               </>
             )}
@@ -113,100 +112,179 @@ const Footer = ({ sheetRef, values, workers }) => {
               Aquí aparecerán los trabajadores que se postulen a tu solicitud
             </Text>
           ) : (
-            workers.map((w) => (
-              <Pressable
-                key={w.uid}
-                style={styles.advanceSearch__footer__card}
-                android_ripple={{ color: "#E2E2E2", borderless: false }}
-                onPress={() =>
-                  navigation.navigate("WorkerProfile", {
-                    worker: w,
-                    bottom: "advance",
-                    values,
-                  })
-                }
-              >
-                <View style={styles.advanceSearch__footer__cardHeader}>
-                  <Image
-                    source={
-                      typeof w.photoURL === "string"
-                        ? { uri: w.photoURL }
-                        : w.photoURL
-                    }
-                    style={styles.advanceSearch__footer__avatar}
-                  />
-                  <View style={styles.advanceSearch__footer__cardHeaderText}>
-                    <Text style={styles.advanceSearch__footer__name}>
-                      {w.firstName} {w.lastName.charAt(0)}.
-                    </Text>
-                    <Licensed
-                      width={16}
-                      height={16}
-                      style={styles.advanceSearch__footer__verifiedIcon}
-                    />
-                  </View>
-                  <View style={styles.advanceSearch__footer__ratingContainer}>
-                    <AntDesign name="star" size={12} color={colors.black} />
-                    <Text style={styles.advanceSearch__footer__ratingValue}>
-                      {w.starRating.toFixed(1)}
-                    </Text>
-                    <Text style={styles.advanceSearch__footer__ratingCount}>
-                      ({w.amountRating})
-                    </Text>
-                  </View>
-                </View>
+            workers.map((postulation) => {
+              const worker = postulation.worker;
+              if (!worker) return null;
 
-                <View style={styles.advanceSearch__footer__cardBody}>
-                  <View style={styles.advanceSearch__footer__infoRow}>
-                    <Text style={styles.advanceSearch__footer__infoLabel}>
-                      Presupuesto:
-                    </Text>
-                    <Text style={styles.advanceSearch__footer__infoValue}>
-                      {w.price != null ? formatPrice(w.price) : "A definir"}
-                    </Text>
-                  </View>
-                  <View style={styles.advanceSearch__footer__infoRowMoment}>
-                    <View
-                      style={[
-                        styles.advanceSearch__footer__infoSubContainer,
-                        w.moment === "now"
-                          ? styles.advanceSearch__footer__infoAvailable
-                          : styles.advanceSearch__footer__infoBusy,
-                      ]}
-                    >
-                      {w.moment === "now" ? (
-                        <Available height={20} width={20} fill={colors.green} />
-                      ) : (
-                        <Busy height={20} width={20} fill={colors.primary} />
-                      )}
-                      <Text
+              const hasAlternateOffer = !!postulation.offerAnotherTime;
+
+              const displayMoment = hasAlternateOffer
+                ? postulation.offerMoment || "scheduled"
+                : values.moment;
+
+              const rawDate =
+                hasAlternateOffer &&
+                (postulation.offerScheduledDateTime ||
+                  postulation.scheduledDateTime ||
+                  postulation.date)
+                  ? postulation.offerScheduledDateTime ||
+                    postulation.scheduledDateTime ||
+                    postulation.date
+                  : values.scheduledDateTime;
+
+              const displayDate =
+                rawDate && typeof rawDate?.toDate === "function"
+                  ? rawDate.toDate()
+                  : rawDate;
+
+              const isNow = displayMoment === "now" && !hasAlternateOffer;
+
+              const photoSource =
+                typeof worker.photoURL === "string"
+                  ? { uri: worker.photoURL }
+                  : null;
+
+              const workerName =
+                worker.workerName || worker.name || worker.firstName || "";
+              const workerInitial = workerName?.[0] || "";
+
+              const ratingValue = Number(
+                worker.starRating ??
+                  worker.rating ??
+                  worker.averageRating ??
+                  0
+              );
+              const ratingCount = Number(
+                worker.amountRating ??
+                  worker.ratingCount ??
+                  worker.totalRatings ??
+                  0
+              );
+
+              const priceValue =
+                postulation.price != null && postulation.price !== ""
+                  ? postulation.price
+                  : postulation.budget != null && postulation.budget !== ""
+                  ? postulation.budget
+                  : null;
+
+              return (
+                <Pressable
+                  key={worker.uid}
+                  style={styles.advanceSearch__footer__card}
+                  android_ripple={{ color: "#E2E2E2", borderless: false }}
+                  onPress={() =>
+                    navigation.navigate("WorkerProfile", {
+                      worker,
+                      postulation,
+                      bottom: "advance",
+                      values,
+                      requestId,
+                    })
+                  }
+                >
+                  <View style={styles.advanceSearch__footer__cardHeader}>
+                    {photoSource ? (
+                      <Image
+                        source={photoSource}
+                        style={styles.advanceSearch__footer__avatar}
+                      />
+                    ) : (
+                      <View
                         style={[
-                          styles.advanceSearch__footer__infoText,
-                          w.moment === "now"
-                            ? styles.advanceSearch__footer__infoTextAvailable
-                            : styles.advanceSearch__footer__infoTextBusy,
+                          styles.advanceSearch__footer__avatar,
+                          styles.advanceSearch__footer__avatarPlaceholder,
                         ]}
                       >
-                        {w.moment === "now"
-                          ? "Ahora mismo"
-                          : `${formatDate(w.scheduledDateTime)} • ${formatTime(
-                              w.scheduledDateTime
-                            )} hs`}
+                        <Text style={styles.advanceSearch__footer__avatarInitial}>
+                          {workerInitial}
+                        </Text>
+                      </View>
+                    )}
+                    <View style={styles.advanceSearch__footer__cardHeaderText}>
+                      <Text style={styles.advanceSearch__footer__name}>
+                        {workerName}
+                      </Text>
+                    </View>
+                    <View style={styles.advanceSearch__footer__ratingContainer}>
+                      <AntDesign
+                        name="star"
+                        size={12}
+                        color={
+                          ratingValue > 0 ? colors.primary : colors.lightGray
+                        }
+                      />
+                      <Text style={styles.advanceSearch__footer__ratingValue}>
+                        {ratingValue.toFixed(1)}
+                      </Text>
+                      <Text style={styles.advanceSearch__footer__ratingCount}>
+                        ({ratingCount || 0})
                       </Text>
                     </View>
                   </View>
-                  {w.message && (
-                    <View
-                      style={styles.advanceSearch__footer__messageContainer}
-                    >
-                      <Text style={styles.advanceSearch__footer__messageText}>
-                        {w.message}
+
+                  <View style={styles.advanceSearch__footer__cardBody}>
+                    <View style={styles.advanceSearch__footer__infoRow}>
+                      <Text style={styles.advanceSearch__footer__infoLabel}>
+                        Presupuesto:
+                      </Text>
+                      <Text style={styles.advanceSearch__footer__infoValue}>
+                        {priceValue != null && priceValue !== "" ? formatPrice(priceValue) : "A definir"}
                       </Text>
                     </View>
-                  )}
-                </View>
-              </Pressable>
-            ))
+                    <View style={styles.advanceSearch__footer__infoRowMoment}>
+                      <View
+                        style={[
+                          styles.advanceSearch__footer__infoSubContainer,
+                          isNow
+                            ? styles.advanceSearch__footer__infoAvailable
+                            : styles.advanceSearch__footer__infoBusy,
+                        ]}
+                      >
+                        {isNow ? (
+                          <Available
+                            height={20}
+                            width={20}
+                            fill={colors.green}
+                          />
+                        ) : (
+                          <Busy
+                            height={20}
+                            width={20}
+                            fill={colors.primary}
+                          />
+                        )}
+                        <Text
+                          style={[
+                            styles.advanceSearch__footer__infoText,
+                            isNow
+                              ? styles.advanceSearch__footer__infoTextAvailable
+                              : styles.advanceSearch__footer__infoTextBusy,
+                          ]}
+                        >
+                          {isNow || !displayDate
+                            ? isNow
+                              ? "Ahora mismo"
+                              : "A coordinar"
+                            : `${formatDate(displayDate)} • ${formatTime(
+                                displayDate
+                              )} hs`}
+                        </Text>
+                      </View>
+                    </View>
+                    {postulation.message ? (
+                      <View
+                        style={styles.advanceSearch__footer__messageContainer}
+                      >
+                        <Text style={styles.advanceSearch__footer__messageText}>
+                          {postulation.message}
+                        </Text>
+                      </View>
+                    ) : null}
+                  </View>
+                </Pressable>
+              );
+            })
           )}
         </View>
       </BottomSheetScrollView>

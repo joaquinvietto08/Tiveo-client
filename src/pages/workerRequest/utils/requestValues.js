@@ -3,26 +3,34 @@ import { UserContext } from "../../../context/UserContext";
 import { LocationContext } from "../../../context/LocationContext";
 
 export const buildRequestValues = (
-  [description, images, services, moment, scheduledDateTime],
+  [
+    description,
+    images,
+    services,
+    moment,
+    scheduledDateTime,
+    addressDetails = {},
+  ],
   worker,
   user,
   location
 ) => ({
-  user: {
-    userId: user.uid,
+  client: {
+    clientId: user.uid,
     displayName: user.displayName,
   },
   address: {
-    addressId: location.place_id,
     address: location.formatted_address.split(",")[0],
-    floor: location?.floor || "",
-    instructions: location?.notes || "",
-    phone: location?.phoneNumber || "",
+    geohash: location?.geometry?.geohash || "",
+    floor: addressDetails.floor ?? location?.floor ?? "",
+    instructions: addressDetails.instructions ?? location?.notes ?? "",
+    phone: addressDetails.phone ?? location?.phoneNumber ?? "",
   },
   worker: {
     workerId: worker?.uid || "",
-    firstName: worker?.firstName || "",
-    lastName: worker?.lastName || "",
+    workerName: worker?.workerName || "",
+    workerFirstName: worker?.name || "",
+    workerLastName: worker?.lastName || "",
     profilePicture: worker?.photoURL || "",
   },
   description,
@@ -30,7 +38,6 @@ export const buildRequestValues = (
   services,
   scheduledDateTime: scheduledDateTime ?? "",
   moment,
-  paymentStatus: "pending"
 });
 
 export const useRequestValues = (data, worker) => {

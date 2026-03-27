@@ -103,7 +103,7 @@ export const styles = StyleSheet.create({
   },
   workerProfile__advance__BottomContainer: {
     marginTop: "auto",
-    paddingBottom: 20,
+    paddingBottom: 60,
     paddingHorizontal: 20,
     paddingTop: 20,
     backgroundColor: colors.white,

@@ -17,7 +17,7 @@ const SearchBar = () => {
       >
         <View style={styles.home__searchBar__button}>
           <Ionicons name="search-outline" size={24} color="black" />
-          <Text style={styles.home__searchBar__text}>¿Que estás buscando?</Text>
+          <Text style={styles.home__searchBar__text}>¿Qué estás buscando?</Text>
         </View>
       </Pressable>
     </View>

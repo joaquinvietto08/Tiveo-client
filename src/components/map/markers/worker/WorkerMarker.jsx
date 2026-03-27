@@ -1,27 +1,82 @@
+import React, { useEffect, useMemo, useState } from "react";
 import { View, Image, StyleSheet, Text } from "react-native";
 import { getIcon } from "../../../../utils/getIcons";
 import { colors } from "../../../../styles/globalStyles";
 
-const WorkerMarker = ({ worker }) => {
-  const displayedServices = worker.services.slice(0, 2);
-  const extraServicesCount = worker.services.length - displayedServices.length;
+const WorkerMarker = ({ worker, onImageLoaded }) => {
+  const [hasImageError, setHasImageError] = useState(false);
+  const services = worker?.services || [];
+  const displayedServices = services.slice(0, 2);
+  const extraServicesCount = services.length - displayedServices.length;
+
+  const imageSource = useMemo(() => {
+    if (hasImageError) return null;
+
+    if (typeof worker?.photoURL === "string") {
+      const trimmedUrl = worker.photoURL.trim();
+      if (!trimmedUrl) return null;
+      return { uri: trimmedUrl };
+    }
+
+    return worker?.photoURL || null;
+  }, [hasImageError, worker?.photoURL]);
+
+  const workerInitial =
+    worker?.firstName?.[0]?.toUpperCase() ||
+    worker?.name?.[0]?.toUpperCase() ||
+    worker?.workerName?.[0]?.toUpperCase() ||
+    worker?.lastName?.[0]?.toUpperCase() ||
+    "?";
+
+  useEffect(() => {
+    if (!imageSource) {
+      onImageLoaded?.();
+    }
+  }, [imageSource, onImageLoaded]);
+
+  useEffect(() => {
+    setHasImageError(false);
+  }, [worker?.photoURL]);
+
+  const handleImageError = () => {
+    setHasImageError(true);
+    onImageLoaded?.();
+  };
 
   return (
     <View style={styles.map__markers__worker__markerContainer}>
-      <Image
-        source={worker.photoURL}
-        style={styles.map__markers__worker__workerImage}
-      />
+      {imageSource ? (
+        <Image
+          key={`${worker?.id ?? "w"}-${worker?.photoURL ?? ""}`}
+          source={imageSource}
+          style={[styles.map__markers__worker__workerImage, styles.map__markers__worker__imageLoaded]}
+          onLoad={onImageLoaded}
+          onError={handleImageError}
+          resizeMode="cover"
+        />
+      ) : (
+        <View
+          style={[
+            styles.map__markers__worker__workerImage,
+            styles.map__markers__worker__placeholder,
+          ]}
+        >
+          <Text style={styles.map__markers__worker__placeholderText}>
+            {workerInitial}
+          </Text>
+        </View>
+      )}
       <View style={styles.map__markers__worker__servicesContainer}>
         {extraServicesCount > 0 && (
           <View style={styles.map__markers__worker__serviceIcon}>
             <Text style={styles.map__markers__worker__serviceText}>
-              +{extraServicesCount}
+              +{Math.min(extraServicesCount, 9)}
             </Text>
           </View>
         )}
         {displayedServices.map((service, index) => {
-          const ServiceIcon = getIcon(service.service); // Obtén el ícono correspondiente
+          const ServiceIcon = getIcon(service);
+          if (!ServiceIcon) return null;
           return (
             <View key={index} style={styles.map__markers__worker__serviceIcon}>
               <ServiceIcon width={16} height={16} />
@@ -43,6 +98,10 @@ const styles = StyleSheet.create({
     width: 46,
     height: 46,
     borderRadius: 50,
+  },
+  map__markers__worker__imageLoaded: {
+    opacity: 1,
+    backgroundColor: "transparent",
   },
   map__markers__worker__servicesContainer: {
     position: "absolute",
@@ -68,6 +127,16 @@ const styles = StyleSheet.create({
     color: colors.black,
     fontFamily: "Inter-Bold",
     marginLeft: 3,
+  },
+  map__markers__worker__placeholder: {
+    backgroundColor: colors.lightGray,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  map__markers__worker__placeholderText: {
+    fontSize: 16,
+    fontFamily: "Inter-SemiBold",
+    color: colors.black,
   },
 });
 

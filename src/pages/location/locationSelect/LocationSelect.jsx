@@ -34,13 +34,16 @@ const LocationSelect = ({ navigation }) => {
         }}
       >
         <View style={styles.locationSelect__header}>
-          <Pressable style={styles.locationSelect__headerButton}>
+          <Pressable
+            style={styles.locationSelect__headerButton}
+            onPress={() => navigation.navigate("Profile")}
+          >
             <Text style={styles.locationSelect__headerText}>Ver perfil</Text>
           </Pressable>
         </View>
 
         <View style={styles.locationSelect__container}>
-          <Text style={styles.locationSelect__title}>Elije tu ubicación</Text>
+          <Text style={styles.locationSelect__title}>Elige tu ubicación</Text>
           <Text style={styles.locationSelect__subtitle}>
             Necesitamos tu ubicación para mostrarte los trabajadores disponibles
             en tu zona

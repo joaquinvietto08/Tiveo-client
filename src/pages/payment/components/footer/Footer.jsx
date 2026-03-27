@@ -1,12 +1,20 @@
 import { View, Text } from "react-native";
 import { styles } from "./FooterStyles";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { TouchableOpacity } from "react-native";
 import { colors } from "../../../../styles/globalStyles";
-import { startCheckout } from "../../utils/firebasePayment";
+import { startCheckout, confirmPayment } from "../../utils/firebasePayment";
 import LoadingButton from "../../../../components/inputs/loadingButton/LoadingButton";
 
-const Footer = ({ onRequestScrollToBottom, setBlockBack, onSuccess, setSuccesMessage }) => {
+const Footer = ({
+  payment,
+  workerName,
+  activityId,
+  onRequestScrollToBottom,
+  setBlockBack,
+  onSuccess,
+  setSuccesMessage,
+}) => {
   const [selectedMethod, setSelectedMethod] = useState("efectivo");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -17,22 +25,61 @@ const Footer = ({ onRequestScrollToBottom, setBlockBack, onSuccess, setSuccesMes
     { id: "mercado_pago", label: "Mercado Pago", color: colors.blue },
   ];
 
+  useEffect(() => {
+    if (payment?.method) {
+      setSelectedMethod(payment.method);
+    }
+  }, [payment?.method]);
+
   const handlePay = async () => {
+    if (!payment) {
+      setError(
+        "Aún no se puede pagar, pedile al trabajador que genere el cobro."
+      );
+      setTimeout(() => setError(null), 4000);
+      return;
+    }
+
+    if (payment?.status === "paid") {
+      setError("Este trabajo ya está pagado.");
+      setTimeout(() => setError(null), 4000);
+      return;
+    }
+
+    if (!payment.totalAmount || payment.totalAmount <= 0) {
+      setError("El monto del pago no es válido.");
+      setTimeout(() => setError(null), 4000);
+      return;
+    }
+
+    setError(null);
     onRequestScrollToBottom?.();
     setLoading(true);
     setBlockBack(true);
 
     try {
       if (selectedMethod === "efectivo") {
+        const workerId =
+          payment?.workerId ||
+          payment?.worker?.workerId ||
+          payment?.worker?.uid ||
+          payment?.worker?.id;
+        await confirmPayment({
+          paymentId: payment.id,
+          activityId: activityId || null,
+          workerId: workerId || null,
+          method: "efectivo",
+        });
+        setSuccesMessage("Pago en efectivo registrado");
         setLoading(false);
         setBlockBack(false);
         onSuccess();
-        setSuccesMessage("Entregale el dinero en efectivo al trabajador")
+        return;
       } else {
         await startCheckout({
-          id: "1234545",
-          title: "Trabajo de Carlos José",
-          unit_price: 4000,
+          id: payment.paymentId || payment.id,
+          title: `Trabajo de ${workerName}`,
+          unit_price: payment.totalAmount,
           onOkay: () => {
             setLoading(false);
             setTimeout(() => {
@@ -48,7 +95,7 @@ const Footer = ({ onRequestScrollToBottom, setBlockBack, onSuccess, setSuccesMes
             setLoading(false);
             setBlockBack(false);
             setTimeout(() => {
-              setError("Algo salio mal, intentalo nuevamente");
+              setError("Algo salió mal, inténtalo nuevamente");
             }, 1100);
             setTimeout(() => {
               setError(null);
@@ -57,8 +104,11 @@ const Footer = ({ onRequestScrollToBottom, setBlockBack, onSuccess, setSuccesMes
         });
       }
     } catch (error) {
+      console.error("❌ Error al procesar el pago:", error);
       setLoading(false);
       setBlockBack(false);
+      setError("Algo salió mal, inténtalo nuevamente");
+      setTimeout(() => setError(null), 4000);
     }
   };
 
@@ -102,7 +152,7 @@ const Footer = ({ onRequestScrollToBottom, setBlockBack, onSuccess, setSuccesMes
         </View>
       )}
       <LoadingButton
-        text="Pagar"
+        text="Realizar pago"
         loading={loading}
         onPress={handlePay}
         paddingBottom={20}

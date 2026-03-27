@@ -19,7 +19,7 @@ export const styles = StyleSheet.create({
     gap: 6,
     justifyContent: "space-between",
   },
-  activity__activityCard__cardIconsContianer: {
+  activity__activityCard__cardIconsContainer: {
     flexDirection: "row",
     alignItems: "center",
   },
@@ -76,5 +76,62 @@ export const styles = StyleSheet.create({
     backgroundColor: colors.primary,
     borderBottomRightRadius: 8,
     borderBottomLeftRadius: 8,
+  },
+  activity__activityCard__modalOverlay: {
+    flex: 1,
+    backgroundColor: "rgba(0,0,0,0.5)",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  activity__activityCard__modalContent: {
+    backgroundColor: colors.white,
+    borderRadius: 8,
+    padding: 20,
+    width: "90%",
+    alignItems: "center",
+  },
+  activity__activityCard__modalTitle: {
+    fontFamily: "Inter-Bold",
+    fontSize: 18,
+    marginBottom: 8,
+    color: colors.black,
+    textAlign: "center",
+  },
+  activity__activityCard__modalText: {
+    fontFamily: "Inter-Regular",
+    fontSize: 14,
+    marginBottom: 20,
+    textAlign: "center",
+    color: colors.gray,
+  },
+  activity__activityCard__modalButtons: {
+    flexDirection: "row",
+    width: "100%",
+    alignItems: "center ",
+  },
+  activity__activityCard__modalButton: {
+    flex: 1,
+    padding: 8,
+    height: 60,
+    justifyContent: "center",
+    borderRadius: 6,
+    alignItems: "center",
+    marginHorizontal: 5,
+  },
+  activity__activityCard__modalKeepButton: {
+    backgroundColor: colors.primary,
+  },
+  activity__activityCard__modalCancelButton: {},
+  activity__activityCard__modalButtonText: {
+    fontFamily: "Inter-Medium",
+    fontSize: 15,
+    color: colors.white,
+    textAlign: "center",
+  },
+  activity__activityCard__modalButtonCancelText: {
+    fontFamily: "Inter-Medium",
+    fontSize: 15,
+    color: "red",
+    textAlign: "center",
   },
 });

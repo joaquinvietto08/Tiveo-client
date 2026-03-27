@@ -1,35 +1,89 @@
 import { Image, Pressable, Text, View } from "react-native";
 import { styles } from "./CardsStyles";
 import { FlatList } from "react-native-gesture-handler";
-import { translateAvailability } from "../../../../../utils/formatHelpers";
+import {
+  translateAvailability,
+  translateService,
+} from "../../../../../utils/formatHelpers";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { colors } from "../../../../../styles/globalStyles";
+import { getIcon } from "../../../../../utils/getIcons";
+import { useNavigation } from "@react-navigation/native";
 
 const CardButton = ({ worker }) => {
+  const navigation = useNavigation();
+  const services = worker?.services || [];
+  const displayedServices = services.slice(0, 3);
+  const extraServicesCount = Math.min(Math.max(0, services.length - 3), 9);
+  const photoUri = worker?.photo || worker?.photoURL;
+
   return (
     <View style={styles.home__bottomSheet__card__cardContainer}>
       <Pressable
-        android_ripple={{ color: "#E2E2E2", borderless: true }}
+        android_ripple={{ color: "#E2E2E2" }}
         style={styles.home__bottomSheet__card__button}
+        onPress={() => navigation.navigate("WorkerProfile", { worker })}
       >
-        <View style={styles.home__bottomSheet__card__headerContainer}>
-          <Image
-            source={worker.bannerImage}
-            style={styles.home__bottomSheet__card__headerPhoto}
-          />
-        </View>
+        <View style={styles.home__bottomSheet__card__content}>
+          <View style={styles.home__bottomSheet__card__profile}>
+            {photoUri ? (
+              <Image
+                source={{ uri: photoUri }}
+                style={styles.home__bottomSheet__card__avatar}
+              />
+            ) : null}
+            <View style={styles.home__bottomSheet__card__profileInfo}>
+              <Text style={styles.home__bottomSheet__card__infoTitle}>
+                {worker.firstName} {worker.lastName}
+              </Text>
+              <Text style={styles.home__bottomSheet__card__infoWorkerName}>
+                {worker.workerName}
+              </Text>
+              <View style={styles.home__bottomSheet__card__infoContainer}>
+                <AntDesign name="star" size={12} color={colors.yellow} />
+                <Text style={styles.home__bottomSheet__card__infoRating}>
+                  {worker.starRating}{" "}
+                </Text>
+                <Text style={styles.home__bottomSheet__card__infotTotalRatings}>
+                  ({worker.completedJobs})
+                </Text>
+              </View>
+            </View>
+          </View>
 
-        <Text style={styles.home__bottomSheet__card__infoTitle}>
-          {worker.description}
-        </Text>
-        <View style={styles.home__bottomSheet__card__infoContainer}>
-          <AntDesign name="star" size={12} color={colors.yellow} />
-          <Text style={styles.home__bottomSheet__card__infoRating}>
-            {worker.starRating}{" "}
+          <Text style={styles.home__bottomSheet__card__description} numberOfLines={2}>
+            {worker?.description}
           </Text>
-          <Text style={styles.home__bottomSheet__card__infotTotalRatings}>
-            ({worker.completedJobs})
-          </Text>
+
+          {(displayedServices.length > 0 || extraServicesCount > 0) && (
+            <View style={styles.home__bottomSheet__card__chipsWrapper}>
+              {displayedServices.map((service) => {
+                const IconComponent = getIcon(service);
+                const label = translateService(service);
+
+                return (
+                  <View
+                    key={service}
+                    style={styles.home__bottomSheet__card__chip}
+                  >
+                    {IconComponent ? (
+                      <IconComponent width={16} height={16} />
+                    ) : null}
+                    <Text style={styles.home__bottomSheet__card__chipText}>
+                      {label}
+                    </Text>
+                  </View>
+                );
+              })}
+              {extraServicesCount > 0 && (
+                <View style={styles.home__bottomSheet__card__chip}>
+                  <Text style={styles.home__bottomSheet__card__chipText}>
+                    +{extraServicesCount}
+                  </Text>
+                </View>
+              )}
+            </View>
+          )}
         </View>
 
         <View style={styles.home__bottomSheet__card__statusContainer}>
@@ -57,7 +111,6 @@ const Cards = ({ workers }) => {
     <View>
       <View style={styles.home__bottomSheet__card__subtitleContainer}>
         <Text style={styles.home__bottomSheet__card__subtitle}>Destacados</Text>
-        <Text style={styles.home__bottomSheet__card__more}>Ver todos</Text>
       </View>
 
       <FlatList

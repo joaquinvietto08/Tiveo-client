@@ -23,6 +23,12 @@ export const styles = StyleSheet.create({
     color: colors.black,
     marginBottom: 4,
   },
+  activityDetails__worker__workerName: {
+    fontFamily: "Inter-Regular",
+    fontSize: 14,
+    color: colors.gray,
+    marginBottom: 10,
+  },
   activityDetails__worker__date: {
     fontFamily: "Inter-Regular",
     fontSize: 14,

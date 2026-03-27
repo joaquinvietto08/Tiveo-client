@@ -27,7 +27,7 @@ const CategoriesBottomSheet = forwardRef(
         </Pressable>
         <View style={styles.categoriesBottomSheet__content}>
           <Text style={styles.categoriesBottomSheet__title}>
-            Selecciona la catagoria que{"\n"}se adapte a tu necesidad
+            Selecciona la categoría que{"\n"}se adapte a tu necesidad
           </Text>
           <BottomSheetScrollView showsVerticalScrollIndicator={false}>
             <ServicesList

@@ -13,10 +13,31 @@ import { styles } from "./ChatStyles";
 const ChatItem = React.memo(
   ({ text, sender, timestamp, type, imageUrl, onImagePress }) => {
     const isMe = sender === "client";
+    const isSystem = type === "warranty_claim" || sender === "system";
 
     return (
       <>
-        {type === "text" && (
+        {type === "warranty_claim" && (
+          <View
+            style={[
+              styles.messages__chat__item,
+              styles.messages__chat__item__system,
+            ]}
+          >
+            <Text
+              style={[
+                styles.messages__chat__text,
+                styles.messages__chat__text__system,
+              ]}
+            >
+              {text}
+            </Text>
+            {timestamp ? (
+              <Text style={styles.messages__chat__time}>{timestamp}</Text>
+            ) : null}
+          </View>
+        )}
+        {type === "text" && !isSystem && (
           <View
             style={[
               styles.messages__chat__item,

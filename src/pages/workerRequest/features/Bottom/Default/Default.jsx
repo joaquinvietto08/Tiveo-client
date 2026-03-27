@@ -3,28 +3,48 @@ import { Image, Text, View } from "react-native";
 import { styles } from "./DefaultStyles";
 import { AntDesign } from "@expo/vector-icons";
 import { useRequestValues } from "../../../utils/requestValues";
-import firestore from "@react-native-firebase/firestore";
+import {
+  collection,
+  doc,
+  getFirestore,
+  serverTimestamp,
+  setDoc,
+} from "@react-native-firebase/firestore";
 import LoadingButton from "../../../../../components/inputs/loadingButton/LoadingButton";
+import { uploadRequestImages } from "../../../utils/uploadRequestImages";
 
-const Default = ({ worker, data, onRequestScrollToBottom, onSuccess, setBlockBack }) => {
+const db = getFirestore();
+
+const Default = ({
+  worker,
+  data,
+  onRequestScrollToBottom,
+  onSuccess,
+  setBlockBack,
+}) => {
   const values = useRequestValues(data, worker);
 
   const [loading, setLoading] = useState(false);
 
-  const handleSaveActivity = async () => {
+  const handleSendRequest = async () => {
     onRequestScrollToBottom?.();
     setLoading(true);
     setBlockBack(true);
 
     let ok = false;
     try {
-      await firestore()
-        .collection("activity")
-        .add({
-          ...values,
-          createdAt: firestore.FieldValue.serverTimestamp(),
-          status: "pending",
-        });
+      const requestRef = doc(collection(db, "requests"));
+      const uploadedImages = await uploadRequestImages(values.images, {
+        requestId: requestRef.id,
+        userId: values?.client?.userId,
+      });
+      await setDoc(requestRef, {
+        ...values,
+        images: uploadedImages,
+        createdAt: serverTimestamp(),
+        status: "requested",
+        type: "direct",
+      });
       ok = true;
     } catch (error) {
       console.error(error);
@@ -44,18 +64,28 @@ const Default = ({ worker, data, onRequestScrollToBottom, onSuccess, setBlockBac
     }
   };
 
+  const imageSource =
+    typeof worker.photoURL === "string"
+      ? { uri: worker.photoURL }
+      : worker.photoURL;
+  const workerDisplayName =
+    worker.workerName ||
+    worker.name ||
+    worker.firstName ||
+    "Trabajador";
+
   return (
     <View style={styles.WR__defaultBottom__container}>
       <View style={styles.WR__defaultBottom__hr}></View>
       <View style={styles.WR__defaultBottom__worker}>
         <Image
-          source={worker.photoURL}
+          source={imageSource}
           style={styles.WR__defaultBottom__image}
           resizeMode="cover"
         />
         <View>
           <Text style={styles.WR__defaultBottom__name}>
-            {worker.firstName} {worker.lastName}
+            {workerDisplayName}
           </Text>
           <View style={styles.WR__defaultBottom__ratingContainer}>
             <AntDesign name="star" size={16} />
@@ -71,12 +101,8 @@ const Default = ({ worker, data, onRequestScrollToBottom, onSuccess, setBlockBac
       <LoadingButton
         text="Enviar solicitud"
         loading={loading}
-        onPress={handleSaveActivity}
+        onPress={handleSendRequest}
       />
-      <Text style={styles.WR__defaultBottom__infoText}>
-        Recordá que podes cancelar sin costo hasta{"\n"}15 minutos antes de que
-        llegue el trabajador
-      </Text>
     </View>
   );
 };

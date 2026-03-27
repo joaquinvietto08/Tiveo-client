@@ -1,49 +1,138 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import * as geofire from "geofire-common";
-import { workers } from "../components/data/workersData";
+import {
+  collection,
+  endAt,
+  getDocs,
+  getFirestore,
+  orderBy,
+  query,
+  startAt,
+} from "@react-native-firebase/firestore";
 import { LocationContext } from "./LocationContext";
 
 // Crear el contexto
 export const NearbyWorkersContext = createContext();
 
 // Proveedor del contexto
+const db = getFirestore();
+
 export const NearbyWorkersProvider = ({ children }) => {
   const { location } = useContext(LocationContext);
   const [nearbyWorkers, setNearbyWorkers] = useState([]);
 
   const radiusInKm = 1;
+  const latitude = location?.geometry?.location?.lat;
+  const longitude = location?.geometry?.location?.lng;
 
   // Función para actualizar manualmente la lista de trabajadores cercanos
-  const fetchNearbyWorkers = () => {
-    if (!location) return;
+  const fetchNearbyWorkers = useCallback(async () => {
+    if (typeof latitude !== "number" || typeof longitude !== "number") {
+      setNearbyWorkers([]);
+      return;
+    }
 
-    const radiusInM = radiusInKm * 1000;
-    const nearby = [];
+    try {
+      const center = [latitude, longitude];
+      const radiusInM = radiusInKm * 1000;
+      const bounds = geofire.geohashQueryBounds(center, radiusInM);
+      const workersRef = collection(db, "workers");
+      const queries = bounds.map(([start, end]) => {
+        const workersQuery = query(
+          workersRef,
+          orderBy("geohash"),
+          startAt(start),
+          endAt(end)
+        );
+        return getDocs(workersQuery);
+      });
 
-    // Calcular los límites de geohash para el área de búsqueda
-    const bounds = geofire.geohashQueryBounds(
-      [location.geometry.location.lat, location.geometry.location.lng],
-      radiusInM
-    );
+      const snapshots = await Promise.all(queries);
+      const nearby = [];
+      const seenWorkerIds = new Set();
 
-    workers.forEach((worker) => {
-      const { geohash: workerGeohash } = worker;
+      snapshots.forEach((snapshot) => {
+        snapshot.docs.forEach((doc) => {
+          if (seenWorkerIds.has(doc.id)) return;
 
-      const isInBounds = bounds.some(
-        ([start, end]) => workerGeohash >= start && workerGeohash <= end
-      );
+          const data = doc.data();
+          const workerGeohash = data?.geohash;
+          if (!workerGeohash) return;
 
-      if (isInBounds) {
-        nearby.push(worker);
-      }
-    });
+          const workerStatus = (data?.status || "").toLowerCase();
+          if (workerStatus === "inactive") return;
 
-    setNearbyWorkers(nearby);
-  };
+          const lat =
+            typeof data?.lat === "number"
+              ? data.lat
+              : typeof data?.location?.lat === "number"
+              ? data.location.lat
+              : typeof data?.location?.latitude === "number"
+              ? data.location.latitude
+              : null;
+
+          const lng =
+            typeof data?.lng === "number"
+              ? data.lng
+              : typeof data?.location?.lng === "number"
+              ? data.location.lng
+              : typeof data?.location?.longitude === "number"
+              ? data.location.longitude
+              : null;
+
+          if (lat === null || lng === null) return;
+
+          const distanceInKm = geofire.distanceBetween([lat, lng], center);
+          if (distanceInKm > radiusInKm) return;
+
+          const normalizedStatus =
+            workerStatus === "active" ? "available" : workerStatus || "busy";
+
+          const services = Array.isArray(data?.services) ? data.services : [];
+
+          seenWorkerIds.add(doc.id);
+          nearby.push({
+            ...data,
+            uid: data?.uid || doc.id,
+            lat,
+            lng,
+            status: normalizedStatus,
+            firstName: data?.firstName || data?.name || data?.workerName || "",
+            lastName: data?.lastName || "",
+            name: data?.name || data?.firstName || "",
+            workerName: data?.workerName || data?.name || "",
+            photoURL: data?.photoURL || data?.photo || "",
+            services,
+          });
+        });
+      });
+
+      setNearbyWorkers(nearby);
+    } catch (error) {
+      console.error("Error fetching nearby workers:", error);
+      setNearbyWorkers([]);
+    }
+  }, [latitude, longitude, radiusInKm]);
 
   useEffect(() => {
+    if (
+      typeof location?.geometry?.location?.lat !== "number" ||
+      typeof location?.geometry?.location?.lng !== "number"
+    ) {
+      return;
+    }
+
     fetchNearbyWorkers();
-  }, [location, radiusInKm]);
+    const intervalId = setInterval(fetchNearbyWorkers, 20000);
+
+    return () => clearInterval(intervalId);
+  }, [fetchNearbyWorkers, latitude, longitude]);
 
   return (
     <NearbyWorkersContext.Provider
